@@ -13,13 +13,13 @@ OpenSSH can use many authentication methods, including plain password, public ke
 
 To install the OpenSSH client applications on your Ubuntu system, use this command at a terminal prompt:
 
-```bash
+```shell
 sudo apt install openssh-client
 ```
 
 To install the OpenSSH server application, and related support files, use this command at a terminal prompt:
 
-```bash
+```shell
 sudo apt install openssh-server
 ```
 
@@ -31,14 +31,14 @@ There are many directives in the `sshd` configuration file, which control things
 
 > **Tip**:
 > Before editing the configuration file, you should make a copy of the original `/etc/ssh/sshd_config` file and protect it from writing so you will have the original settings as a reference and to reuse as necessary. You can do this with the following commands:
-> ```bash
+> ```shell
 > sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.original
 > sudo chmod a-w /etc/ssh/sshd_config.original
 > ```
 
 Since losing an SSH server might mean losing your way to reach a server, check the configuration after changing it and before restarting the server:
 
-```bash
+```shell
 sudo sshd -t -f /etc/ssh/sshd_config
 ```
 
@@ -52,7 +52,7 @@ Banner /etc/issue.net
 
 After making changes to the `/etc/ssh/sshd_config` file, save the file. Then, restart the `sshd` server application to effect the changes using the following command:
 
-```bash
+```shell
 sudo systemctl restart ssh.service
 ```
 
@@ -65,13 +65,13 @@ SSH allows authentication between two hosts without the need of a password. SSH 
 
 To generate the keys, run the following command:
 
-```bash
+```shell
 ssh-keygen -t rsa
 ```
 
 This will generate the keys using the **RSA Algorithm**.  At the time of this writing, the generated keys will have 3072 bits.  You can modify the number of bits by using the `-b` option.  For example, to generate keys with 4096 bits, you can use:
 
-```bash
+```shell
 ssh-keygen -t rsa -b 4096
 ```
 
@@ -79,13 +79,13 @@ During the process you will be prompted for a password. Simply hit <kbd>Enter</k
 
 By default, the public key is saved in the file `~/.ssh/id_rsa.pub`, while `~/.ssh/id_rsa` is the private key. Now copy the `id_rsa.pub` file to the remote host and append it to `~/.ssh/authorized_keys` by running:
 
-```bash
+```shell
 ssh-copy-id username@remotehost
 ```
 
 Finally, double check the permissions on the `authorized_keys` file -- only the authenticated user should have read and write permissions. If the permissions are not correct then change them by:
 
-```bash
+```shell
 chmod 600 .ssh/authorized_keys
 ```
 
@@ -95,7 +95,7 @@ You should now be able to SSH to the host without being prompted for a password.
 
 These days many users have already SSH keys registered with services like Launchpad or GitHub. Those can be imported with:
 
-```bash
+```shell
 ssh-import-id <username-on-remote-service>
 ```
 
@@ -113,7 +113,7 @@ Once the keypair is generated, it can be used as you would normally use any othe
 
 For example, plug the U2F device in and generate a keypair to use with it:
 
-```bash
+```shell
 $ ssh-keygen -t ecdsa-sk
 Generating public/private ecdsa-sk key pair.
 You may need to touch your authenticator to authorize key generation. <-- touch device
@@ -128,7 +128,7 @@ SHA256:V9PQ1MqaU8FODXdHqDiH9Mxb8XK3o5aVYDQLVl9IFRo ubuntu@focal
 
 Now transfer the public part to the server to `~/.ssh/authorized_keys` and you are ready to go:
 
-```bash
+```shell
 $ ssh -i .ssh/id_ecdsa_sk ubuntu@focal.server
 Confirm user presence for key ECDSA-SK SHA256:V9PQ1MqaU8FODXdHqDiH9Mxb8XK3o5aVYDQLVl9IFRo <-- touch device
 Welcome to Ubuntu Focal Fossa (GNU/Linux 5.4.0-21-generic x86_64)
@@ -146,7 +146,7 @@ Using resident keys increases the likelihood of an attacker being able to use a 
 
 OpenSSH allows resident keys to be generated using the `ssh-keygen` flag `-O resident` at key generation time:
 
-```bash
+```shell
 $ ssh-keygen -t ecdsa-sk -O resident -O application=ssh:mykeyname
 Generating public/private ecdsa-sk key pair.
 You may need to touch your authenticator to authorize key generation.
@@ -160,7 +160,7 @@ Your identification has been saved in mytoken
 
 This will produce a public/private key pair as usual, but it will be possible to retrieve the private key part (the key handle) from the token later.  This is done by running:
 
-```bash
+```shell
 $ ssh-keygen -K
 Enter PIN for authenticator: 
 You may need to touch your authenticator to authorize key download.
@@ -171,7 +171,7 @@ Saved ECDSA-SK key ssh:mytoken to id_ecdsa_sk_rk_mytoken
 
 It will use the part after `ssh:` from the `application` parameter from before as part of the key filenames:
 
-```bash
+```shell
 $ l id_ecdsa_sk_rk_mytoken*
 -rw------- 1 ubuntu ubuntu 598 out  4 18:49 id_ecdsa_sk_rk_mytoken
 -rw-r--r-- 1 ubuntu ubuntu 228 out  4 18:49 id_ecdsa_sk_rk_mytoken.pub
@@ -179,7 +179,7 @@ $ l id_ecdsa_sk_rk_mytoken*
 
 If you set a passphrase when extracting the keys from the hardware token, and later use these keys, you will be prompted for both the key passphrase *and* the hardware key PIN. You will also have to touch the token:
 
-```bash
+```shell
 $ ssh -i ./id_ecdsa_sk_rk_mytoken ubuntu@focal.server
 Enter passphrase for key './id_ecdsa_sk_rk_mytoken': 
 Confirm user presence for key ECDSA-SK 
@@ -190,7 +190,7 @@ User presence confirmed
 
 It is also possible to download and add resident keys directly to `ssh-agent` by running
 
-```bash
+```shell
 $ ssh-add -K
 ```
 
@@ -220,7 +220,7 @@ TOTP avoids this downside of HOTP by using the current timezone-independent date
 
 From a terminal prompt, install the `google-authenticator` PAM module:
 
-```bash
+```shell
 sudo apt update
 sudo apt install libpam-google-authenticator
 ```
@@ -242,7 +242,7 @@ Each user needs to run the setup tool to configure 2FA. This will ask some quest
 
 As a user who needs 2FA configured, from a terminal prompt run the following command:
 
-```bash
+```shell
 google-authenticator
 ```
 
@@ -273,7 +273,7 @@ AuthenticationMethods publickey,keyboard-interactive
 
 Restart the `ssh` service to pick up configuration changes:
 
-```bash
+```shell
 sudo systemctl try-reload-or-restart ssh
 ```
 
@@ -295,7 +295,7 @@ Changes to PAM configuration have immediate effect, and no separate reloading co
 
 Now when you log in using SSH, in addition to the normal public key authentication, you will be prompted for your TOTP or HOTP code:
 
-```bash
+```shell
 $ ssh jammy.server
 Enter passphrase for key 'id_rsa':
 (ubuntu@jammy.server) Verification code:

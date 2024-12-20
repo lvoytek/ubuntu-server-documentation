@@ -11,7 +11,7 @@ It uses **profiles** of an application to determine what files and permissions t
 
 To install the `apparmor-profiles` package from a terminal prompt:
 
-```bash
+```shell
 sudo apt install apparmor-profiles
 ```
 
@@ -31,32 +31,32 @@ AppArmor profiles are located in the `/etc/apparmor.d` directory. It also stores
 
 - **`apparmor_status`** is used to view the current status of AppArmor profiles:
 
-  ```bash
+  ```shell
   sudo apparmor_status
   ```
 
 - **`aa-complain`** places a profile into `complain` mode:
 
-  ```bash
+  ```shell
   sudo aa-complain /path/to/bin
   ```
 
 - **`aa-enforce`** places a profile into `enforce` mode:
 
-  ```bash
+  ```shell
   sudo aa-enforce /path/to/bin
   ```
 
 - **`apparmor_parser`** is used to load a profile into the kernel. It can also be used to reload a currently-loaded profile using the `-r` option after modifying it to have the changes take effect. 
 To reload a profile:
 
-  ```bash
+  ```shell
   sudo apparmor_parser -r /etc/apparmor.d/profile.name
   ```
 
 - **`systemctl`** can be used to reload all profiles:
 
-  ```bash
+  ```shell
   sudo systemctl reload apparmor.service
   ```
 
@@ -64,28 +64,28 @@ To reload a profile:
 
 The `/etc/apparmor.d/disable` directory can be used along with the `apparmor_parser -R` option to disable a profile:
 
-```bash
+```shell
 sudo ln -s /etc/apparmor.d/profile.name /etc/apparmor.d/disable/
 sudo apparmor_parser -R /etc/apparmor.d/profile.name
 ```
     
 To re-enable a disabled profile, remove the symbolic link to the profile in `/etc/apparmor.d/disable/`, then load the profile using the `-a` option:
 
-```bash
+```shell
 sudo rm /etc/apparmor.d/disable/profile.name
 cat /etc/apparmor.d/profile.name | sudo apparmor_parser -a
 ```
 
 AppArmor can be disabled, and the kernel module unloaded, by entering the following:
 
-```bash
+```shell
 sudo systemctl stop apparmor.service
 sudo systemctl disable apparmor.service
 ```
 
 To re-enable AppArmor, enter:
 
-```bash
+```shell
 sudo systemctl enable apparmor.service
 sudo systemctl start apparmor.service
 ```
@@ -150,13 +150,13 @@ Which can be broken down as follows:
 - **Generate the new profile**:
   Use `aa-genprof` to generate a new profile. From a terminal:
   
-  ```bash
+  ```shell
   sudo aa-genprof executable
   ```
   
   For example:
   
-  ```bash
+  ```shell
   sudo aa-genprof slapd
   ```
 
@@ -169,7 +169,7 @@ Which can be broken down as follows:
 
 When the program is misbehaving, audit messages are sent to the log files. The program `aa-logprof` can be used to scan log files for AppArmor audit messages, review them and update the profiles. From a terminal:
 
-```bash
+```shell
 sudo aa-logprof
 ```
 

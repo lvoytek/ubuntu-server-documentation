@@ -16,7 +16,7 @@ Strictly speaking, the `smbldap-tools` package isn't needed, but unless you have
 
 Install these packages now:
 
-```bash
+```shell
 sudo apt install samba smbldap-tools
 ```
 
@@ -36,13 +36,13 @@ In order for OpenLDAP to be used as a backend for Samba, the DIT will need to us
 
 The schema is found in the now-installed samba package and is already in the LDIF format. We can import it with one simple command:
 
-```bash
+```shell
 sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /usr/share/doc/samba/examples/LDAP/samba.ldif
 ```
 
 To query and view this new schema:
 
-```bash
+```shell
 sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b cn=schema,cn=config 'cn=*samba*'
 ```
 
@@ -72,13 +72,13 @@ olcDbIndex: default sub,eq
 
 Using the `ldapmodify` utility load the new indices:
 
-```bash
+```shell
 sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f samba_indices.ldif
 ```
 
 If all went well you should see the new indices when using `ldapsearch`:
 
-```bash
+```shell
 sudo ldapsearch -Q -LLL -Y EXTERNAL -H \
 ldapi:/// -b cn=config olcDatabase={1}mdb olcDbIndex
 ```
@@ -97,7 +97,7 @@ It's important to make these choices now because `smbldap-config` will use them 
 
 Once you are happy with `netbios name` and `workgroup`, proceed to generate the `smbldap-tools` configuration by running the configuration script which will ask you some questions:
 
-```bash
+```shell
 sudo smbldap-config
 ```
 
@@ -118,7 +118,7 @@ Use the Root DN credentials.
 
 The `smbldap-populate` script will then add the LDAP objects required for Samba. It will ask you for a password for the "domain root" user, which is also the "root" user stored in LDAP:
 
-```bash
+```shell
 sudo smbldap-populate -g 10000 -u 10000 -r 10000
 ```
 
@@ -155,7 +155,7 @@ Change the values to match your environment.
 
 Now inform Samba about the Root DN user's password (the one set during the installation of the `slapd` package):
 
-```bash
+```shell
 sudo smbpasswd -W
 ```
 
@@ -163,13 +163,13 @@ As a final step to have your LDAP users be able to connect to Samba and authenti
 
 Install `sssd-ldap`:
 
-```bash
+```shell
 sudo apt install sssd-ldap
 ```
 
 Configure `/etc/sssd/sssd.conf`:
 
-```bash
+```shell
 [sssd]
 config_file_version = 2
 domains = example.com
@@ -184,7 +184,7 @@ ldap_search_base = dc=example,dc=com
 
 Adjust permissions and start the service:
 
-```bash
+```shell
 sudo chmod 0600 /etc/sssd/sssd.conf
 sudo chown root:root /etc/sssd/sssd.conf
 sudo systemctl start sssd
@@ -192,13 +192,13 @@ sudo systemctl start sssd
 
 Restart the Samba services:
 
-```bash
+```shell
 sudo systemctl restart smbd.service nmbd.service
 ```
 
 To quickly test the setup, see if `getent` can list the Samba groups:
 
-```bash
+```shell
 $ getent group Replicators
 Replicators:*:552:
 ```
@@ -208,7 +208,7 @@ Replicators:*:552:
 
 If you have existing LDAP users that you want to include in your new LDAP-backed Samba they will, of course, also need to be given some of the extra Samba specific attributes. The `smbpasswd` utility can do this for you:
 
-```bash
+```shell
 sudo smbpasswd -a username
 ```
 
@@ -218,19 +218,19 @@ To manage user, group, and machine accounts use the utilities provided by the `s
 
 - To add a new user with a home directory:
 
-  ```bash
+  ```shell
   sudo smbldap-useradd -a -P -m username
   ```
 
   The `-a` option adds the Samba attributes, and the `-P` option calls the `smbldap-passwd` utility after the user is created allowing you to enter a password for the user. Finally, `-m` creates a local home directory. Test with the `getent` command:
 
-    ```bash
+    ```shell
     getent passwd username
     ```
 
 - To remove a user:
 
-  ```bash
+  ```shell
   sudo smbldap-userdel username
   ```
   
@@ -238,7 +238,7 @@ To manage user, group, and machine accounts use the utilities provided by the `s
 
 - To add a group:
 
-  ```bash
+  ```shell
   sudo smbldap-groupadd -a groupname
   ```
 
@@ -246,7 +246,7 @@ To manage user, group, and machine accounts use the utilities provided by the `s
 
 - To make an existing user a member of a group:
 
-  ```bash 
+  ```shell 
   sudo smbldap-groupmod -m username groupname
   ```
   
@@ -254,13 +254,13 @@ To manage user, group, and machine accounts use the utilities provided by the `s
 
 - To remove a user from a group:
 
-  ```bash
+  ```shell
   sudo smbldap-groupmod -x username groupname
   ```
   
 - To add a Samba machine account:
 
-  ```bash
+  ```shell
   sudo smbldap-useradd -t 0 -w username
   ```
   

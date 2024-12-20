@@ -31,7 +31,7 @@ userPassword: {CRYPT}x
 
 Then add it with `ldapadd`:
 
-```bash
+```shell
 $ ldapadd -x -ZZ -D cn=admin,dc=example,dc=com -W -f replicator.ldif
 Enter LDAP Password:
 adding new entry "cn=replicator,dc=example,dc=com"
@@ -39,7 +39,7 @@ adding new entry "cn=replicator,dc=example,dc=com"
 
 Now set a password for it with `ldappasswd`:
 
-```bash
+```shell
 $ ldappasswd -x -ZZ -D cn=admin,dc=example,dc=com -W -S cn=replicator,dc=example,dc=com
 New password:
 Re-enter new password:
@@ -53,7 +53,7 @@ The next step is to give this replication user the correct privileges, i.e.:
 
 For that we need to update the ACLs on the provider. Since ordering matters, first check what the existing ACLs look like on the `dc=example,dc=com` tree:
 
-```bash
+```shell
 $ sudo ldapsearch -Q -Y EXTERNAL -H ldapi:/// -LLL -b cn=config '(olcSuffix=dc=example,dc=com)' olcAccess
 dn: olcDatabase={1}mdb,cn=config
 olcAccess: {0}to attrs=userPassword by self write by anonymous auth by * none
@@ -79,7 +79,7 @@ olcLimits: dn.exact="cn=replicator,dc=example,dc=com"
 
 And add it to the server:
 
-```bash
+```shell
 $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f replicator-acl-limits.ldif
 modifying entry "olcDatabase={1}mdb,cn=config"
 ```
@@ -122,7 +122,7 @@ olcSpSessionLog: 100
 
 Add the new content:
 
-```bash
+```shell
 sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f provider_simple_sync.ldif
 ```
 
@@ -173,7 +173,7 @@ Ensure the following attributes have the correct values:
 
 Add the new configuration:
 
-```bash
+```shell
 sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f consumer_simple_sync.ldif
 ```
 
@@ -262,13 +262,13 @@ olcAccessLogPurge: 07+00:00 01+00:00
 
 Create a directory:
 
-```bash
+```shell
 sudo -u openldap mkdir /var/lib/ldap/accesslog
 ```
 
 Add the new content:
 
-```bash
+```shell
 sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f provider_sync.ldif
 ```
 
@@ -322,7 +322,7 @@ Ensure the following attributes have the correct values:
 
 Add the new configuration:
 
-```bash
+```shell
 sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f consumer_sync.ldif
 ```
 
@@ -332,7 +332,7 @@ You're done! The `dc=example,dc=com` tree should now be synchronising.
 
 Once replication starts, you can monitor it by running:
 
-```bash
+```shell
 $ ldapsearch -z1 -LLL -x -s base -b dc=example,dc=com contextCSN
 dn: dc=example,dc=com
 contextCSN: 20200423222317.722667Z#000000#000#000000
@@ -344,13 +344,13 @@ If your connection is slow and/or your LDAP database large, it might take a whil
 
 If the consumer's `contextCSN` is missing or does not match the provider, you should stop and figure out the issue before continuing. Try checking the `slapd` entries in `/var/log/syslog` in the provider to see if the consumer's authentication requests were successful, or that its requests to retrieve data return no errors. In particular, verify that you can connect to the provider from the consumer as the replicator BindDN using `START_TLS`:
 
-```bash
+```shell
 ldapwhoami -x -ZZ -D cn=replicator,dc=example,dc=com -W -h ldap01.example.com
 ```
 
 For our example, you should now see the `john` user in the replicated tree:
 
-```bash
+```shell
 $ ldapsearch -x -LLL -b dc=example,dc=com -h ldap02.example.com '(uid=john)' uid
 dn: uid=john,ou=People,dc=example,dc=com
 uid: john

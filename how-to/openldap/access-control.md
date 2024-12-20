@@ -12,7 +12,7 @@ To get the effective ACL for an LDAP query we need to look at the ACL entries of
 
 The following commands will give, respectively, the ACLs of the `mdb` database (`dc=example,dc=com`) and those of the frontend database:
 
-```bash
+```shell
 $ sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b \
 cn=config '(olcDatabase={1}mdb)' olcAccess
     
@@ -85,7 +85,7 @@ dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
 
 The following command will display the ACLs of the `slapd-config` database:
 
-```bash
+```shell
 $ sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b \
 cn=config '(olcDatabase={0}config)' olcAccess
     
@@ -102,7 +102,7 @@ Since this is a SASL identity we need to use a SASL **mechanism** when invoking 
 
 A succinct way to get all the ACLs is like this:
 
-```bash
+```shell
 $ sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b \
 cn=config '(olcAccess=*)' olcAccess olcSuffix
 ```

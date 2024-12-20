@@ -8,13 +8,13 @@ Logs are an invaluable source of information about problems that may arise in yo
 
 Install `logwatch` using the following command:
 
-```bash
+```shell
 sudo apt install logwatch
 ```
 
 You will also need to manually create a temporary directory in order for it to work:
 
-```bash
+```shell
 sudo mkdir /var/cache/logwatch
 ```
 
@@ -49,7 +49,7 @@ Service = "-eximstats"
 
 Next, run `logwatch` manually to verify your configuration changes are valid:
 
-```bash
+```shell
 sudo logwatch --detail Low --range today
 ```
 

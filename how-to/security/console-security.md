@@ -12,7 +12,7 @@ Anyone with physical access to the keyboard can use the <kbd>Ctrl</kbd> + <kbd>A
 
 To disable the reboot action taken by pressing the <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> key combination, run the following two commands:
 
-```bash
+```shell
 sudo systemctl mask ctrl-alt-del.target
 sudo systemctl daemon-reload
 ```

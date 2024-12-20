@@ -17,7 +17,7 @@ To install a certificate in the trust store it must be in PEM format. A PEM cert
 
 Assuming your PEM-formatted root CA certificate is in `local-ca.crt`, run the following commands to install it:
 
-```bash
+```shell
 sudo apt-get install -y ca-certificates
 sudo cp local-ca.crt /usr/local/share/ca-certificates
 sudo update-ca-certificates
@@ -32,7 +32,7 @@ After this point you can use tools like `curl` and `wget` to connect to local si
 
 You can convert a DER-formatted certificate called `local-ca.der` to PEM form like this: 
 
-```bash
+```shell
 sudo openssl x509 -inform der -outform pem -in local-ca.der -out local-ca.crt`
 ```
 

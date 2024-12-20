@@ -16,13 +16,13 @@ For this guide, though, we are going to use the `realmd` package and instruct it
 
 First, let's install the necessary packages:
 
-```bash
+```shell
 sudo apt install realmd samba
 ```
 
 In order to have the joined machine registered in the AD DNS, it needs to have an FQDN set. You might have that already, if running the `hostname -f` command returns a full hostname with domain. If it doesn't, then set the hostname as follows:
 
-```bash
+```shell
 sudo hostnamectl hostname <yourfqdn>
 ```
 
@@ -32,7 +32,7 @@ For this guide, we will be using `j1.internal.example.fake`, and the AD domain w
 
 Next, we need to verify that the AD server is both reachable and known by running the following command:
 
-```bash
+```shell
 sudo realm discover internal.example.fake
 ```
 
@@ -60,7 +60,7 @@ internal.example.fake
 
 Let's join the domain in verbose mode so we can see all the steps:
 
-```bash
+```shell
 sudo realm join -v --membership-software=samba --client-software=winbind  internal.example.fake
 ```
 
@@ -127,7 +127,7 @@ If this is set to `yes`, then the domain name will not be part of the users and 
 
 To have the home directory created automatically the first time a user logs in to the system, and if you haven't removed `libpam-winbind`, then enable the `pam_mkhomedir` module via this command:
 
-```bash
+```shell
 sudo pam-auth-update --enable mkhomedir
 ```
 
@@ -149,7 +149,7 @@ For example, let's create a simple `[storage]` share. Add this to the `/etc/samb
 
 Then create the `/storage` directory. Let's also make it `1777` so all users can use it, and then ask samba to reload its configuration:
 
-```bash
+```shell
 sudo mkdir -m 1777 /storage
 sudo smbcontrol smbd reload-config
 ```
@@ -220,7 +220,7 @@ Will reserve the `2,000,000` through `2,999,999` range for user and group ID all
 
 The `Administrator` user we inspected before with `getent passwd` can give us a glimpse of how these ranges are used (output format changed for clarity):
 
-```bash
+```shell
 $ id INTEXAMPLE\\Administrator
 uid=2000500(INTEXAMPLE\administrator)
 gid=2000513(INTEXAMPLE\domain users)

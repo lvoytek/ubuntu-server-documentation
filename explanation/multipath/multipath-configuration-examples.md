@@ -16,7 +16,7 @@ A very simple `/etc/multipath.conf` file exists, as explained in {ref}`the confi
 
 The **internal attributes** database can be acquired by running the following on the command line:
 
-```bash
+```shell
 sudo multipath -t
 ```
 

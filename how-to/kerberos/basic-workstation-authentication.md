@@ -18,7 +18,7 @@ We are going to use `sssd` with a trick so that it will fetch the user informati
 
 To install the packages enter the following in a terminal prompt:
 
-```bash
+```shell
 $ sudo apt install krb5-user sssd-krb5
 ```
 
@@ -49,7 +49,7 @@ sudo dpkg-reconfigure krb5-config
 
 You can test the Kerberos configuration by requesting a ticket using the `kinit` utility. For example:
 
-```bash
+```shell
 $ kinit ubuntu
 Password for ubuntu@EXAMPLE.COM:
 ```
@@ -81,7 +81,7 @@ The above configuration will use Kerberos for **authentication** (`auth_provider
 
 Adjust the permissions of the config file and start `sssd`:
 
-```bash
+```shell
 $ sudo chown root:root /etc/sssd/sssd.conf
 $ sudo chmod 0600 /etc/sssd/sssd.conf
 $ sudo systemctl start sssd
@@ -89,7 +89,7 @@ $ sudo systemctl start sssd
 
 Just by having installed `sssd` and its dependencies, PAM will already have been configured to use `sssd`, with a fallback to local user authentication. To try it out, if this is a workstation, simply switch users (in the GUI), or open a login terminal (<kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>number</kbd>), or spawn a login shell with `sudo login`, and try logging in using the name of a Kerberos principal. Remember that this user must already exist on the local system:
 
-```bash
+```shell
 $ sudo login
 focal-krb5-client login: ubuntu
 Password:

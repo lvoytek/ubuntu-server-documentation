@@ -7,7 +7,7 @@ Gitolite provides a traditional source control management server for git, with m
 
 Gitolite can be installed with the following command:
 
-```bash
+```shell
 sudo apt install gitolite3
 ```
 
@@ -17,26 +17,26 @@ Configuration of the gitolite server is a little different that most other serve
 
 First of all, let's create a user for gitolite to use for the service:
 
-```bash
+```shell
 sudo adduser --system --shell /bin/bash --group --disabled-password --home /home/git git
 ```
 
 Now we want to let gitolite know about the repository administrator's public SSH key. This assumes that the current user is the repository administrator. If you have not yet configured an SSH key, refer to the section on {ref}`SSH keys in our OpenSSH guide <openssh-server>`.
 
-```bash
+```shell
 cp ~/.ssh/id_rsa.pub /tmp/$(whoami).pub
 ```
 
 Let's switch to the git user and import the administrator's key into gitolite.
 
-```bash
+```shell
 sudo su - git
 gl-setup /tmp/*.pub
 ```
 
 Gitolite will allow you to make initial changes to its configuration file during the setup process. You can now clone and modify the gitolite configuration repository from your administrator user (the user whose public SSH key you imported). Switch back to that user, then clone the configuration repository:
 
-```bash
+```shell
 exit
 git clone git@$IP_ADDRESS:gitolite-admin.git
 cd gitolite-admin
@@ -53,7 +53,7 @@ Adding a new user to gitolite is simple: just obtain their public SSH key and ad
 
 Similarly, users are deleted by deleting their public key files. After each change, do not forget to commit the changes to git, and push the changes back to the server with:
 
-```bash
+```shell
 git commit -a
 git push origin master
 ```
@@ -75,13 +75,13 @@ repo    project1
 
 Once a user's public key has been imported by the gitolite admin, granting the user authorisation to use one or more repositories, the user can access those repositories with the following command:
 
-```bash
+```shell
 git clone git@$SERVER_IP:$PROJECT_NAME.git
 ```
 
 To add the server as a new remote for an existing git repository:
 
-```bash
+```shell
 git remote add gitolite git@$SERVER_IP:$PROJECT_NAME.git
 ```
 

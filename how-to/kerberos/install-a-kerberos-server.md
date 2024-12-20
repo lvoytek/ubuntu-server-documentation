@@ -19,7 +19,7 @@ Also, Kerberos is a time sensitive protocol. If the local system time between a 
 
 The first step in creating a Kerberos realm is to install the `krb5-kdc` and `krb5-admin-server` packages. From a terminal enter:
 
-```bash
+```shell
 sudo apt install krb5-kdc krb5-admin-server
 ```
 
@@ -30,7 +30,7 @@ You will be asked at the end of the install to supply the hostname for the Kerbe
 
 Next, create the new realm with the `kdb5_newrealm` utility:
 
-```bash
+```shell
 sudo krb5_newrealm
 ```
 
@@ -40,7 +40,7 @@ It will ask you for a database master password, which is used to encrypt the loc
 
 The questions asked during installation are used to configure the `/etc/krb5.conf` and `/etc/krb5kdc/kdc.conf` files. The former is used by the Kerberos 5 libraries, and the latter configures the KDC. If you need to adjust the KDC settings, edit the file and restart the `krb5-kdc` daemon. If you need to reconfigure Kerberos from scratch, perhaps to change the realm name, you can do so by typing:
 
-```bash
+```shell
 sudo dpkg-reconfigure krb5-kdc
 ```
 
@@ -49,7 +49,7 @@ sudo dpkg-reconfigure krb5-kdc
 
 Let's create our first principal. Since there is no principal create yet, we need to use `kadmin.local`, which uses a local UNIX socket to talk to the KDC, and requires root privileges:
 
-```bash
+```shell
 $ sudo kadmin.local
 Authenticating as principal root/admin@EXAMPLE.COM with password.
 kadmin.local: addprinc ubuntu
@@ -62,7 +62,7 @@ kadmin.local: quit
 
 To be able to use `kadmin` remotely, we should create an **admin principal**. Convention suggests it should be an **admin instance**, as that also makes creating a generic Access Control List (ACL) easier. Let's create an admin instance for the `ubuntu` principal:
 
-```bash
+```shell
 $ sudo kadmin.local
 Authenticating as principal root/admin@EXAMPLE.COM with password.
 kadmin.local: addprinc ubuntu/admin
@@ -75,13 +75,13 @@ kadmin.local: quit
 
 Next, the new admin principal needs to have the appropriate ACL permissions. The permissions are configured in the `/etc/krb5kdc/kadm5.acl` file:
 
-```bash
+```shell
 ubuntu/admin@EXAMPLE.COM        *
 ```
 
 You can also use a more generic form for this ACL:
 
-```bash
+```shell
 */admin@EXAMPLE.COM        *
 ```
 
@@ -89,20 +89,20 @@ The above will grant all privileges to any admin instance of a principal. See th
 
 Now restart the `krb5-admin-server` for the new ACL to take effect:
 
-```bash
+```shell
 sudo systemctl restart krb5-admin-server.service
 ```
 
 The new user principal can be tested using the `kinit` utility:
 
-```bash
+```shell
 $ kinit ubuntu/admin
 Password for ubuntu/admin@EXAMPLE.COM:
 ```
 
 After entering the password, use the `klist` utility to view information about the Ticket Granting Ticket (TGT):
 
-```bash
+```shell
 $ klist
 Ticket cache: FILE:/tmp/krb5cc_1000
 Default principal: ubuntu/admin@EXAMPLE.COM
@@ -129,7 +129,7 @@ See the {ref}`DNS chapter <install-dns>` for detailed instructions on setting up
 
 A very quick and useful way to troubleshoot what `kinit` is doing is to set the environment variable `KRB5_TRACE` to a file, or `stderr`, and it will show extra information. The output is quite verbose:
 
-```bash
+```shell
 $ KRB5_TRACE=/dev/stderr kinit ubuntu/admin
 [2898] 1585941845.278578: Getting initial credentials for ubuntu/admin@EXAMPLE.COM
 [2898] 1585941845.278580: Sending unauthenticated request

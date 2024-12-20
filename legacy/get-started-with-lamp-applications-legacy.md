@@ -16,7 +16,7 @@ The fastest way to get started is to install LAMP using `tasksel`. Tasksel is a 
 
 At a terminal prompt enter the following commands:
 
-```bash
+```shell
 sudo apt-get update
 sudo apt-get install -y tasksel
 sudo tasksel install lamp-server

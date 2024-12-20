@@ -83,7 +83,7 @@ A priority string can start with a single initial keyword, and then add or remov
 
 To see the resulting list of ciphers and algorithms from a priority string, one can use the `gnutls-cli` command-line tool. For example, to list all the ciphers and algorithms allowed with the priority string `SECURE256`:
 
-```console
+```shell
 $ gnutls-cli --list --priority SECURE256
 Cipher suites for SECURE256
 TLS_AES_256_GCM_SHA384                                  0x13, 0x02      TLS1.3
@@ -109,7 +109,7 @@ PK-signatures: SIGN-RSA-SHA384, SIGN-RSA-PSS-SHA384, SIGN-RSA-PSS-RSAE-SHA384, S
 
 You can manipulate the resulting set by manipulating the priority string. For example, to remove `CHACHA20-POLY1305` from the `SECURE256` set:
 
-```console
+```shell
 $ gnutls-cli --list --priority SECURE256:-CHACHA20-POLY1305
 Cipher suites for SECURE256:-CHACHA20-POLY1305
 TLS_AES_256_GCM_SHA384                                  0x13, 0x02      TLS1.3
@@ -138,7 +138,7 @@ MYSET = SECURE256:-CHACHA20-POLY1305
 
 Which allows the `MYSET` priority string to be used like this:
 
-```bash
+```shell
 $ gnutls-cli --list --priority @MYSET
 ```
 
@@ -176,13 +176,13 @@ default-priority-string = NORMAL:-VERS-TLS-ALL:+VERS-TLS1.3
 
 With our test server providing everything but TLSv1.3:
 
-```console
+```shell
 $ sudo openssl s_server -cert j-server.pem -key j-server.key -port 443 -no_tls1_3  -www
 ```
 
 Connections will fail:
 
-```console
+```shell
 $ gnutls-cli j-server.lxd
 Processed 125 CA certificate(s).
 Resolving 'j-server.lxd:443'...
@@ -193,14 +193,14 @@ Connecting to '10.0.100.87:443'...
 
 An application linked with GnuTLS will also fail:
 
-```console
+```shell
 $ lftp -c "cat https://j-server.lxd/status"
 cat: /status: Fatal error: gnutls_handshake: A TLS fatal alert has been received.
 ```
 
 But an application can override these settings, because it's only the priority string that is being manipulated in the GnuTLS config:
 
-```console
+```shell
 $ lftp -c "set ssl:priority NORMAL:+VERS-TLS-ALL; cat https://j-server.lxd/status" | grep ^New
 New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384
 ```
@@ -221,7 +221,7 @@ Note that setting the same key multiple times will append the new value to the p
 
 In this scenario, the application cannot override the config anymore:
 
-```console
+```shell
 $ lftp -c "set ssl:priority NORMAL:+VERS-TLS-ALL; cat https://j-server.lxd/status" | grep ^New
 cat: /status: Fatal error: gnutls_handshake: A TLS fatal alert has been received.
 ```
@@ -243,13 +243,13 @@ tls-disabled-cipher = AES-128-GCM
 
 If we now connect to a server that was brought up with this config:
 
-```bash
+```shell
 $ sudo openssl s_server -cert j-server.pem -key j-server.key -port 443 -ciphersuites TLS_AES_128_GCM_SHA256 -www
 ```
 
 Our GnuTLS client will fail:
 
-```console
+```shell
 $ gnutls-cli j-server.lxd
 Processed 126 CA certificate(s).
 Resolving 'j-server.lxd:443'...
@@ -260,7 +260,7 @@ Connecting to '10.0.100.87:443'...
 
 And given GnuTLS' behaviour regarding re-enabling a cipher that was once removed, we cannot allow AES128 from the command line either:
 
-```console
+```shell
 $ gnutls-cli --priority="NORMAL:+AES-128-GCM"  j-server.lxd
 Processed 126 CA certificate(s).
 Resolving 'j-server.lxd:443'...

@@ -8,13 +8,13 @@ Here, we will be our own Certificate Authority (CA) and then create and sign our
 
 Install the `gnutls-bin` and `ssl-cert` packages:
 
-```bash
+```shell
 sudo apt install gnutls-bin ssl-cert
 ```
 
 Create a private key for the Certificate Authority:
 
-```bash
+```shell
 sudo certtool --generate-privkey --bits 4096 --outfile /etc/ssl/private/mycakey.pem
 ```
 
@@ -29,7 +29,7 @@ expiration_days = 3650
 
 Create the self-signed CA certificate:
 
-```bash
+```shell
 sudo certtool --generate-self-signed \
 --load-privkey /etc/ssl/private/mycakey.pem \
 --template /etc/ssl/ca.info \
@@ -41,7 +41,7 @@ sudo certtool --generate-self-signed \
 
 Run `update-ca-certificates` to add the new CA certificate to the list of trusted CAs. Note the one added CA:
 
-```bash
+```shell
 $ sudo update-ca-certificates
 Updating certificates in /etc/ssl/certs...
 1 added, 0 removed; done.
@@ -53,7 +53,7 @@ This also creates a `/etc/ssl/certs/mycacert.pem` symlink pointing to the real f
 
 Make a private key for the server:
 
-```bash
+```shell
 sudo certtool --generate-privkey \
 --bits 2048 \
 --outfile /etc/ldap/ldap01_slapd_key.pem
@@ -77,7 +77,7 @@ The above certificate is good for 1 year, and it's valid only for the `ldap01.ex
 
 Create the server's certificate:
 
-```bash
+```shell
 sudo certtool --generate-certificate \
 --load-privkey /etc/ldap/ldap01_slapd_key.pem \
 --load-ca-certificate /etc/ssl/certs/mycacert.pem \
@@ -88,7 +88,7 @@ sudo certtool --generate-certificate \
 
 Adjust permissions and ownership:
 
-```bash
+```shell
 sudo chgrp openldap /etc/ldap/ldap01_slapd_key.pem
 sudo chmod 0640 /etc/ldap/ldap01_slapd_key.pem
 ```
@@ -111,7 +111,7 @@ olcTLSCertificateKeyFile: /etc/ldap/ldap01_slapd_key.pem
 
 Use the `ldapmodify` command to tell `slapd` about our TLS work via the `slapd-config` database:
 
-```bash
+```shell
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f certinfo.ldif
 ```
 
@@ -123,7 +123,7 @@ SLAPD_SERVICES="ldap:/// ldapi:/// ldaps:///"
 
 And restart `slapd` with:
 
-```bash
+```shell
 sudo systemctl restart slapd
 ```
 
@@ -131,14 +131,14 @@ Note that *StartTLS* will be available without the change above, and does NOT ne
 
 Test *StartTLS*:
 
-```bash
+```shell
 $ ldapwhoami -x -ZZ -H ldap://ldap01.example.com
 anonymous
 ```
 
 Test LDAPS:
 
-```bash
+```shell
 $ ldapwhoami -x -H ldaps://ldap01.example.com
 anonymous
 ```
@@ -147,7 +147,7 @@ anonymous
 
 To generate a certificate pair for an OpenLDAP replica (consumer), create a holding directory (which will be used for the eventual transfer) and run the following:
 
-```bash
+```shell
 mkdir ldap02-ssl
 cd ldap02-ssl
 certtool --generate-privkey \
@@ -157,7 +157,7 @@ certtool --generate-privkey \
 
 Create an info file, `ldap02.info`, for the Consumer server, adjusting its values according to your requirements:
 
-```bash
+```shell
 organization = Example Company
 cn = ldap02.example.com
 tls_www_server
@@ -168,7 +168,7 @@ expiration_days = 365
 
 Create the Consumer's certificate:
 
-```bash
+```shell
     sudo certtool --generate-certificate \
     --load-privkey ldap02_slapd_key.pem \
     --load-ca-certificate /etc/ssl/certs/mycacert.pem \
@@ -182,20 +182,20 @@ Create the Consumer's certificate:
 
 Get a copy of the CA certificate:
 
-```bash
+```shell
 cp /etc/ssl/certs/mycacert.pem .
 ```
 
 We're done. Now transfer the `ldap02-ssl` directory to the Consumer. Here we use `scp` (adjust accordingly):
 
-```bash
+```shell
 cd ..
 scp -r ldap02-ssl user@consumer:
 ```
 
 On the Consumer side, install the certificate files you just transferred:
 
-```bash
+```shell
 sudo cp ldap02_slapd_cert.pem ldap02_slapd_key.pem /etc/ldap
 sudo chgrp openldap /etc/ldap/ldap02_slapd_key.pem
 sudo chmod 0640 /etc/ldap/ldap02_slapd_key.pem
@@ -219,7 +219,7 @@ olcTLSCertificateKeyFile: /etc/ldap/ldap02_slapd_key.pem
 
 Configure the `slapd-config` database:
 
-```bash
+```shell
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f certinfo.ldif
 ```
 
@@ -227,14 +227,14 @@ Like before, if you want to enable LDAPS, edit `/etc/default/slapd` and add `lda
 
 Test *StartTLS*:
 
-```bash
+```shell
 $ ldapwhoami -x -ZZ -H ldap://ldap02.example.com
 anonymous
 ```
 
 Test LDAPS:
 
-```bash
+```shell
 $ ldapwhoami -x -H ldaps://ldap02.example.com
 anonymous
 ```

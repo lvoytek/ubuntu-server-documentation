@@ -15,13 +15,13 @@ Before installing Munin on `server01`, {ref}`Apache2 will need to be installed <
 
 First, on `server01` install the `munin` package. In a terminal enter the following command:
 
-```bash
+```shell
 sudo apt install munin
 ```
 
 Now on `server02`, install the `munin-node` package:
 
-```bash
+```shell
 sudo apt install munin-node
 ```
 
@@ -51,7 +51,7 @@ allow ^172\.18\.100\.100$
 
 Now restart `munin-node` on `server02` for the changes to take effect:
 
-```bash
+```shell
 sudo systemctl restart munin-node.service
 ```
 
@@ -64,7 +64,7 @@ In a browser, go to `http://server01/munin`, and you should see links to nice gr
 
 The `munin-plugins-extra` package contains performance checks and additional services such as DNS, DHCP, and Samba, etc. To install the package, from a terminal enter:
 
-```bash
+```shell
 sudo apt install munin-plugins-extra
 ```
 

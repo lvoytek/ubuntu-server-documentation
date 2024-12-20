@@ -7,7 +7,7 @@ OpenVPN is a flexible, reliable and secure Virtual Private Networking (VPN) solu
 
 To install OpenVPN, run the following command in your terminal:
 
-```bash
+```shell
 sudo apt install openvpn easy-rsa
 ```
 
@@ -31,7 +31,7 @@ Both the server and the client will authenticate each other by first verifying t
 
 To set up your own CA, and generate certificates and keys for an OpenVPN server with multiple clients, first copy the `easy-rsa` directory to `/etc/openvpn`. This will ensure that any changes to the scripts will not be lost when the package is updated. From a terminal, run:
 
-```bash
+```shell
 sudo make-cadir /etc/openvpn/easy-rsa
 ```
 
@@ -40,7 +40,7 @@ sudo make-cadir /etc/openvpn/easy-rsa
 
 As a `root` user, change to the newly created directory `/etc/openvpn/easy-rsa` and run:
 
-```bash
+```shell
 ./easyrsa init-pki
 ./easyrsa build-ca
 ```
@@ -51,25 +51,25 @@ The PEM passphrase set when creating the CA will be asked for every time you nee
 
 Next, we will generate a key pair for the server:
 
-```bash
+```shell
 ./easyrsa gen-req myservername nopass
 ```
 
 Diffie Hellman parameters must be generated for the OpenVPN server. The following command will place them in `pki/dh.pem`:
 
-```bash
+```shell
 ./easyrsa gen-dh
 ```
 
 And finally, create a certificate for the server:
 
-```bash
+```shell
 ./easyrsa sign-req server myservername
 ```
 
 All certificates and keys have been generated in subdirectories. Common practice is to copy them to `/etc/openvpn/`:
 
-```bash
+```shell
 cp pki/dh.pem pki/ca.crt pki/issued/myservername.crt pki/private/myservername.key /etc/openvpn/
 ```
 
@@ -81,7 +81,7 @@ This can be done either on the server (as with the keys and certificates above) 
 
 To create the certificate, enter the following in a terminal as a root user:
 
-```bash
+```shell
 ./easyrsa gen-req myclient1 nopass
 ./easyrsa sign-req client myclient1
 ```
@@ -99,7 +99,7 @@ Since the client certificates and keys are only required on the client machine, 
 
 Included with your OpenVPN installation are these (and many more) sample configuration files:
 
-```bash
+```shell
 root@server:/# ls -l /usr/share/doc/openvpn/examples/sample-config-files/
 total 68
 -rw-r--r-- 1 root root 3427 2011-07-04 15:09 client.conf
@@ -108,7 +108,7 @@ total 68
 
 Start by copying and unpacking `server.conf.gz` to `/etc/openvpn/server.conf`:
 
-```bash
+```shell
 sudo cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/myserver.conf.gz
 sudo gzip -d /etc/openvpn/myserver.conf.gz
 ```
@@ -124,7 +124,7 @@ dh dh.pem
 
 Complete this set with a TLS Authentication (TA) key in `etc/openvpn` for `tls-auth` like this:
 
-```bash
+```shell
 sudo openvpn --genkey --secret ta.key
 ```
 
@@ -136,13 +136,13 @@ Edit `/etc/sysctl.conf` and uncomment the following line to enable IP forwarding
 
 Then reload `sysctl`:
 
-```bash
+```shell
 sudo sysctl -p /etc/sysctl.conf
 ```
 
 This is the minimum you need to configure to get a working OpenVPN server. You can use all the default settings in the sample `server.conf` file. Now you can start the server. 
 
-```bash
+```shell
 $ sudo systemctl start openvpn@myserver
 ```
 
@@ -152,13 +152,13 @@ $ sudo systemctl start openvpn@myserver
 
 You will find logging and error messages in the journal. For example, if you started a [templated service](https://www.freedesktop.org/software/systemd/man/systemd.unit.html) `openvpn@server` you can filter for this particular message source with:
 
-```bash
+```shell
 sudo journalctl -u openvpn@myserver -xe
 ```
 
 The same templated approach works for all of `systemctl`:
 
-```bash
+```shell
 $ sudo systemctl status openvpn@myserver
 openvpn@myserver.service - OpenVPN connection to myserver
    Loaded: loaded (/lib/systemd/system/openvpn@.service; disabled; vendor preset: enabled)
@@ -193,7 +193,7 @@ After `systemctl daemon-reload`, a restart of the "generic" OpenVPN will restart
 
 Now, check if OpenVPN created a `tun0` interface:
 
-```bash
+```shell
 root@server:/etc/openvpn# ip addr show dev tun0
 5: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
     link/none 
@@ -207,13 +207,13 @@ root@server:/etc/openvpn# ip addr show dev tun0
 
 There are various different OpenVPN client implementations -- both with and without GUIs. You can read more about clients in {ref}`our page on OpenVPN Clients <openvpn-client-implementations>`. For now, we use the command-line/service-based OpenVPN client for Ubuntu, which is part of the same package as the server. So you must install the `openvpn` package again on the client machine:
 
-```bash
+```shell
 sudo apt install openvpn
 ```
 
 This time, copy the `client.conf` sample config file to `/etc/openvpn/`:
 
-```bash
+```shell
 sudo cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf /etc/openvpn/
 ```
 
@@ -235,13 +235,13 @@ remote vpnserver.example.com 1194
 
 Now start the OpenVPN client with the same templated mechanism:
 
-```bash
+```shell
 $ sudo systemctl start openvpn@client
 ```
 
 You can check the status as you did on the server:
 
-```bash
+```shell
 $ sudo systemctl status openvpn@client
 openvpn@client.service - OpenVPN connection to client
    Loaded: loaded (/lib/systemd/system/openvpn@.service; disabled; vendor preset: enabled)
@@ -298,7 +298,7 @@ ovpn-myserver[4818]: myclient1/192.168.122.114:55738 Incoming Data Channel: Ciph
 
 And you can check on the client if it created a `tun0` interface:
 
-```bash
+```shell
 $ ip addr show dev tun0
 4: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 100
     link/none 
@@ -310,7 +310,7 @@ $ ip addr show dev tun0
 
 Check if you can ping the OpenVPN server:
 
-```bash
+```shell
 root@client:/etc/openvpn# ping 10.8.0.1
 PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
 64 bytes from 10.8.0.1: icmp_req=1 ttl=64 time=0.920 ms
@@ -321,7 +321,7 @@ PING 10.8.0.1 (10.8.0.1) 56(84) bytes of data.
 
 Check out your routes:
 
-```bash
+```shell
 $ ip route 
 default via 192.168.122.1 dev ens3 proto dhcp src 192.168.122.114 metric 100 
 10.8.0.1 via 10.8.0.5 dev tun0 
@@ -360,7 +360,7 @@ OpenVPN can be set up for either a routed or a bridged VPN mode. Sometimes this 
 
 First, use Netplan to configure a bridge device using the desired Ethernet device:
 
-```bash
+```shell
 $ cat /etc/netplan/01-netcfg.yaml
 network:
     version: 2
@@ -382,7 +382,7 @@ Static IP addressing is highly suggested. DHCP addressing can also work, but you
 
 The next step on the server is to configure the Ethernet device for promiscuous mode on boot. To do this, ensure the `networkd-dispatcher` package is installed and create the following configuration script:
 
-```bash
+```shell
 sudo apt update
 sudo apt install networkd-dispatcher
 sudo touch /usr/lib/networkd-dispatcher/dormant.d/promisc_bridge
@@ -413,7 +413,7 @@ server-bridge 10.0.0.4 255.255.255.0 10.0.0.128 10.0.0.254
 
 After configuring the server, restart OpenVPN by entering:
 
-```bash
+```shell
 sudo systemctl restart openvpn@myserver
 ```
 
@@ -428,7 +428,7 @@ dev tap
 
 Finally, restart OpenVPN:
 
-```bash
+```shell
 sudo systemctl restart openvpn@client
 ```
 

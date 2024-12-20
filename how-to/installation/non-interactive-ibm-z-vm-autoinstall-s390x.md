@@ -10,7 +10,7 @@ For a zFCP and a VLAN network example, please see the [non-interactive IBM LPAR 
 
 * Start with the preparation of the (FTP) install server (if it doesn't already exist).
 
-  ```bash
+  ```shell
   user@local:~$ ssh admin@installserver.local
   admin@installserver:~$ mkdir -p /srv/ftp/ubuntu-daily-live-server-20.04
   admin@installserver:~$ wget http://cdimage.ubuntu.com/ubuntu-server/focal/daily-live/current/focal-live-server-s390x.iso --directory-prefix=/srv/ftp/ubuntu-daily-live-server-20.04
@@ -30,7 +30,7 @@ For a zFCP and a VLAN network example, please see the [non-interactive IBM LPAR 
 
 * The ISO image needs to be extracted now. Since files in the boot folder need to be modified, loopback mount is not an option here:
 
-  ```bash
+  ```shell
   admin@installserver:~$ cd /srv/ftp/ubuntu-daily-live-server-20.04
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ mkdir iso
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ sudo mount -o loop ./focal-live-server-s390x.iso ./iso
@@ -47,7 +47,7 @@ For a zFCP and a VLAN network example, please see the [non-interactive IBM LPAR 
 
 * Next, prepare an *autoinstall* (HTTP) server. This hosts the configuration data for the non-interactive installation.
 
-  ```bash
+  ```shell
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ mkdir -p /srv/www/autoinstall/zvmguest
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cd /srv/www/autoinstall/zvmguest
   admin@installserver:/srv/www/autoinstall/zvmguest$ 
@@ -56,7 +56,7 @@ For a zFCP and a VLAN network example, please see the [non-interactive IBM LPAR 
   instance-id: 2c2215fb-6a38-417f-b72f-376b1cc44f01
   admin@installserver:/srv/www/autoinstall/zvmguest$
   ```
-  ```bash
+  ```shell
   admin@installserver:/srv/www/autoinstall/zvmguest$ vi user-data
   admin@installserver:/srv/www/autoinstall/zvmguest$ cat user-data
   #cloud-config
@@ -111,7 +111,7 @@ For a zFCP and a VLAN network example, please see the [non-interactive IBM LPAR 
 
 * For s390x installations, the `early-commands` section is the interesting part:
 
-  ```bash
+  ```shell
   early-commands:
     - touch /tmp/lets_activate_the_s390x_devices
     - chzdev dasd -e 1f00

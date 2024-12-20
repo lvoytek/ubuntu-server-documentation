@@ -12,7 +12,7 @@ A common use case for an LDAP server is to store UNIX user and group information
 
 You can install `ldapscripts` by running the following command:
 
-```bash
+```shell
 sudo apt install ldapscripts
 ```
 
@@ -35,7 +35,7 @@ MSUFFIX='ou=Computers'
 
 Store the `cn=admin` password in the `/etc/ldapscripts/ldapscripts.passwd` file and make sure it's only readable by the *root* local user:
 
-```bash
+```shell
  echo -n 'password' | sudo tee /etc/ldapscripts/ldapscripts.passwd
 sudo chmod 400 /etc/ldapscripts/ldapscripts.passwd
 ```
@@ -51,7 +51,7 @@ Here are some brief examples you can use to manage users and groups using `ldaps
 
 ### Create a new user
 
-```bash
+```shell
 sudo ldapaddgroup george
 sudo ldapadduser george george
 ```
@@ -60,7 +60,7 @@ This will create a group and user with name "george" and set the user's primary 
 
 ### Change a user's password
 
-```bash
+```shell
 $ sudo ldapsetpasswd george
 
 Changing password for user uid=george,ou=People,dc=example,dc=com
@@ -71,7 +71,7 @@ Successfully set password for user uid=george,ou=People,dc=example,dc=com
 
 ## Delete a user
 
-```bash
+```shell
 sudo ldapdeleteuser george
 ```
 
@@ -79,19 +79,19 @@ Note that this won't delete the user's primary group, but will remove the user f
 
 ## Add a group
 
-```bash
+```shell
 sudo ldapaddgroup qa
 ```
 
 ## Delete a group
 
-```bash
+```shell
 sudo ldapdeletegroup qa
 ```
 
 ## Add a user to a group
 
-```bash    
+```shell    
 sudo ldapaddusertogroup george qa
 ```
 
@@ -99,7 +99,7 @@ You should now see a `memberUid` attribute for the `qa` group with a value of `g
 
 ## Remove a user from a group
 
-```bash
+```shell
 sudo ldapdeleteuserfromgroup george qa
 ```
 
@@ -109,7 +109,7 @@ The `memberUid` attribute should now be removed from the `qa` group.
 
 The `ldapmodifyuser` script allows you to add, remove, or replace a user's attributes. The script uses the same syntax as the `ldapmodify` utility. For example:
 
-```bash    
+```shell    
 sudo ldapmodifyuser george
 # About to modify the following entry :
 dn: uid=george,ou=People,dc=example,dc=com
@@ -143,7 +143,7 @@ UTEMPLATE="/etc/ldapscripts/ldapadduser.template"
     
 There are sample templates in the `/usr/share/doc/ldapscripts/examples` directory. Copy or rename the `ldapadduser.template.sample` file to `/etc/ldapscripts/ldapadduser.template`:
 
-```bash    
+```shell    
 sudo cp /usr/share/doc/ldapscripts/examples/ldapadduser.template.sample \
 /etc/ldapscripts/ldapadduser.template
 ```
@@ -170,7 +170,7 @@ Notice the `<ask>` option used for the **sn** attribute. This will make `ldapadd
 
 There are utilities in the package that were not covered here. This command will output a list of them:
 
-```bash
+```shell
 dpkg -L ldapscripts | grep /usr/sbin
 ```
 

@@ -7,13 +7,13 @@
 
 To install MySQL, run the following command from a terminal prompt:
 
-```bash
+```shell
 sudo apt install mysql-server
 ```
 
 Once the installation is complete, the MySQL server should be started automatically. You can quickly check its current status via systemd:
 
-```bash
+```shell
 sudo service mysql status
 ```
 
@@ -33,7 +33,7 @@ Oct 08 14:37:38 db.example.org systemd[1]: Started MySQL Community Server.
 
 The network status of the MySQL service can also be checked by running the `ss` command at the terminal prompt:
 
-```bash
+```shell
 sudo ss -tap | grep mysql
 ```
 
@@ -46,13 +46,13 @@ LISTEN    0         70                       *:33060                   *:*      
 
 If the server is not running correctly, you can type the following command to start it:
 
-```bash
+```shell
 sudo service mysql restart
 ```
 
 A good starting point for troubleshooting problems is the systemd journal, which can be accessed from the terminal prompt with this command:
 
-```bash
+```shell
 sudo journalctl -u mysql
 ```
 
@@ -69,7 +69,7 @@ bind-address            = 192.168.0.5
 
 After making a configuration change, the MySQL daemon will need to be restarted with the following command:
 
-```bash
+```shell
 sudo systemctl restart mysql.service
 ```
 
@@ -115,19 +115,19 @@ MySQL databases should be backed up regularly. Backups can be accomplished throu
 
 To dump the data of a publicly available database on the local MySQL server into a file, run the following:
 
-```bash
+```shell
 mysqldump [database name] > dump.sql
 ```
 
 For restricted databases, specify a user with the proper permissions using `-u`:
 
-```bash
+```shell
 mysqldump -u root [database name] > dump.sql
 ```
 
 To restore a database from the backup file, run the `mysql` command and pipe the file through stdin:
 
-```bash
+```shell
 mysql -u root [database name] < dump.sql
 ```
 
@@ -139,13 +139,13 @@ MySQL Shell, supported in Ubuntu 24.04 LTS and later, contains a set of utilitie
 
 To install MySQL Shell, run the following:
 
-```bash
+```shell
 sudo apt install mysql-shell
 ```
 
 Run the following to connect to the local MySQL server on Ubuntu with MySQL Shell in Python mode:
 
-```bash
+```shell
 mysqlsh --socket=/var/run/mysqld/mysqld.sock --no-password --python
 ```
 
@@ -177,19 +177,19 @@ Also supported in Ubuntu 24.04 LTS and later, Percona Xtrabackup is a tool for c
 
 To install Xtrabackup, run the following command from a terminal prompt:
 
-```bash
+```shell
 sudo apt install percona-xtrabackup
 ```
 
 Create a new backup with the `xtrabackup` command. This can be done while the server is running.
 
-```bash
+```shell
 xtrabackup --backup --target-dir=/tmp/worlddump
 ```
 
 To restore from a backup, service will need to be interrupted. This can be achieved with the following:
 
-```bash
+```shell
 sudo systemctl stop mysql
 xtrabackup --prepare --target-dir=/tmp/worlddump
 sudo rm -rf /var/lib/mysql
@@ -210,7 +210,7 @@ Many parameters can be adjusted with the existing database, however some may aff
 
 First, if you have existing data, you will first need to carry out a `mysqldump` and reload:
 
-```bash
+```shell
 mysqldump --all-databases --routines -u root -p > ~/fulldump.sql
 ```
 
@@ -218,19 +218,19 @@ This will then prompt you for the root password before creating a copy of the da
 
 Once the dump has been completed, shut down MySQL:
 
-```bash
+```shell
 sudo service mysql stop
 ```
 
 It's also a good idea to backup the original configuration:
 
-```bash
+```shell
 sudo rsync -avz /etc/mysql /root/mysql-backup
 ```
 
 Next, make any desired configuration changes. Then, delete and re-initialise the database space and make sure ownership is correct before restarting MySQL:
 
-```bash
+```shell
 sudo rm -rf /var/lib/mysql/*
 sudo mysqld --initialize
 sudo chown -R mysql: /var/lib/mysql
@@ -239,13 +239,13 @@ sudo service mysql start
 
 The final step is re-importation of your data by piping your SQL commands to the database.
 
-```bash
+```shell
 cat ~/fulldump.sql | mysql
 ```
 
 For large data imports, the 'Pipe Viewer' utility can be useful to track import progress. Ignore any ETA times produced by `pv`; they're based on the average time taken to handle each row of the file, but the speed of inserting can vary wildly from row to row with `mysqldumps`:
 
-```bash
+```shell
 sudo apt install pv
 pv ~/fulldump.sql | mysql
 ```
@@ -259,7 +259,7 @@ Once this step is complete, you are good to go\!
 
 [MySQL Tuner](https://github.com/major/MySQLTuner-perl) is a Perl script that connects to a running MySQL instance and offers configuration suggestions for optimising the database for your workload. The longer the server has been running, the better the advice `mysqltuner` can provide. In a production environment, consider waiting for at least 24 hours before running the tool. You can install `mysqltuner` with the following command:
 
-```bash
+```shell
 sudo apt install mysqltuner
 ```
 

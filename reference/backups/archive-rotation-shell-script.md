@@ -132,7 +132,7 @@ date
 
 Restoring from a tape drive is basically the same as restoring from a file. Simply rewind the tape and use the device path instead of a file path. For example, to restore the `/etc/hosts` file to `/tmp/etc/hosts`:
 
-```bash
+```shell
 mt -f /dev/st0 rewind
 tar -xzf /dev/st0 -C /tmp etc/hosts
 ```

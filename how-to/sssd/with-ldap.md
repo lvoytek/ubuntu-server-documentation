@@ -14,7 +14,7 @@ For this setup, we need:
 
 Install the following packages:
 
-```bash
+```shell
 sudo apt install sssd-ldap ldap-utils
 ```
 
@@ -37,7 +37,7 @@ ldap_search_base = dc=example,dc=com
 
 Make sure to start the `sssd` service:
 
-```bash
+```shell
 sudo systemctl start sssd.service
 ```
 
@@ -48,7 +48,7 @@ sudo systemctl start sssd.service
 
 To enable automatic home directory creation, run the following command:
 
-```bash
+```shell
 sudo pam-auth-update --enable mkhomedir
 ```
 
@@ -70,14 +70,14 @@ Alternatively, you can edit `/etc/ldap/ldap.conf` and point `TLS_CACERT` to the 
 
 Once that is all done, check that you can connect to the LDAP server using verified SSL connections:
 
-```bash
+```shell
 $ ldapwhoami -x -ZZ -H ldap://ldap01.example.com
 anonymous
 ```
 
 and for `ldaps` (if enabled in `/etc/default/slapd`):
 
-```bash
+```shell
 $ ldapwhoami -x -H ldaps://ldap01.example.com
 ```
 
@@ -130,7 +130,7 @@ memberUid: john
 
 The user `john` should be known to the system:
 
-```bash
+```shell
 ubuntu@ldap-client:~$ getent passwd john
 john:*:10001:10001:John Smith:/home/john:/bin/bash
 
@@ -140,7 +140,7 @@ uid=10001(john) gid=10001(john) groups=10001(john),10100(Engineering)
 
 And we should be able to authenticate as `john`:
 
-```bash
+```shell
 ubuntu@ldap-client:~$ sudo login
 ldap-client login: john
 Password:

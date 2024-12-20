@@ -8,13 +8,13 @@ Domain Name Service (DNS) is an Internet service that maps IP addresses and full
 
 At a terminal prompt, run the following command to install the `bind9` package:
 
-```bash
+```shell
 sudo apt install bind9
 ```
 
 A useful package for testing and troubleshooting DNS issues is the `dnsutils` package. Very often these tools will be installed already, but to check and/or install `dnsutils` enter the following:
 
-```bash
+```shell
 sudo apt install dnsutils
 ```
 
@@ -56,7 +56,7 @@ forwarders {
 
 To enable the new configuration, restart the DNS server. From a terminal prompt, run:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 
@@ -82,7 +82,7 @@ zone "example.com" {
 
 Now use an existing zone file as a template to create the `/etc/bind/db.example.com` file:
 
-```bash
+```shell
 sudo cp /etc/bind/db.local /etc/bind/db.example.com
 ```
 
@@ -117,7 +117,7 @@ Now, you can add DNS records to the bottom of the zone file. See {ref}`Common Re
 
 Once you have made changes to the zone file, BIND9 needs to be restarted for the changes to take effect:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 
@@ -139,7 +139,7 @@ zone "1.168.192.in-addr.arpa" {
 
 Now create the `/etc/bind/db.192` file:
 
-```bash
+```shell
 sudo cp /etc/bind/db.127 /etc/bind/db.192
 ```
 
@@ -164,7 +164,7 @@ The `Serial Number` in the reverse zone needs to be incremented on each change a
 
 After creating the reverse zone file restart BIND9:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 
@@ -193,7 +193,7 @@ zone "1.168.192.in-addr.arpa" {
 
 Restart BIND9 on the primary server:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 
@@ -215,7 +215,7 @@ zone "1.168.192.in-addr.arpa" {
 
 Once again, replace `192.168.1.10` with the IP address of your primary nameserver, then restart BIND9 on the secondary server:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 
@@ -276,7 +276,7 @@ search example.com
 
 To check which DNS server your local resolver is using, run:
 
-```bash
+```shell
 resolvectl status
 ```
 
@@ -289,7 +289,7 @@ If you installed the `dnsutils` package you can test your setup using the DNS lo
 
 After installing BIND9 use `dig` against the loopback interface to make sure it is listening on port 53. From a terminal prompt:
 
-```bash
+```shell
 dig -x 127.0.0.1
 ```
 
@@ -302,7 +302,7 @@ You should see lines similar to the following in the command output:
 
 If you have configured BIND9 as a caching nameserver, "dig" an outside domain to check the query time:
 
-```bash    
+```shell    
 dig ubuntu.com
 ```
 
@@ -322,7 +322,7 @@ After a second `dig` there should be improvement:
 
 Now let's demonstrate how applications make use of DNS to resolve a host name, by using the `ping` utility to send an ICMP echo request:
 
-```bash
+```shell
 ping example.com
 ```
 
@@ -340,7 +340,7 @@ A great way to test your zone files is by using the `named-checkzone` utility in
 
 To test our example forward zone file, enter the following from a command prompt:
 
-```bash
+```shell
 named-checkzone example.com /etc/bind/db.example.com
 ```
 
@@ -373,13 +373,13 @@ With the `rndc` tool, you can quickly turn query logging on and off, without res
 
 To turn query logging on, run:
 
-```bash
+```shell
 sudo rndc querylog on
 ```
 
 Likewise, to turn it off, run:
 
-```bash
+```shell
 sudo rndc querylog off
 ```
 
@@ -426,14 +426,14 @@ logging {
 
 Since the **named daemon** runs as the `bind` user, the `/var/log/named` directory must be created and the ownership changed:
 
-```bash
+```shell
 sudo mkdir /var/log/named
 sudo chown bind:bind /var/log/named
 ```
 
 Now restart BIND9 for the changes to take effect:
 
-```bash
+```shell
 sudo systemctl restart bind9.service
 ```
 

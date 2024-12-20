@@ -9,7 +9,7 @@ CUPS manages print jobs and queues, and provides support for a wide range of pri
 
 A complete CUPS install has many package dependencies, but they can all be specified on the same command line. To perform a basic installation of CUPS, enter the following command in your terminal:
 
-```bash
+```shell
 sudo apt install cups
 ```
 
@@ -23,7 +23,7 @@ The CUPS server's behavior is configured through directives found in the `/etc/c
 
 We recommend that you make a copy of the original CUPS configuration file and protect it from writing, before you start configuring CUPS. You will then have the original settings as a reference, which you can reuse or restore as necessary.
 
-```bash
+```shell
 sudo cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.original
 sudo chmod a-w /etc/cups/cupsd.conf.original
 ```
@@ -64,7 +64,7 @@ Port 631  # Listen on port 631 on all interfaces
 
 For more examples of configuration directives in the CUPS server configuration file, view the associated system manual page by entering the following command:
 
-```bash
+```shell
 man cupsd.conf
 ```
 
@@ -72,7 +72,7 @@ man cupsd.conf
 
 Whenever you make changes to the `/etc/cups/cupsd.conf` configuration file, you'll need to restart the CUPS server by typing the following command at a terminal prompt:
 
-```bash
+```shell
 sudo systemctl restart cups.service
 ```
 
@@ -84,7 +84,7 @@ To perform administrative tasks via the web interface, you must either have the 
 
 To add a user to the `lpadmin` group, run at the terminal prompt:
 
-```bash
+```shell
 sudo usermod -aG lpadmin username
 ```
 

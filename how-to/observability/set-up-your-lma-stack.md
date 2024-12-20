@@ -40,7 +40,7 @@ As reference, here are the ports we'll be binding for each service:
 
 First, let's set up the Workload. We'll be using LXD as our container technology in this guide, but any VM, container, or bare metal host should work, so long as it's running Ubuntu 20.10. With LXD installed on our host we can use its `lxc` command line tool to create our containers:
 
-```bash
+```shell
 $ lxc launch ubuntu:20.10 workload
 Creating workload
 Starting workload
@@ -50,7 +50,7 @@ workload:~#
 ```
 On the Workload, install Telegraf:
 
-```bash
+```shell
 workload:~# apt update
 workload:~# apt install telegraf
 ```
@@ -82,7 +82,7 @@ We won't be using `Influxdb`, so you can comment that section out (if it's enabl
 
 Now restart the Telegraf service:
 
-```bash
+```shell
 workload:~# systemctl restart telegraf
 workload:~# systemctl status telegraf
 ● telegraf.service - The plugin-driven server agent for reporting metrics into InfluxDB
@@ -103,7 +103,7 @@ workload:~# systemctl status telegraf
 
 Verify that it is collecting metrics by connecting to Telegraf's web interface:
 
-```bash
+```shell
 workload:~# wget -O- http://workload:9273/metrics
 
 # HELP cpu_usage_guest Telegraf collected metric
@@ -123,7 +123,7 @@ cpu_usage_idle{cpu="cpu10",host="workload"} 95.95141700494543
 
 Now let's create the Monitor. As before, we'll be using LXD as the container technology but feel free to adapt these steps to your chosen alternative:
 
-```bash
+```shell
 $ lxc launch ubuntu:20.10 monitor
 Creating monitor
 Starting monitor
@@ -133,20 +133,20 @@ monitor:~#
 
 Make a note of the newly created container's IP address, which we'll need later on;
 
-```bash
+```shell
 monitor:~# ip addr | grep 'inet .* global'
 inet 10.69.244.104/24 brd 10.69.244.255 scope global dynamic eth0
 ```
 
 Verify the Workload's Telegraf instance can be reached from the Monitor:
 
-```bash
+```shell
 monitor:~# wget -O- http://workload:9273/metrics
 ```
 
 We'll be setting up a few components to run on this node using their respective Snap packages. LXD images should normally have snap pre-installed, but if not, install it manually:
 
-```bash
+```shell
 monitor:~# apt install snapd
 ```
 
@@ -156,14 +156,14 @@ Prometheus will be our data manager. It collects data from external sources -- T
 
 Let's install Prometheus itself, and the Prometheus Alertmanager plugin for alerts, along with the required dependencies:
 
-```bash
+```shell
 monitor:~# snap install prometheus
 monitor:~# snap install prometheus-alertmanager
 ```
 
 The snap will automatically configure and start the service. To verify this, run:
 
-```bash
+```shell
 monitor:~# snap services
 Service                Startup  Current   Notes
 lxd.activate           enabled  inactive  -
@@ -174,14 +174,14 @@ prometheus-alertmanager.alertmanager  enabled  active    -
 
 Verify that Prometheus is listening on the port as we expect:
 
-```bash
+```shell
 visualizer:~# ss -tulpn | grep prometheus
 tcp    LISTEN  0      128                     *:9090               *:*      users:(("prometheus",pid=618,fd=8))
 ```
 
 `journalctl` can be also used to review the state of Snap services if more detail is needed. For example, to see where Prometheus is loading its config from:
 
-```bash
+```shell
 monitor:~# journalctl | grep "prometheus.*config"
 ...
 ...msg="Completed loading of configuration file" filename=/var/snap/prometheus/32/prometheus.yml
@@ -207,7 +207,7 @@ scrape_configs:
 
 Then restart Prometheus:
 
-```bash
+```shell
 monitor:~# snap restart prometheus
 ```
 
@@ -288,7 +288,7 @@ inhibit_rules:
 
 Restart Alertmanager after making the configuration change:
 
-```bash
+```shell
 workload:~# snap restart prometheus-alertmanager
 ```
 
@@ -296,21 +296,21 @@ workload:~# snap restart prometheus-alertmanager
 
 Grafana provides our main dashboard, from which we can generate graphs and other visuals to study the collected metrics. Grafana can read its data directly from log files, but we'll focus on using Prometheus as its principle data source. Grafana is available as a Snap and can be installed like this:
 
-```bash
+```shell
 monitor:~# snap install grafana
 grafana 6.7.4 from Alvaro Uría (aluria) installed
 ```
 
 It uses port `3000`:
 
-```bash
+```shell
 # ss -tulpn | grep grafana
 tcp    LISTEN  0      128                     *:3000               *:*      users:(("grafana-server",pid=1449,fd=10))
 ```
 
 We next need to know where it expects its configuration:
 
-```bash
+```shell
 monitor:~# journalctl | grep "grafana.*conf"
 ... msg="Config loaded from" logger=settings file=/snap/grafana/36/conf/defaults.ini
 ... msg="Config overridden from Environment variable" logger=settings var="GF_PATHS_PROVISIONING=/var/snap/grafana/common/conf/provisioning"
@@ -322,7 +322,7 @@ We can see it is getting its defaults from `/snap/grafana/36/conf/`, but `/snap/
 
 For a production installation, the `defaults.ini` has numerous parameters we'd want to customise for our site, however for the demo we'll accept all the defaults. We do need to configure our data sources, but can do this via the web interface:
 
-```bash
+```shell
 $ firefox http://10.69.244.104:3000
 ```
 

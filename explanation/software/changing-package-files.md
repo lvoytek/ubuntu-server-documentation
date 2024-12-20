@@ -25,13 +25,13 @@ port            = 3307
 
 After saving the file, restart the service.
 
-```bash
+```shell
 systemctl restart mysql
 ```
 
 The `netstat` command shows that this was successful:
 
-```bash
+```shell
 netstat -tunpevaW | grep -i 3307
 tcp        0      0 127.0.0.1:3307          0.0.0.0:*               LISTEN      106        416022     1730/mysqld  
 ```
@@ -44,7 +44,7 @@ Instead, if you would like to modify a unit file, do so through Systemd. It prov
 
 For example, if you want to edit Apache2 such that it restarts after a failure instead of just when it aborts, you can run the following:
 
-```bash
+```shell
 sudo systemctl edit apache2
 ```
 
@@ -94,13 +94,13 @@ Restart=on-failure
 
 Once the changes are saved, the override file will be created in `/etc/systemd/system/apache2.service.d/override.conf`. To apply changes, run
 
-```bash
+```shell
 sudo systemctl daemon-reload
 ```
 
 To verify the change was successful, you can run the status command.
 
-```bash
+```shell
 systemctl status apache2
 ● apache2.service - The Apache HTTP Server
      Loaded: loaded (/lib/systemd/system/apache2.service; enabled; preset: enabled)
@@ -167,7 +167,7 @@ Since config files are meant to be intentional changes by the user/admin, they a
 
 If you have a particular config file, like in the example `/etc/rsyslog.conf`, you first want to find out which package owns that config file:
 
-```bash
+```shell
 $ dpkg -S /etc/rsyslog.conf
 
 rsyslog: /etc/rsyslog.conf
@@ -176,7 +176,7 @@ rsyslog: /etc/rsyslog.conf
 So we now know that the package `rsyslog` owns the config file `/etc/rsyslog.conf`.
 This command just queries package metadata and works even if the file has been deleted.
 
-```bash
+```shell
 $ rm /etc/rsyslog.conf
 $ dpkg -S /etc/rsyslog.conf
 
@@ -186,7 +186,7 @@ rsyslog: /etc/rsyslog.con
 To restore that file you can re-install the package, telling `dpkg` to bring any missing files back.
 To do so you pass `dpkg` options through `apt` using `-o Dpkg::Options::="` and then set `--force-...` depending on what action you want. For example:
 
-```bash
+```shell
 $ sudo apt install --reinstall -o Dpkg::Options::="--force-confmiss" rsyslog
 ...
 Preparing to unpack .../rsyslog_8.2302.0-1ubuntu3_amd64.deb ...
@@ -216,7 +216,7 @@ More details on these options can be found in the [`dpkg` man page](https://manp
 
 So in the case of an accidental bad config entry, if you want to go back to the package default you could use `--force-confask` to check the difference and consider restoring the content.
 
-```bash
+```shell
 $ echo badentry >> /etc/rsyslog.conf
 $ sudo apt install --reinstall -o Dpkg::Options::="--force-confask" rsyslog
 ...
@@ -257,7 +257,7 @@ Installing new version of config file /etc/rsyslog.conf ...
 
 The same can be used if you removed a whole directory by accident, to detect and re-install all related packages config files.
 
-```bash
+```shell
 $ rm -rf /etc/vim
 $ dpkg -S /etc/vim
 vim-common, vim-tiny: /etc/vim

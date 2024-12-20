@@ -53,13 +53,13 @@ ls -lh $dest
 
 The simplest way to use the above backup script is to copy and paste the contents into a file (called `backup.sh`, for example). The file must be made executable:
 
-```bash
+```shell
 chmod u+x backup.sh
 ```
 
 Then from a terminal prompt, run the following command:
 
-```bash
+```shell
 sudo ./backup.sh
 ```
 
@@ -71,7 +71,7 @@ The `cron` utility can be used to automate use of the script. The `cron` daemon 
 
 `cron` is configured through entries in a `crontab` file. `crontab` files are separated into fields:
 
-```console
+```shell
 # m h dom mon dow   command
 ```
 
@@ -93,7 +93,7 @@ To add or change entries in a `crontab` file the `crontab -e` command should be 
 
 To run the `backup.sh` script listed above using `cron`, enter the following from a terminal prompt:
 
-```bash
+```shell
 sudo crontab -e
 ```
 
@@ -102,7 +102,7 @@ sudo crontab -e
 
 As an example, if we add the following entry to the `crontab` file:
 
-```bash
+```shell
 # m h dom mon dow   command
 0 0 * * * bash /usr/local/bin/backup.sh
 ```
@@ -118,12 +118,12 @@ Once an archive has been created, it is important to test the archive. The archi
 
 - To see a listing of the archive contents, run the following command from a terminal:
 
-  ```bash
+  ```shell
   tar -tzvf /mnt/backup/host-Monday.tgz
   ```
 
 - To restore a file from the archive back to a different directory, enter:
-  ```bash 
+  ```shell 
   tar -xzvf /mnt/backup/host-Monday.tgz -C /tmp etc/hosts
   ```
   
@@ -131,7 +131,7 @@ Once an archive has been created, it is important to test the archive. The archi
 
 - To restore all files in the archive enter the following:
 
-  ```bash
+  ```shell
   cd /
   sudo tar -xzvf /mnt/backup/host-Monday.tgz
   ```

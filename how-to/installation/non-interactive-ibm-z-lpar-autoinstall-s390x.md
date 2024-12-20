@@ -8,7 +8,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Start with the preparation of the (FTP) install server (if it doesn't already exist).
 
-  ```bash
+  ```shell
   user@local:~$ ssh admin@installserver.local
   admin@installserver:~$ mkdir -p /srv/ftp/ubuntu-daily-live-server-20.04
   admin@installserver:~$ wget http://cdimage.ubuntu.com/ubuntu-server/focal/daily-live/current/focal-live-server-s390x.iso --directory-prefix=/srv/ftp/ubuntu-daily-live-server-20.04
@@ -28,7 +28,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * The ISO image needs to be extracted now. Since files in its boot folder need to be modified, loopback mount is not an option here:
 
-  ```bash
+  ```shell
   admin@installserver:~$ cd /srv/ftp/ubuntu-daily-live-server-20.04
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ mkdir iso
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ sudo mount -o loop ./focal-live-server-s390x.iso ./iso
@@ -87,13 +87,13 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Now create ins and parm files dedicated to the LPAR that will be installed (here `zlinlpar`), based on the default ins and parm files that are shipped with the ISO image:
 
-  ```bash
+  ```shell
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ chmod -R +rw ./boot
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cp ./boot/ubuntu.ins ./boot/ubuntu_zlinlpar.ins
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cp ./boot/parmfile.ubuntu ./boot/parmfile.zlinlpar
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ 
   ```
-  ```bash  
+  ```shell  
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ vi ./boot/ubuntu_zlinlpar.ins
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cat ./boot/ubuntu_zlinlpar.ins
   * Ubuntu for z Series (default kernel)
@@ -104,11 +104,11 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
   initrd.ubuntu 0x01000000
   admin@installserver:~$ 
     ```
-    ```bash
+    ```shell
     admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ vi ./boot/parmfile.zlinlpar
     admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cat ./boot/parmfile.zlinlpar
     ```
-    ```bash
+    ```shell
    ip=10.11.12.42::10.11.12.1:255.255.255.0:zlinlpar:encc000.4711:none:10.11.12.1 vlan=encc000.4711:encc000 url=http://installserver.local:80/ubuntu-daily-live-server-20.04/focal-live-server-s390x.iso autoinstall ds=nocloud-net;s=http://installserver.local:80/autoinstall/zlinlpar/ --- quiet
    ```
 
@@ -116,7 +116,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Now prepare an *autoinstall* (HTTP) server, which hosts the configuration data for the non-interactive installation.
 
-  ```bash
+  ```shell
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ mkdir -p /srv/www/autoinstall/zlinlpar
   admin@installserver:/srv/ftp/ubuntu-daily-live-server-20.04$ cd /srv/www/autoinstall/zlinlpar
   admin@installserver:/srv/www/autoinstall/zlinlpar$ 
@@ -125,7 +125,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
   instance-id: 2c2215fb-6a38-417f-b72f-376b1cc44f01
   admin@installserver:/srv/www/autoinstall/zlinlpar$
   ```
-  ```bash
+  ```shell
   admin@installserver:/srv/www/autoinstall/zlinlpar$ vi user-data
   admin@installserver:/srv/www/autoinstall/zlinlpar$ cat user-data
   #cloud-config
@@ -186,7 +186,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * For s390x installations the `early-commands` section is the interesting part:
 
-  ```bash
+  ```shell
   early-commands:
     - touch /tmp/lets_activate_the_s390x_devices
     - chzdev zfcp -e e000
@@ -209,7 +209,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Then, start the 'Load from Removable Media or Server' task under 'Recovery' --> 'Load from Removable Media or Server' on your specific LPAR that you are going to install, and fill out the following fields (the contents will be of course different on your system):
 
-  ```bash
+  ```shell
   FTP Source 	
   Host computer:	installserver.local
   User ID:	ftpuser
@@ -222,7 +222,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * At the 'Load from Removable Media or Server - Select Software to Install' screen, choose the LPAR that is going to be installed, here:
 
-  ```bash
+  ```shell
   ubuntu-daily-live-server-20.04/boot/ubuntu_zlinlpar.ins   Ubuntu for z Series (default kernel)
   ```
 
@@ -232,7 +232,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Then, another 'Yes' -- understanding that it's a disruptive task:
 
-  ```bash
+  ```shell
   Disruptive Task Confirmation : Load from Removable Media or Server
   ```
 
@@ -240,7 +240,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Then navigate to 'Daily' --> 'Operating System Messages' to monitor the initial program load (IPL) of the install system ...
 
-  ```bash
+  ```shell
   Message
   chzdev: Unknown device type or device ID format: c000.4711
   Use 'chzdev --help' for more information
@@ -310,7 +310,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
   
 * At short notice, you can even log in to the system with the user 'installer' and the temporary password that was given at the end of the boot-up process (see above) of the installation system:
 
-  ```bash
+  ```shell
   user@workstation:~$ ssh installer@zlinlpar
   The authenticity of host 'zlinlpar (10.11.12.42)' can't be established.
   ECDSA key fingerprint is SHA256:O/dU/D8jJAEGQcbqKGE9La24IRxUPLpzzs5li9F6Vvk.
@@ -350,7 +350,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * Notice that it informs you about a currently-running autoinstall process:
  
-  ```bash
+  ```shell
   the installer running on /dev/tty1 will perform the autoinstall
   ```
 
@@ -374,7 +374,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * If you wait long enough you'll see the remote session get closed:
 
-  ```bash
+  ```shell
   root@ubuntu-server:/# Connection to zlinlpar closed by remote host.
   Connection to zlinlpar closed.
   user@workstation:~$ 
@@ -382,7 +382,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * As well as at the console:
 
-  ```bash
+  ```shell
   ubuntu-server login:
   
   [[0;1;31mFAILED[0m] Failed unmounting [0;1;39m/cdrom[0m.
@@ -396,7 +396,7 @@ For a DASD and a non-VLAN network example, please see the [non-interactive IBM z
 
 * ...and that the post-install reboot gets triggered:
 
-  ```bash
+  ```shell
   Message
   Mounting [0;1;39mKernel Configuration File System[0m...
   Starting [0;1;39mApply Kernel Variables[0m...

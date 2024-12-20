@@ -53,13 +53,13 @@ Now we are ready to configure the internal endpoint.
 
 Install the `wireguard` package:
 
-```bash
+```shell
 $ sudo apt install wireguard
 ```
 
 Generate the keys for this host:
 
-```bash
+```shell
 $ umask 077
 $ wg genkey > internal-private.key
 $ wg pubkey < internal-private.key > internal-public.key
@@ -96,13 +96,13 @@ net.ipv4.conf.all.proxy_arp = 1
 
 Then run this command to apply those settings:
 
-```bash
+```shell
 $ sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 ```
 
 Now the WireGuard interface can be brought up:
 
-```bash
+```shell
 $ sudo wg-quick up wg0
 ```
 
@@ -126,7 +126,7 @@ AllowedIPs = 10.10.10.0/24
 
 And bring up this WireGuard interface:
 
-```bash
+```shell
 $ sudo wg-quick up home_internal
 ```
 

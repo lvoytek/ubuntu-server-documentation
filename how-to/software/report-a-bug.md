@@ -14,7 +14,7 @@ Getting this information to Launchpad can be a challenge if the system is not ru
 
 Bug reports in Ubuntu need to be filed against a specific software package, so the name of the package (source package or program name/path) affected by the bug needs to be supplied to `apport-cli`:
 
-```bash
+```shell
 apport-cli PACKAGENAME
 ```
 
@@ -90,13 +90,13 @@ Problem report file: /tmp/apport.vim.1pg92p02.apport
 
 To report the bug, get the file onto an Internet-enabled Ubuntu system and apply `apport-cli` to it. This will cause the menu to appear immediately (since the information is already collected). You should then press <kbd>s</kbd> to send:
 
-```bash    
+```shell    
 apport-cli apport.vim.1pg92p02.apport
 ```    
 
 To directly save a report to disk (without menus) you can run:
 
-```bash
+```shell
 apport-cli vim --save apport.vim.test.apport
 ```
 
@@ -117,7 +117,7 @@ After an application crashes, if enabled, `apport` will store a crash report und
 
 Use the `apport-cli` command with no arguments to process any pending crash reports. It will offer to report them one by one, as in the following example:
 
-```bash
+```shell
 apport-cli
 ``` 
 

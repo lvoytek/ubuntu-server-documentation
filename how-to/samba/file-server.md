@@ -9,7 +9,7 @@ The server will be configured to share files with any client on the network with
 
 The first step is to install the `samba` package. From a terminal prompt enter:
 
-```bash
+```shell
 sudo apt install samba
 ```
 
@@ -64,7 +64,7 @@ Determines the permissions that new files will have when created.
 
 Now that Samba is configured, the directory needs to be created and the permissions changed. From a terminal, run the following commands:
 
-```bash
+```shell
 sudo mkdir -p /srv/samba/share
 sudo chown nobody:nogroup /srv/samba/share/
 ```
@@ -75,7 +75,7 @@ The `-p` switch tells `mkdir` to create the entire directory tree if it doesn't 
 
 Finally, restart the Samba services to enable the new configuration by running the following command:
 
-```bash
+```shell
 sudo systemctl restart smbd.service nmbd.service
 ```
 

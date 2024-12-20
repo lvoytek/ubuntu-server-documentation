@@ -14,7 +14,7 @@ If left alone, the default virtual host will serve as your default site, or the 
 
 If you want to configure a new virtual host or site, copy the `000-default.conf` file into the same directory with a name you choose. For example:
 
-```bash
+```shell
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/mynewsite.conf
 ```
 
@@ -57,7 +57,7 @@ Specifies where Apache2 should look for the files that make up the site. The def
 
 Enable the new *VirtualHost* using the a2ensite utility and restart Apache2:
 
-```bash
+```shell
 sudo a2ensite mynewsite
 sudo systemctl restart apache2.service
 ```
@@ -67,7 +67,7 @@ sudo systemctl restart apache2.service
 
 Similarly, use the `a2dissite` utility to disable sites. This is can be useful when troubleshooting configuration problems with multiple virtual hosts:
 
-```bash
+```shell
 sudo a2dissite mynewsite
 sudo systemctl restart apache2.service
 ```

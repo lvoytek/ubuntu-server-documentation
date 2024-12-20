@@ -80,7 +80,7 @@ artifact. It will be called `chiselled-hello_latest_amd64.rock`.
 That is now converted to a disk image for use as virtual disk in our later
 example.
 
-```bash
+```shell
 # Convert the artifact of the ROCK tutorial into OCI format
 $ sudo rockcraft.skopeo --insecure-policy copy oci-archive:chiselled-hello_latest_amd64.rock oci:chiselled-hello.oci:latest
 # Unpack that to a local directory
@@ -99,7 +99,7 @@ Now that we have a stripped-down workload as an example, we can run it
 in standard QEMU and see that this is much quicker than booting a full
 operating system.
 
-```bash
+```shell
 $ sudo qemu-system-x86_64 -m 128M -machine accel=kvm \
     -kernel /boot/vmlinuz-$(uname -r) \
     -append 'console=ttyS0 root=/dev/vda fsck.mode=skip init=/usr/bin/hello' \
@@ -170,7 +170,7 @@ For more details on what else could be disabled see
 
 Run the guest in `qemu-system-x86_64-microvm`:
 
-```bash
+```shell
 $ sudo qemu-system-x86_64-microvm -m 128M -machine accel=kvm \
     -bios /usr/share/qemu/qboot.rom \
     -kernel /boot/vmlinuz-$(uname -r) \
@@ -218,7 +218,7 @@ content with the guest via `virtiofsd`.
 Doing so for our example could start with a conversion of the container
 artifact above to a shareable directory:
 
-```bash
+```shell
 # Copy out the example the tutorial had in OCI format
 $ sudo rockcraft.skopeo --insecure-policy copy oci-archive:chiselled-hello_latest_amd64.rock oci:chiselled-hello.oci:latest
 # Unpack that to a directory
@@ -228,7 +228,7 @@ $ oci-image-tool  unpack --ref name=latest chiselled-hello.oci /tmp/chiselled-he
 
 Exposing that directory to a guest via `virtiofsd`:
 
-```bash
+```shell
 $ sudo apt install virtiofsd
 $ /usr/libexec/virtiofsd --socket-path=/tmp/vfsd.sock --shared-dir /tmp/chiselled-hello
 ...
@@ -237,7 +237,7 @@ $ /usr/libexec/virtiofsd --socket-path=/tmp/vfsd.sock --shared-dir /tmp/chiselle
 
 To the QEMU command-line one would then add the following options:
 
-```bash
+```shell
 ...
 -object memory-backend-memfd,id=mem,share=on,size=128M \
 -numa node,memdev=mem -chardev socket,id=char0,path=/tmp/vfsd.sock \

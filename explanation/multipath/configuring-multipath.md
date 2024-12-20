@@ -158,7 +158,7 @@ Regular expression for an udev property. All devices that have matching udev pro
 
 The protocol strings that multipath recognises are `scsi:fcp`, `scsi:spi`, `scsi:ssa`, `scsi:sbp`, `scsi:srp`, `scsi:iscsi`, `scsi:sas`, `scsi:adt`, `scsi:ata`, `scsi:unspec`, `ccw`, `cciss`, `nvme`, and `undef`. The protocol that a path is using can be viewed by running: 
    
-```bash
+```shell
 multipathd show paths format "%d %P"
 ```
 

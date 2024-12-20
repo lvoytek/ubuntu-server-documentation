@@ -32,7 +32,7 @@ Starting in Oracular Oriole (24.10) the kernel crash dump facility will be enabl
 
 On machines with it enabled (either by default or by manual installation), it can be disabled via the command:
 
-```bash
+```shell
 sudo apt remove kdump-tools
 ```
 
@@ -42,7 +42,7 @@ On machines that do not meet these requirements and on pre-24.10 releases, the k
 
 The kernel crash dump utility is installed with the following command:
 
-```bash
+```shell
 sudo apt install kdump-tools
 ```
 
@@ -152,7 +152,7 @@ The only mandatory variable to define is SSH. It must contain the username and h
 
 The following example shows how `kdump-config propagate` is used to create and propagate a new keypair to the remote server:
 
-```bash
+```shell
 sudo kdump-config propagate
 ```
 
@@ -171,7 +171,7 @@ The password of the account used on the remote server will be required in order 
 
 The `kdump-config show` command can be used to confirm that `kdump` is correctly configured to use the SSH protocol:
 
-```bash
+```shell
 kdump-config show
 ```
 
@@ -208,7 +208,7 @@ As with the SSH protocol, the `HOSTTAG` variable can be used to replace the IP a
 
 The `kdump-config show` command can be used to confirm that `kdump` is correctly configured to use the NFS protocol :
 
-```bash 
+```shell 
 kdump-config show
 ```
 
@@ -232,7 +232,7 @@ current state:    ready to kdump
 
 To confirm that the kernel dump mechanism is enabled, there are a few things to verify. First, confirm that the `crashkernel` boot parameter is present (note that the following line has been split into two to fit the format of this document):
 
-```bash
+```shell
 cat /proc/cmdline
     
 BOOT_IMAGE=/vmlinuz-3.2.0-17-server root=/dev/mapper/PreciseS-root ro
@@ -248,7 +248,7 @@ crashkernel=<range1>:<size1>[,<range2>:<size2>,...][@offset]
 
 So for the `crashkernel` parameter found in `/proc/cmdline` we would have :
 
-```bash
+```shell
 crashkernel=384M-2G:64M,2G-:128M
 ```
 
@@ -261,19 +261,19 @@ The above value means:
   - if the RAM size is larger than 2G, then reserve 128M
 
 Second, verify that the kernel has reserved the requested memory area for the `kdump` kernel by running:
-```bash
+```shell
 dmesg | grep -i crash
 ```    
 Which produces the following output in this case:
 
-```bash
+```shell
 ...
 [    0.000000] Reserving 64MB of memory at 800MB for crashkernel (System RAM: 1023MB)
 ```
 
 Finally, as seen previously, the `kdump-config show` command displays the current status of the `kdump-tools` configuration :
 
-```bash
+```shell
 kdump-config show
 ```
 
@@ -300,13 +300,13 @@ kexec command:
 
 Verify that the *SysRQ* mechanism is enabled by looking at the value of the `/proc/sys/kernel/sysrq` kernel parameter:
 
-```bash
+```shell
 cat /proc/sys/kernel/sysrq
 ```
 
 If a value of *0* is returned, the dump and then reboot feature is disabled. A value greater than *1* indicates that a sub-set of `sysrq` features is enabled. See `/etc/sysctl.d/10-magic-sysrq.conf` for a detailed description of the options and their default values. Enable dump then reboot testing with the following command:
 
-```bash
+```shell
 sudo sysctl -w kernel.sysrq=1
 ```
 
@@ -336,7 +336,7 @@ Begin: Saving vmcore from kernel crash ...
 Once completed, the system will reboot to its normal operational mode. You will then find the kernel crash dump file, and related subdirectories, in the `/var/crash` directory by running, e.g. `ls /var/crash
 `, which produces the following:
 
-```bash
+```shell
 201809240744  kexec_cmd  linux-image-4.15.0-34-generic-201809240744.crash
 ```
 

@@ -7,7 +7,7 @@ Like other web servers, nginx supports dynamically loaded modules to provide in-
 
 nginx will report the modules it has been built with via its `-V` option.  A quick and dirty way to list the available modules is thus:
 
-```bash
+```shell
 $ nginx -V 2>&1 | tr -- - '\n' | grep _module                                                                    
 http_ssl_module                                                                                                  
 http_stub_status_module                                                                                          
@@ -21,7 +21,7 @@ stream_geoip_module=dynamic
 
 Many of these modules are built-in and thus are always available with nginx, but some exist as separate packages whose installation status can be checked via `apt`. For example:
 
-```bash
+```shell
 $ apt policy libnginx-mod-http-image-filter                                                                      
 libnginx-mod-http-image-filter:                                                                                  
   Installed: (none)                                                                                              
@@ -33,7 +33,7 @@ libnginx-mod-http-image-filter:
 
 `apt` can also be used to install the desired dynamic module:
 
-```bash
+```shell
 $ sudo apt install libnginx-mod-http-image-filter                                                                
 ...                                                                                                              
 The following NEW packages will be installed:                                                                    
@@ -48,7 +48,7 @@ Triggering nginx reload
 
 Dynamic modules are automatically enabled and get reloaded by nginx on installation. If you need to manually disable an installed module, remove its file from the `/etc/nginx/modules-enabled` directory, for example:
 
-```bash
+```shell
 $ ls /etc/nginx/modules-*                                                                                        
 /etc/nginx/modules-available:                                                                                    
                                                                                                                      

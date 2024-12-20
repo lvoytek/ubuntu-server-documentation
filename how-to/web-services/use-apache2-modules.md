@@ -11,20 +11,20 @@ Ubuntu compiles Apache2 to allow the dynamic loading of modules. Configuration d
 
 You can install additional Apache2 modules and use them with your web server. For example, run the following command at a terminal prompt to install the Python 3 WSGI module:
 
-```bash
+```shell
 sudo apt install libapache2-mod-wsgi-py3
 ```
 
 The installation will enable the module automatically, but we can disable it with `a2dismod`:
 
-```bash
+```shell
 sudo a2dismod wsgi
 sudo systemctl restart apache2.service
 ```
 
 And then use the `a2enmod` utility to re-enable it:
 
-```bash
+```shell
 sudo a2enmod wsgi
 sudo systemctl restart apache2.service
 ```
@@ -37,7 +37,7 @@ The `mod_ssl` module adds an important feature to the Apache2 server - the abili
 
 The `mod_ssl` module is available in the `apache2-common` package. Run the following command at a terminal prompt to enable the `mod_ssl` module:
 
-```bash
+```shell
 sudo a2enmod ssl
 ```
 
@@ -48,7 +48,7 @@ There is a default HTTPS configuration file in `/etc/apache2/sites-available/def
 
 To configure Apache2 for HTTPS, enter the following:
 
-```bash
+```shell
 sudo a2ensite default-ssl
 ```
 
@@ -57,7 +57,7 @@ sudo a2ensite default-ssl
 
 With Apache2 now configured for HTTPS, restart the service to enable the new settings:
 
-```bash
+```shell
 sudo systemctl restart apache2.service
 ```
 
@@ -69,7 +69,7 @@ You can access the secure server pages by typing `https://your_hostname/url/` in
 
 For more than one user to be able to write to the same directory you will need to grant write permission to a group they share in common. The following example grants shared write permission to `/var/www/html` to the group "webmasters".
 
-```bash
+```shell
 sudo chgrp -R webmasters /var/www/html
 sudo chmod -R g=rwX /var/www/html/
 ```

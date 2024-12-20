@@ -14,7 +14,7 @@ In this section, we'll install and configure Samba as a Primary Domain Controlle
 
 First, we'll install Samba, and `libpam-winbind` (to sync the user accounts), by entering the following in a terminal prompt:
 
-```bash
+```shell
 sudo apt install samba libpam-winbind
 ```
 
@@ -93,7 +93,7 @@ When configured as a domain controller, a *\[netlogon\]* share needs to be confi
 
 Now create the `netlogon` directory, and an empty (for now) `logon.cmd` script file:
 
-```bash
+```shell
 sudo mkdir -p /srv/samba/netlogon
 sudo touch /srv/samba/netlogon/logon.cmd
 ```
@@ -102,7 +102,7 @@ You can enter any normal Windows logon script commands in `logon.cmd` to customi
 
 Restart Samba to enable the new domain controller, using the following command:
 
-```bash
+```shell
 sudo systemctl restart smbd.service nmbd.service
 ```
 
@@ -112,7 +112,7 @@ Lastly, there are a few additional commands needed to set up the appropriate rig
 
 Since *root* is disabled by default, a system group needs to be mapped to the Windows *Domain Admins* group in order to join a workstation to the domain. Using the `net` utility, from a terminal enter:
 
-```bash
+```shell
 sudo net groupmap add ntgroup="Domain Admins" unixgroup=sysadmin rid=512 type=d
 ```
 
@@ -120,13 +120,13 @@ You should change *sysadmin* to whichever group you prefer. Also, the user joini
 
 If the user does not have Samba credentials yet, you can add them with the `smbpasswd` utility. Change the *sysadmin* username appropriately:
 
-```bash
+```shell
 sudo smbpasswd -a sysadmin
 ```
 
 Also, rights need to be explicitly provided to the *Domain Admins* group to allow the *add machine script* (and other admin functions) to work. This is achieved by executing:
 
-```bash
+```shell
 net rpc rights grant -U sysadmin "EXAMPLE\Domain Admins" SeMachineAccountPrivilege \
 SePrintOperatorPrivilege SeAddUsersPrivilege SeDiskOperatorPrivilege \
 SeRemoteShutdownPrivilege
@@ -144,7 +144,7 @@ Using LDAP is the most robust way to sync account information, because both doma
 
 First, install `samba` and `libpam-winbind`. From a terminal enter:
 
-```bash
+```shell
 sudo apt install samba libpam-winbind
 ```
 
@@ -165,13 +165,13 @@ domain master = no
 
 Make sure a user has rights to read the files in `/var/lib/samba`. For example, to allow users in the *admin* group to SCP the files, enter:
 
-```bash
+```shell
 sudo chgrp -R admin /var/lib/samba
 ```
 
 Next, sync the user accounts, using SCP to copy the `/var/lib/samba` directory from the PDC:
 
-```bash
+```shell
 sudo scp -r username@pdc:/var/lib/samba /var/lib
 ```
 
@@ -179,7 +179,7 @@ You can replace *username* with a valid username and *pdc* with the hostname or 
 
 Finally, restart samba:
 
-```bash
+```shell
 sudo systemctl restart smbd.service nmbd.service
 ```
 

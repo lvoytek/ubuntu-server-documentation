@@ -9,7 +9,7 @@ There are default AppArmor profiles for `/usr/sbin/smbd` and `/usr/sbin/nmbd`, t
 
 To install the package, enter the following command from a terminal prompt:
 
-```bash
+```shell
 sudo apt install apparmor-profiles apparmor-utils
 ```
 
@@ -33,7 +33,7 @@ target="smbd//null-/usr/lib/x86_64-linux-gnu/samba/samba-bgqd"
 
 The alternative to 'complain' mode is 'enforce' mode, where any operations that violate policy are blocked. To place the profile into `enforce` mode and reload it, run:
 
-```bash
+```shell
 sudo aa-enforce /usr/sbin/smbd
 sudo apparmor_parser -r -W -T /etc/apparmor.d/usr.sbin.smbd
 ```

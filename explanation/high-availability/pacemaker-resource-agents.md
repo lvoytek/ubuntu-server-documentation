@@ -142,7 +142,7 @@ From its manpage:
 
 If the LVM setup is ready to be activated and deactivated by this resource agent (make sure the `system_id_resource` is set to `uname` in `/etc/lvm/lvm.conf`), the `LVM-activate` resource can be configured with the following command:
 
-```bash
+```shell
 $ crm configure primitive $RESOURCE_NAME ocf:heartbeat:LVM-activate \
              vgname=$VOLUME_GROUP \
              vg_access_mode=system_id

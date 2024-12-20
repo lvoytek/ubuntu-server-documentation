@@ -9,7 +9,7 @@ The specific steps to enable Kerberos for a service can vary, but in general bot
 
 For example, let's create a principal for an LDAP service running on the `ldap-server.example.com` host:
 
-```bash
+```shell
 ubuntu@ldap-server:~$ sudo kadmin -p ubuntu/admin
 Authenticating as principal ubuntu/admin with password.
 Password for ubuntu/admin@EXAMPLE.COM:
@@ -35,7 +35,7 @@ Entry for principal ldap/ldap-server.example.com with kvno 2, encryption type ae
 
 This is why we needed to run `kadmin` with `sudo`: so that it can write to `/etc/krb5.keytab`. This is the system keytab file, which is the default file for all keys that might be needed for services on this host, and we can list them with `klist`. Back in the shell:
 
-```bash
+```shell
 $ sudo klist -k
 Keytab name: FILE:/etc/krb5.keytab
 KVNO Principal
@@ -59,7 +59,7 @@ In this case, as long as the target location is writable, you don't even have to
 
 Then use `scp` to transfer it to the target host:
 
-```bash
+```shell
 $ scp /home/ubuntu/ldap.keytab ldap-server.example.com:
 ```
 

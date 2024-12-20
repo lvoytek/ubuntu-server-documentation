@@ -23,7 +23,7 @@ This guide does not explain Active Directory, how it works, how to set one up, o
 
 Install the following packages:
 
-```bash
+```shell
 sudo apt install sssd-ad sssd-tools realmd adcli
 ```
 
@@ -33,7 +33,7 @@ We will use the `realm` command, from the `realmd` package, to join the domain a
 
 Let's verify the domain is discoverable via DNS:
 
-```bash
+```shell
 $ sudo realm -v discover ad1.example.com
  * Resolving: _ldap._tcp.ad1.example.com
  * Performing LDAP DSE lookup on: 10.51.0.5
@@ -57,14 +57,14 @@ This performs several checks and determines the best software stack to use with 
 
 Now let's join the domain:
 
-```bash
+```shell
 $ sudo realm join ad1.example.com
 Password for Administrator: 
 ```
 
 That was quite uneventful. If you want to see what it was doing, pass the `-v` option:
 
-```bash
+```shell
 $ sudo realm join -v ad1.example.com
  * Resolving: _ldap._tcp.ad1.example.com
  * Performing LDAP DSE lookup on: 10.51.0.5
@@ -156,7 +156,7 @@ Let's highlight a few things from this config file:
 
 What the `realm` tool didn't do for us is setup `pam_mkhomedir`, so that network users can get a home directory when they login. This remaining step can be done by running the following command:
 
-```bash
+```shell
 sudo pam-auth-update --enable mkhomedir
 ```
 
@@ -164,14 +164,14 @@ sudo pam-auth-update --enable mkhomedir
 
 You should now be able to fetch information about AD users. In this example, `John Smith` is an AD user:
 
-```bash
+```shell
 $ getent passwd john@ad1.example.com
 john@ad1.example.com:*:1725801106:1725800513:John Smith:/home/john@ad1.example.com:/bin/bash
 ```
 
 Let's see his groups:
 
-```bash
+```shell
 $ groups john@ad1.example.com
 john@ad1.example.com : domain users@ad1.example.com engineering@ad1.example.com
 ```
@@ -181,7 +181,7 @@ john@ad1.example.com : domain users@ad1.example.com engineering@ad1.example.com
 
 Finally, how about we try a login:
 
-```bash
+```shell
 $ sudo login
 ad-client login: john@ad1.example.com
 Password: 
@@ -195,7 +195,7 @@ Notice how the home directory was automatically created.
 
 You can also use SSH, but note that the command will look a bit funny because of the multiple `@` signs:
 
-```bash
+```shell
 $ ssh john@ad1.example.com@10.51.0.11
 Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.4.0-24-generic x86_64)
 (...)
@@ -210,7 +210,7 @@ john@ad1.example.com@ad-client:~$
 
 If you install `krb5-user`, your AD users will also get a Kerberos ticket upon logging in:
 
-```bash
+```shell
 john@ad1.example.com@ad-client:~$ klist
 Ticket cache: FILE:/tmp/krb5cc_1725801106_9UxVIz
 Default principal: john@AD1.EXAMPLE.COM
@@ -225,7 +225,7 @@ Valid starting     Expires            Service principal
 
 Let's test with `smbclient` using Kerberos authentication to list the shares of the domain controller:
 
-```bash
+```shell
 john@ad1.example.com@ad-client:~$ smbclient -k -L server1.ad1.example.com
 
 	Sharename       Type      Comment
@@ -240,7 +240,7 @@ SMB1 disabled -- no workgroup available
 
 Notice how we now have a ticket for the `cifs` service, which was used for the share list above:
 
-```bash
+```shell
 john@ad1.example.com@ad-client:~$ klist
 Ticket cache: FILE:/tmp/krb5cc_1725801106_9UxVIz
 Default principal: john@AD1.EXAMPLE.COM

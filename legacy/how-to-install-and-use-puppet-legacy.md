@@ -33,13 +33,13 @@ On each Puppet client, add an entry for the server:
 
 To install Puppet, run the following command in a terminal on the **server**:
 
-```bash
+```shell
 sudo apt install puppetmaster
 ```
 
 On the **client** machine, or machines, enter:
 
-```bash
+```shell
 sudo apt install puppet
 ```
 
@@ -47,7 +47,7 @@ sudo apt install puppet
 
 Create a folder path for the Apache2 class:
 
-```bash
+```shell
 sudo mkdir -p /etc/puppet/modules/apache2/manifests
 ```
 
@@ -80,7 +80,7 @@ node 'puppetclient.example.com' {
 
 The final step for this simple Puppet server is to restart the daemon:
 
-```bash
+```shell
 sudo systemctl restart puppetmaster.service
 ```
 
@@ -94,31 +94,31 @@ START=yes
 
 Then start the service:
 
-```bash
+```shell
 sudo systemctl start puppet.service
 ```
 
 View the client cert fingerprint:
 
-```bash
+```shell
 sudo puppet agent --fingerprint
 ```
 
 Back on the Puppet server, view pending certificate signing requests:
 
-```bash
+```shell
 sudo puppet cert list
 ```
 
 On the Puppet server, verify the fingerprint of the client and sign the `puppetclient` cert:
 
-```bash
+```shell
 sudo puppet cert sign puppetclient.example.com
 ```
 
 On the Puppet client, run the puppet agent manually in the foreground. This step isn't strictly necessary, but it is the best way to test and debug the puppet service.
 
-```bash
+```shell
 sudo puppet agent --test
 ```
 

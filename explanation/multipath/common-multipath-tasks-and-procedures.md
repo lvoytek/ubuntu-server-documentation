@@ -13,7 +13,7 @@ For consistency, we will refer to device mapper multipathing as **multipath**.
 
 To resize online multipath devices, first find all the paths to the logical unit number (LUN) that is to be resized by running the following command:
 
-```bash
+```shell
 $ sudo multipath -ll
 
 mpathb (360014056eee8ec6e1164fcb959086482) dm-0 LIO-ORG,lun01
@@ -32,7 +32,7 @@ size=1.0G features='0' hwhandler='1 alua' wp=rw
 
 Now, reconfigure `mpathb` (with `wwid = 360014056eee8ec6e1164fcb959086482`) to have 2 GB instead of just 1 GB and check if it has changed:
 
-```bash
+```shell
 $ echo 1 | sudo tee /sys/block/sde/device/rescan
 
 1
@@ -59,7 +59,7 @@ size=1.0G features='0' hwhandler='1 alua' wp=rw
 
 Not yet! We still need to re-scan the multipath map:
 
-```bash
+```shell
 $ sudo multipathd resize map mpathb
 
 ok
@@ -67,7 +67,7 @@ ok
 
 And then we are good:
 
-```bash
+```shell
 $ sudo multipath -ll
 
 mpathb (360014056eee8ec6e1164fcb959086482) dm-0 LIO-ORG,lun01
@@ -173,7 +173,7 @@ size=1.0G features='0' hwhandler='1 alua' wp=rw
 
 You can use the `dmsetup` command to find out which device mapper entries match the multipathed devices. The following command displays all the device mapper devices and their major and minor numbers. The minor numbers determine the name of the **dm** device. For example, a minor number of 1 corresponds to the `multipathd` device `/dev/dm-1`.
 
-```bash
+```shell
 $ sudo dmsetup ls
 mpathb  (253:0)
 mpatha  (253:1)
@@ -189,7 +189,7 @@ The `multipathd -k` command is an interactive interface to the `multipathd` daem
 
 The `multipathd` interactive console can be used to troubleshoot problems with your system. For example, the following command sequence displays the multipath configuration, including the defaults, before exiting the console. 
 
-```bash
+```shell
 $ sudo multipathd -k
   > show config
   > CTRL-D
@@ -197,7 +197,7 @@ $ sudo multipathd -k
 
 The following command sequence ensures that multipath has picked up any changes to the `multipath.conf`:
 
-```bash
+```shell
 $ sudo multipathd -k
 > reconfigure
 > CTRL-D
@@ -205,7 +205,7 @@ $ sudo multipathd -k
 
 Use the following command sequence to ensure that the path checker is working properly:
 
-```bash
+```shell
 $ sudo multipathd -k
 > show paths
 > CTRL-D
@@ -213,6 +213,6 @@ $ sudo multipathd -k
 
 Commands can also be streamed into `multipathd` using STDIN like so:
 
-```bash
+```shell
 $ echo 'show config' | sudo multipathd -k
 ```

@@ -9,7 +9,7 @@ Placing `/etc` under version control is considered an industry best practice, an
 
 Install etckeeper by entering the following in a terminal:
 
-```bash
+```shell
 sudo apt install etckeeper
 ```
 
@@ -19,7 +19,7 @@ The main configuration file, `/etc/etckeeper/etckeeper.conf`, is fairly simple. 
 
 The repository is automatically initialised (and committed for the first time) during package installation. It is possible to undo this by entering the following command:
 
-```bash
+```shell
 sudo etckeeper uninit
 ```
 
@@ -29,19 +29,19 @@ By default, etckeeper will commit uncommitted changes made to `/etc` on a daily 
 
 It will also automatically commit changes before and after package installation. For a more precise tracking of changes, it is recommended to commit your changes manually, together with a commit message, using:
 
-```bash
+```shell
 sudo etckeeper commit "Reason for configuration change"
 ```
 
 The `vcs` etckeeper command provides access to any subcommand of the VCS that etckeeper is configured to run. It will be run in `/etc`. For example, in the case of git:
 
-```bash
+```shell
 sudo etckeeper vcs log /etc/passwd
 ```
 
 To demonstrate the integration with the package management system (APT), install `postfix`:
 
-```bash
+```shell
 sudo apt install postfix
 ```
 
@@ -81,19 +81,19 @@ When the installation is finished, all the `postfix` configuration files should 
 
 For an example of how `etckeeper` tracks manual changes, add new a host to `/etc/hosts`. Using git you can see which files have been modified:
 
-```bash
+```shell
 sudo etckeeper vcs status
 ```
 
 and how:
 
-```bash
+```shell
 sudo etckeeper vcs diff
 ```
 
 If you are happy with the changes you can now commit them:
 
-```bash
+```shell
 sudo etckeeper commit "added new host"
 ```
 

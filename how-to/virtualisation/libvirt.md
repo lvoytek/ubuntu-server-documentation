@@ -4,7 +4,7 @@
 
 The [libvirt library](https://libvirt.org/) is used to interface with many different virtualisation technologies. Before getting started with libvirt it is best to make sure your hardware supports the necessary virtualisation extensions for [Kernel-based Virtual Machine (KVM)](https://www.linux-kvm.org/page/Main_Page). To check this, enter the following from a terminal prompt:
 
-```bash
+```shell
 kvm-ok
 ```
 
@@ -25,7 +25,7 @@ There is a great example of [how to configure a bridge](https://netplan.readthed
 
 To install the necessary packages, from a terminal prompt enter:
 
-```bash
+```shell
 sudo apt update
 sudo apt install qemu-kvm libvirt-daemon-system
 ```
@@ -34,7 +34,7 @@ After installing `libvirt-daemon-system`, the user that will be used to manage v
 
 In a terminal enter:
 
-```bash
+```shell
 sudo adduser $USER libvirt
 ```
 
@@ -66,31 +66,31 @@ There are several utilities available to manage virtual machines and libvirt. Th
 
 - To list running virtual machines:
 
-  ```bash
+  ```shell
   virsh list
   ```
 
 - To start a virtual machine:
 
-  ```bash
+  ```shell
   virsh start <guestname>
   ```
 
 - Similarly, to start a virtual machine at boot:
 
-  ```bash
+  ```shell
   virsh autostart <guestname>
   ```
 
 - Reboot a virtual machine with:
   
-  ```bash
+  ```shell
   virsh reboot <guestname>
   ```
 
 - The **state** of virtual machines can be saved to a file in order to be restored later. The following will save the virtual machine state into a file named according to the date:
 
-  ```bash
+  ```shell
   virsh save <guestname> save-my.state
   ```
 
@@ -98,25 +98,25 @@ There are several utilities available to manage virtual machines and libvirt. Th
 
 - A saved virtual machine can be restored using:
 
-  ```bash
+  ```shell
   virsh restore save-my.state
   ```
 
 - To shut down a virtual machine you can do:
 
-  ```bash
+  ```shell
   virsh shutdown <guestname>
   ```
 
 - A CD-ROM device can be mounted in a virtual machine by entering:
 
-  ```bash
+  ```shell
   virsh attach-disk <guestname> /dev/cdrom /media/cdrom
   ```
 
 - To change the definition of a guest, `virsh` exposes the domain via:
 
-  ```bash
+  ```shell
   virsh edit <guestname>
   ```
 
@@ -131,7 +131,7 @@ Editing the XML directly certainly is the most powerful way, but also the most c
 
 You can pass connection strings to `virsh` - as well as to most other tools for managing virtualisation.
 
-```bash
+```shell
 virsh --connect qemu:///system
 ```
 
@@ -166,7 +166,7 @@ There are different types of migration available depending on the versions of li
 
 There are various options to those methods, but the entry point for all of them is `virsh migrate`. Read the integrated help for more detail.
 
-```bash
+```shell
  virsh migrate --help 
 ```
 
@@ -206,7 +206,7 @@ Virtual functions are usually assigned via their PCI ID (domain, bus, slot, func
 > **Note**:
 > To get the virtual function in the first place is very device dependent and can therefore not be fully covered here. But in general it involves setting up an IOMMU, registering via [VFIO](https://www.kernel.org/doc/Documentation/vfio.txt) and sometimes requesting a number of VFs. Here an example on ppc64el to get 4 VFs on a device:
 > 
-> ```bash
+> ```shell
 > $ sudo modprobe vfio-pci
 > # identify device
 > $ lspci -n -s 0005:01:01.3
@@ -218,7 +218,7 @@ Virtual functions are usually assigned via their PCI ID (domain, bus, slot, func
 
 You then attach or detach the device via libvirt by relating the guest with the XML snippet.
 
-```bash
+```shell
 virsh attach-device <guestname> <device-xml>
 # Use the Device in the Guest
 virsh detach-device <guestname> <device-xml>
@@ -230,12 +230,12 @@ The [QEMU Monitor](https://en.wikibooks.org/wiki/QEMU/Monitor) is the way to int
 
 Libvirt covers most use cases needed, but if you ever want/need to work around libvirt or want to tweak very special options you can e.g. add a device as follows:
 
-```bash
+```shell
 virsh qemu-monitor-command --hmp focal-test-log 'drive_add 0 if=none,file=/var/lib/libvirt/images/test.img,format=raw,id=disk1'
 ```
 But since the monitor is so powerful, you can do a lot -- especially for debugging purposes like showing the guest registers:
 
-```bash
+```shell
 virsh qemu-monitor-command --hmp y-ipns 'info registers'
 RAX=00ffffc000000000 RBX=ffff8f0f5d5c7e48 RCX=0000000000000000 RDX=ffffea00007571c0
 RSI=0000000000000000 RDI=ffff8f0fdd5c7e48 RBP=ffff8f0f5d5c7e18 RSP=ffff8f0f5d5c7df8
@@ -257,13 +257,13 @@ Huge pages come in different sizes. A *normal* page is usually 4k and huge pages
 
 The simplest yet least reliable way to allocate some huge pages is to just echo a value to `sysfs`:
 
-```bash
+```shell
 echo 256 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
 ```
 
 Be sure to re-check if it worked:
 
-```bash
+```shell
 cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
 
 256
@@ -273,7 +273,7 @@ There one of these sizes is "default huge page size" which will be used in the a
 
 You can check the current default size:
 
-```bash
+```shell
 grep Hugepagesize /proc/meminfo
 
 Hugepagesize:       2048 kB
@@ -281,7 +281,7 @@ Hugepagesize:       2048 kB
 
 But there can be more than one at the same time -- so it's a good idea to check:
 
-```bash
+```shell
 $ tail /sys/kernel/mm/hugepages/hugepages-*/nr_hugepages` 
 ==> /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages <==
 0
@@ -297,7 +297,7 @@ Huge pages need to be allocated by the kernel as mentioned above but to be consu
 
 Feel free to add more mount points if you need different sized ones. An overview can be queried with:
 
-```bash
+```shell
 hugeadm --list-all-mounts
 
 Mount Point          Options
@@ -306,7 +306,7 @@ Mount Point          Options
 
 A one-stop info for the overall huge page status of the system can be reported with:
 
-```bash
+```shell
 hugeadm --explain
 ```
 
@@ -339,7 +339,7 @@ Providing the configuration that a guest should use more address bits as a machi
 
 One can check the bits available to a given CPU via the procfs:
 
-```bash
+```shell
 $ cat /proc/cpuinfo | grep '^address sizes'
 ...
 # an older server with a E5-2620
@@ -426,7 +426,7 @@ In the guest definition one then can add `filesytem` sections to specify host pa
 
 And in the guest this can now be used based on the tag `myfs` like:
 
-```bash
+```shell
 sudo mount -t virtiofs myfs /mnt/
 ```
 

@@ -5,7 +5,7 @@
 
 To install a basic Dovecot server with common POP3 and IMAP functions, run the following command:
 
-```bash
+```shell
 sudo apt install dovecot-imapd dovecot-pop3d
 ```
 
@@ -29,7 +29,7 @@ Make sure to also configure your chosen Mail Transport Agent (MTA) to transfer t
 
 Once you have configured Dovecot, restart its daemon in order to test your setup using the following command:
 
-```bash
+```shell
 sudo service dovecot restart
 ```
 
@@ -49,7 +49,7 @@ By default, Dovecot is configured to use SSL automatically using the package `ss
 
 You can instead generate your own custom certificate for Dovecot using `openssh`, for example:
 
-```bash
+```shell
 sudo openssl req -new -x509 -days 1000 -nodes -out "/etc/dovecot/dovecot.pem" \
     -keyout "/etc/dovecot/private/dovecot.pem"
 ```

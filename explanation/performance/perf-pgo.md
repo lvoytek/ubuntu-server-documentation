@@ -42,7 +42,7 @@ The first thing we have to do is to do several runs of `openssl speed` *before* 
 
 After confirming that everything looks OK, we are ready to start the benchmark.  Let's run the command:
 
-```bash
+```shell
 $ openssl speed -seconds 60 -evp md5 sha512 rsa2048 aes-256-cbc
 ```
 
@@ -95,7 +95,7 @@ This should allow all users to monitor events in the system.
 
 Then, if you are on an Intel system, you can invoke `perf` using:
 
-```bash
+```shell
 $ sudo perf record \
 	-e br_inst_retired.near_taken \
 	--branch-any \
@@ -106,7 +106,7 @@ $ sudo perf record \
 
 On an AMD system, use the following invocation:
 
-```bash
+```shell
 $ sudo perf record \
 	-e 'cpu/event=0xc4,umask=0x0,name=ex_ret_brn_tkn/' \
 	--branch-any \
@@ -119,7 +119,7 @@ After the command has finished running, you should see a file named `openssl-non
 
 Note that the only thing that differs between the Intel and AMD variants is the PMU event to be monitored.  Also, note how we are using `sudo` to invoke `perf record`.  This is necessary in order to obtain full access to Linux kernel symbols and relocation information.  It also means that the `openssl-nonpgo.perfdata` file ownership will need to be adjusted:
 
-```bash
+```shell
 $ sudo chown ubuntu:ubuntu openssl-nonpgo.perfdata
 ```
 
@@ -129,7 +129,7 @@ Now, we need to convert the file to `gcov`.
 
 With `autofdo` installed, you can convert the `perfdata` generated in the last step to `gcov` by doing:
 
-```bash
+```shell
 
 $ create_gcov \
 	--binary /usr/bin/openssl \
@@ -211,7 +211,7 @@ In order to reduce the size of the `perfdata` that is collected, you might want 
 
 Another useful trick is to profile in batches instead of running `perf record` for the entire duration of your program's workload.  To do that, you should use the `-p` option to specify a PID to `perf record` while also specifying `sleep` as the program to be executed during the profiling.  For example, this would be the command like we would use if we were to profile a program whose PID is `1234` for 2 minutes:
 
-```bash
+```shell
 $ sudo perf record \
 	-e br_inst_retired.near_taken \
 	--branch-any \

@@ -14,7 +14,7 @@ This step is necessary for Ubuntu Pro users or holders of personal subscriptions
 
 First, make sure that you have the latest version of the Ubuntu Pro Client running. The package used to access the Pro Client (`pro`) is `ubuntu-advantage-tools`:
 
-```bash
+```shell
 sudo apt update && sudo apt install ubuntu-advantage-tools
 ```
 
@@ -24,13 +24,13 @@ If you already have `ubuntu-advantage-tools` installed, this install command wil
 
 To attach your machine to a subscription, run the following command in your terminal:
 
-```bash
+```shell
 sudo pro attach
 ```
 
 You should see output like this, giving you a link and a code:
 
-```bash
+```shell
 ubuntu@test:~$ sudo pro attach
 Initiating attach operation...
 

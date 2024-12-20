@@ -35,7 +35,7 @@ Such a setup has a few particular details:
 
 This is what an MTR (My Traceroute) report from a system in the beta network to an alpha system will look like:
 
-```bash
+```shell
 ubuntu@b1:~$ mtr -n -r 10.10.10.230
 Start: 2022-09-02T18:56:51+0000
 HOST: b1                Loss%   Snt   Last   Avg  Best  Wrst StDev
@@ -51,7 +51,7 @@ HOST: b1                Loss%   Snt   Last   Avg  Best  Wrst StDev
 
 On the system that is the gateway for each site (that has internet connectivity), we start by installing WireGuard and generating the keys. For the **alpha** site:
 
-```bash
+```shell
 $ sudo apt install wireguard
 $ wg genkey | sudo tee /etc/wireguard/wgA.key
 $ sudo cat /etc/wireguard/wgA.key | wg pubkey | sudo tee /etc/wireguard/wgA.pub
@@ -74,7 +74,7 @@ Endpoint = <beta-gw-ip>:51000
 
 On the gateway for the **beta** site we take similar steps:
 
-```bash
+```shell
 $ sudo apt install wireguard
 $ wg genkey | sudo tee /etc/wireguard/wgB.key
 $ sudo cat /etc/wireguard/wgB.key | wg pubkey | sudo tee /etc/wireguard/wgB.pub
@@ -104,13 +104,13 @@ Since this VPN is permanent between static sites, it's best to use the systemd u
 
 On **alpha**:
 
-```bash
+```shell
 $ sudo systemctl enable --now wg-quick@wgA
 ```
 
 And similarly on **beta**:
 
-```bash
+```shell
 $ sudo systemctl enable --now wg-quick@wgB
 ```
 

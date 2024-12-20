@@ -45,7 +45,7 @@ This section will cover generating a key both with or without a passphrase. The 
 
 To generate the keys for the Certificate Signing Request (CSR) run the following command from a terminal prompt:
 
-```bash
+```shell
 openssl genrsa -des3 -out server.key 2048
 
 Generating RSA private key, 2048 bit long modulus
@@ -61,7 +61,7 @@ Re-type the passphrase to verify. Once you have re-typed it correctly, the serve
 
 Now create the insecure key, the one without a passphrase, and shuffle the key names:
 
-```bash
+```shell
 openssl rsa -in server.key -out server.key.insecure
 mv server.key server.key.secure
 mv server.key.insecure server.key
@@ -71,7 +71,7 @@ The insecure key is now named `server.key`, and you can use this file to generat
 
 To create the CSR, run the following command at a terminal prompt:
 
-```bash
+```shell
 openssl req -new -key server.key -out server.csr
 ```
 
@@ -83,7 +83,7 @@ You can now submit this CSR file to a CA for processing. The CA will use this CS
 
 To create the self-signed certificate, run the following command at a terminal prompt:
 
-```bash
+```shell
 openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 ```
 
@@ -96,7 +96,7 @@ The above command will prompt you to enter the passphrase. Once you enter the co
 
 You can install the key file `server.key` and certificate file `server.crt`, or the certificate file issued by your CA, by running following commands at a terminal prompt:
 
-```bash
+```shell
 sudo cp server.crt /etc/ssl/certs
 sudo cp server.key /etc/ssl/private
 ```
@@ -109,14 +109,14 @@ If the services on your network require more than a few self-signed certificates
 
 First, create the directories to hold the CA certificate and related files:
 
-```bash
+```shell
 sudo mkdir /etc/ssl/CA
 sudo mkdir /etc/ssl/newcerts
 ```
 
 The CA needs a few additional files to operate; one to keep track of the last serial number used by the CA (each certificate must have a unique serial number), and another file to record which certificates have been issued:
 
-```bash
+```shell
 sudo sh -c "echo '01' > /etc/ssl/CA/serial"
 sudo touch /etc/ssl/CA/index.txt
 ```
@@ -133,20 +133,20 @@ private_key     = $dir/private/cakey.pem# The private key
 
 Next, create the self-signed root certificate:
 
-```bash
+```shell
 openssl req -new -x509 -extensions v3_ca -keyout cakey.pem -out cacert.pem -days 3650
 ```
 
 You will then be asked to enter the details about the certificate. Next, install the root certificate and key:
 
-```bash
+```shell
 sudo mv cakey.pem /etc/ssl/private/
 sudo mv cacert.pem /etc/ssl/certs/
 ```
 
 You are now ready to start signing certificates. The first item needed is a Certificate Signing Request (CSR) -- see the "Generating a CSR" section above for details. Once you have a CSR, enter the following to generate a certificate signed by the CA:
 
-```bash
+```shell
 sudo openssl ca -in server.csr -config /etc/ssl/openssl.cnf
 ```
 

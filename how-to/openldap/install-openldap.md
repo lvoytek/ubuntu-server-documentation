@@ -12,7 +12,7 @@ In particular, it creates a database instance that you can use to store your dat
 
 You can install the server and the main command line utilities with the following command:
 
-```bash
+```shell
 sudo apt install slapd ldap-utils
 ```
 
@@ -20,7 +20,7 @@ sudo apt install slapd ldap-utils
 
 If you want to change your Directory Information Tree (DIT) suffix, now would be a good time since changing it discards your existing one. To change the suffix, run the following command:
 
-```bash
+```shell
 sudo dpkg-reconfigure slapd
 ```
 
@@ -49,7 +49,7 @@ The configuration of `slapd` itself is stored under this suffix. Changes to it c
 
 This is what the `slapd-config` DIT looks like via the LDAP protocol (listing only the DNs):
 
-```bash 
+```shell 
 $ sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b cn=config dn
 
 dn: cn=config
@@ -80,7 +80,7 @@ Where the entries mean the following:
 
 This is what the `dc=example,dc=com` DIT looks like:
 
-```bash    
+```shell    
 $ ldapsearch -x -LLL -H ldap:/// -b dc=example,dc=com dn
 
 dn: dc=example,dc=com
@@ -102,7 +102,7 @@ This is using a SASL bind (no `-x` was provided), and further specifying the `EX
 
 In both cases we only got the results that the server access-control lists (ACLs) allowed us to see, based on who we are. A very handy tool to verify the authentication is `ldapwhoami`, which can be used as follows:
 
-```bash
+```shell
 $ ldapwhoami -x
 
 anonymous
@@ -122,7 +122,7 @@ When you use simple bind (`-x`) and specify a Bind DN with `-D` as your authenti
 
 Here are the SASL EXTERNAL examples:
 
-```bash
+```shell
 $ ldapwhoami -Y EXTERNAL -H ldapi:/// -Q
 
 dn:gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
@@ -181,7 +181,7 @@ homeDirectory: /home/john
 
 Add the content:
 
-```bash
+```shell
 $ ldapadd -x -D cn=admin,dc=example,dc=com -W -f add_content.ldif
 
 Enter LDAP Password: ********
@@ -194,7 +194,7 @@ adding new entry "uid=john,ou=People,dc=example,dc=com"
 
 We can check that the information has been correctly added with the `ldapsearch` utility. For example, let's search for the "john" entry, and request the `cn` and `gidnumber` attributes:
 
-```bash
+```shell
 $ ldapsearch -x -LLL -b dc=example,dc=com '(uid=john)' cn gidNumber
 
 dn: uid=john,ou=People,dc=example,dc=com
@@ -212,7 +212,7 @@ That is a logical "AND" between two attributes. Filters are very important in LD
 
 Notice we set the `userPassword` field for the "john" entry to the cryptic value `{CRYPT}x`. This essentially is an invalid password, because no hashing will produce just `x`. It's a common pattern when adding a user entry without a default password. To change the password to something valid, you can now use `ldappasswd`:
 
-```bash
+```shell
 $ ldappasswd -x -D cn=admin,dc=example,dc=com -W -S uid=john,ou=people,dc=example,dc=com
 
 New password:
@@ -239,7 +239,7 @@ olcDbIndex: mail eq,sub
 
 Then issue the command:
 
-```bash
+```shell
 $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f uid_index.ldif
 
 modifying entry "olcDatabase={1}mdb,cn=config"
@@ -247,7 +247,7 @@ modifying entry "olcDatabase={1}mdb,cn=config"
 
 You can confirm the change in this way:
 
-```bash    
+```shell    
 $ sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b \
 cn=config '(olcDatabase={1}mdb)' olcDbIndex
 
@@ -263,7 +263,7 @@ olcDbIndex: mail eq,sub
 
 First, run `slappasswd` to get the hash for the new password you want:
 
-```bash
+```shell
 $ slappasswd
 
 New password:
@@ -282,7 +282,7 @@ olcRootPW: {SSHA}VKrYMxlSKhONGRpC6rnASKNmXG2xHXFo
 
 Finally, run the `ldapmodify` command:
 
-```bash
+```shell
 $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f changerootpw.ldif
 
 modifying entry "olcDatabase={1}mdb,cn=config"
@@ -290,7 +290,7 @@ modifying entry "olcDatabase={1}mdb,cn=config"
 
 We still have the actual **`cn=admin,dc=example,dc=com`** DN in the **`dc=example,dc=com`** database, so let's change that too. Since this is a regular entry in this database suffix, we can use `ldappasswd`:
 
-```bash
+```shell
 $ ldappasswd -x -D cn=admin,dc=example,dc=com -W -S
 
 New password:
@@ -307,7 +307,7 @@ Schemas can only be added to `cn=config` if they are in LDIF format. If not, the
 
 In the following example we'll add one of the pre-installed policy schemas in `/etc/ldap/schema/`. The pre-installed schemas exists in both converted (`.ldif`) and native (`.schema`) formats, so we don't have to convert them and can use `ldapadd` directly:
 
-```bash
+```shell
 $ sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f /etc/ldap/schema/corba.ldif
 
 adding new entry "cn=corba,cn=schema,cn=config"
@@ -334,7 +334,7 @@ olcLogLevel: stats
 
 Implement the change:
 
-```bash
+```shell
 sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f logging.ldif
 ```
 
@@ -354,7 +354,7 @@ $SystemLogRateLimitInterval 0
 
 And then restart the rsyslog daemon:
 
-```bash
+```shell
 sudo systemctl restart syslog.service
 ```
 

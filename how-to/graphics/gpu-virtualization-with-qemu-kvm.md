@@ -21,13 +21,13 @@ All these options  are considered basic usage of graphics, but there are also ad
 
 - *Need native performance*: Use PCI passthrough of additional GPUs in the system. You'll need an IOMMU set up, and you'll need to unbind the cards from the host before you can pass it through, like so:
 
-  ```bash
+  ```shell
   -device vfio-pci,host=05:00.0,bus=1,addr=00.0,multifunction=on,x-vga=on -device vfio-pci,host=05:00.1,bus=1,addr=00.1
   ```
 
 - *Need native performance, but multiple guests per card*: Like with PCI passthrough, but using mediated devices to shard a card on the host into multiple devices, then passing those:
 
-  ```bash
+  ```shell
   -display gtk,gl=on -device vfio-pci,sysfsdev=/sys/bus/pci/devices/0000:00:02.0/4dd511f6-ec08-11e8-b839-2f163ddee3b3,display=on,rombar=0
   ```
 
@@ -50,7 +50,7 @@ You can check your boot-up kernel messages for IOMMU/DMAR messages or even filte
 
 To list all:
 
-```bash
+```shell
 dmesg | grep -i -e DMAR -e IOMMU
 ```
 
@@ -66,7 +66,7 @@ Which produces an output like this:
 
 To filter for the installed 3D card:
 
-```bash
+```shell
 dmesg | grep -i -e DMAR -e IOMMU | grep $(lspci | awk '/ 3D / {print $1}' )
 ```
 
@@ -80,7 +80,7 @@ If you have a particular device and want to check for its group you can do that 
 
 For example, to find the group for our example card:
 
-```bash
+```shell
 find /sys/kernel/iommu_groups/ -name "*$(lspci | awk '/ 3D / {print $1}')*"
 ```
 
@@ -108,7 +108,7 @@ For both, you'll want to ensure the normal driver isn't loaded. In some cases yo
 
 This usually works fine for e.g. network cards, but some other devices like GPUs do not like to be unassigned, so there the required step usually is block loading the drivers you do not want to be loaded. In our GPU example the `nouveau` driver would load and that has to be blocked. To do so you can create a `modprobe` blacklist.
 
-```bash
+```shell
 echo "blacklist nouveau" | sudo tee /etc/modprobe.d/blacklist-nouveau.conf          
 echo "options nouveau modeset=0" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
 sudo update-initramfs -u                                                         
@@ -117,7 +117,7 @@ sudo reboot
 
 You can check which kernel modules are loaded and available via `lspci -v`:
 
-```bash
+```shell
 lspci -v | grep -A 10 " 3D "
 ```
 
@@ -143,7 +143,7 @@ There is also an Nvidia document about the same steps available on [installation
 
 Once you have the drivers from Nvidia, like `nvidia-vgpu-ubuntu-470_470.68_amd64.deb`, then install them and check (as above) that that driver is loaded. The one you need to see is `nvidia_vgpu_vfio`:
 
-```bash
+```shell
 lsmod | grep nvidia
 ```
 
@@ -208,7 +208,7 @@ Please refer to the [NVIDIA documentation](https://docs.nvidia.com/grid/latest/g
 
 The tool for listing and configuring these mediated devices is `mdevctl`: 
 
-```bash
+```shell
 sudo mdevctl types
 ```
 

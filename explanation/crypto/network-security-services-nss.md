@@ -81,13 +81,13 @@ The examples will use the `tstclnt` test application that is part of the `libnss
 
 Install the `libnss3-tools` package which has the necessary tools we will need:
 
-```bash
+```shell
 sudo apt install libnss3-tools
 ```
 
 If you don't have a `~/.pki/nssdb` directory yet, it will have to be created first. For that, we will use the `certutil` command, also part of the `libnss3-tools` package. This will bootstrap the NSS database in that directory, and also create the initial `pkcs11.txt` file we will tweak in the subsequent examples:
 
-```bash
+```shell
 mkdir -p ~/.pki/nssdb
 certutil -d ~/.pki/nssdb -N
 ```
@@ -125,13 +125,13 @@ For these examples, we will be using a simple OpenSSL server on the same system 
 
 First, generate a keypair for OpenSSL:
 
-```bash
+```shell
 openssl req -new -x509 -days 30 -nodes -subj "/CN=localhost" -out localhost.pem -keyout localhost.key
 ```
 
 To avoid telling `tstclnt` to ignore certification validation errors, which might mask the crypto policy changes we are trying to demonstrate, it's best to import this certificate into the NSS database and mark it as trusted:
 
-```bash
+```shell
 certutil -d ~/.pki/nssdb -A -a -i localhost.pem -t TCP -n localhost
 ```
 
@@ -149,7 +149,7 @@ This command will ask you for the NSS database password that you supplied when b
 
 We are now ready to begin our tests. Unless otherwise noted, this is how it's expected that the server will be run:
 
-```bash
+```shell
 openssl s_server -accept 4443 -cert localhost.pem -key localhost.key -www
 ```
 
@@ -159,7 +159,7 @@ The `libnss3-tools` package also contains the `tstclnt` tool, which is what we w
 
 This is the typical command we will use:
 
-```bash
+```shell
 tstclnt -d ~/.pki/nssdb -h localhost -p 4443
 ```
 
@@ -171,7 +171,7 @@ Where the options have the following meanings:
 
 To make things a bit easier to see, since this tool prints a lot of information about the connection, we will wrap it like this:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443 2>&1 | grep ^New
 
 New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
@@ -195,13 +195,13 @@ config="allow=tls-version-min=tls1.3"
 
 If we then start the OpenSSL server without TLSv1.3 support, like this (note the extra `no_tls1_3` at the end):
 
-```bash
+```shell
 openssl s_server -accept 4443 -cert localhost.pem -key localhost.key -www -no_tls1_3
 ```
 
 The `tstclnt` tool will fail to connect:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443 2>&1 | grep ^New
 echo $?
 
@@ -210,7 +210,7 @@ echo $?
 
 To see the actual error, we can remove the `grep` at the end:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443 2>&1
 
 tstclnt: write to SSL socket failed: SSL_ERROR_PROTOCOL_VERSION_ALERT: Peer reports incompatible or unsupported protocol version.
@@ -218,13 +218,13 @@ tstclnt: write to SSL socket failed: SSL_ERROR_PROTOCOL_VERSION_ALERT: Peer repo
 
 If we allow the server to offer TLSv1.3:
 
-```bash
+```shell
 openssl s_server -accept 4443 -cert localhost.pem -key localhost.key -www
 ```
 
 Then the connection completes:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443 2>&1 | grep ^New
 
 New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
@@ -244,7 +244,7 @@ config="disallow=aes128-gcm allow=tls-version-min=tls1.3"
 
 This time the client selects something else:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443  2>&1 | grep ^New
 
 New, TLSv1.3, Cipher is TLS_CHACHA20_POLY1305_SHA256
@@ -258,7 +258,7 @@ config="disallow=aes128-gcm:chacha20-poly1305 allow=tls-version-min=tls1.3"
 
 And now we get AES256:
 
-```bash
+```shell
 echo "GET / HTTP/1.0" | tstclnt -d ~/.pki/nssdb -h localhost -p 4443  2>&1 | grep ^New
 
 New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384

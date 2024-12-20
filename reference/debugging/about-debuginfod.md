@@ -33,7 +33,7 @@ You can safely remove this directory or any files inside it; they will only be d
 
 If you have enabled use of `debuginfod` on your system, here is what happens when you invoke GDB to debug a binary from an Ubuntu package:
 
-```bash
+```shell
 $ gdb -q program
 Reading symbols from program...
 

@@ -19,7 +19,7 @@ The following general checklist should help as a first set of steps to try when 
 
 It can be helpful to leave a terminal open with the `watch wg` command. Here is a sample output showing a system with two peers configured, where only one has established the VPN so far:
 
-```bash
+```shell
 Every 2.0s: wg                j-wg: Fri Aug 26 17:44:37 2022
 
 interface: wg0
@@ -41,19 +41,19 @@ peer: ZliZ1hlarZqvfxPMyME2ECtXDk611NB7uzLAD4McpgI=
 
 WireGuard is also silent when it comes to logging. Being (essentially) a kernel module, we need to explicitly enable verbose logging of its module. This is done with the following command:
 
-```bash
+```shell
 $ echo "module wireguard +p" | sudo tee /sys/kernel/debug/dynamic_debug/control
 ```
 
 This will write WireGuard logging messages to the kernel log, which can be watched live with:
 
-```bash
+```shell
 $ sudo dmesg -wT
 ```
 
 To disable logging, run this:
 
-```bash
+```shell
 $ echo "module wireguard -p" | sudo tee /sys/kernel/debug/dynamic_debug/control
 ```
 
@@ -61,7 +61,7 @@ $ echo "module wireguard -p" | sudo tee /sys/kernel/debug/dynamic_debug/control
 
 If you ping an IP and get back an error like this:
 
-```bash
+```shell
 $ ping 10.10.11.2
 PING 10.10.11.2 (10.10.11.2) 56(84) bytes of data.
 From 10.10.11.1 icmp_seq=1 Destination Host Unreachable
@@ -82,7 +82,7 @@ Another possibility is that one of the peers is behind a NAT, and there wasn't e
 
 This error:
 
-```bash
+```shell
 $ ping 10.10.11.1 
 PING 10.10.11.1 (10.10.11.1) 56(84) bytes of data.
 From 10.10.11.2 icmp_seq=1 Destination Host Unreachable

@@ -10,7 +10,7 @@ In this guide we show how to install and configure `isc-dhcp-server`, which inst
 
 At a terminal prompt, enter the following command to install `isc-dhcp-server`:
 
-```bash
+```shell
 sudo apt install isc-dhcp-server
 ```
 

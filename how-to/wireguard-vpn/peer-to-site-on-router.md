@@ -39,7 +39,7 @@ With this topology, if, say, the NAS wants to send traffic to `10.10.11.2/24`, i
 
 First, we need to create keys for the peers of this setup. We need one pair of keys for the laptop, and another for the home router:
 
-```bash
+```shell
 $ umask 077
 $ wg genkey > laptop-private.key
 $ wg pubkey < laptop-private.key > laptop-public.key
@@ -122,7 +122,7 @@ With these configuration files in place, it's time to bring the WireGuard interf
 
 On the home router, run:
 
-```bash
+```shell
 $ sudo wg-quick up wg0
 [#] ip link add wg0 type wireguard
 [#] wg setconf wg0 /dev/fd/63
@@ -132,7 +132,7 @@ $ sudo wg-quick up wg0
 
 Verify you have a `wg0` interface up with an address of `10.10.11.1/24`:
 
-```bash
+```shell
 $ ip a show dev wg0
 9: wg0: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1378 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
@@ -142,14 +142,14 @@ $ ip a show dev wg0
 
 And a route to the `10.10.1.0/24` network via the `wg0` interface:
 
-```bash
+```shell
 $ ip route | grep wg0
 10.10.11.0/24 dev wg0 proto kernel scope link src 10.10.11.1
 ```
 
 And `wg show` should show some status information, but no connected peer yet:
 
-```bash
+```shell
 $ sudo wg show
 interface: wg0
   public key: <router public key>
@@ -164,13 +164,13 @@ In particular, verify that the listed public keys match what you created (and ex
 
 Before we start the interface on the other peer, it helps to leave the above `show` command running continuously, so we can see when there are changes:
 
-```bash
+```shell
 $ sudo watch wg show
 ```
 
 Now start the interface on the laptop:
 
-```bash
+```shell
 $ sudo wg-quick up home0
 [#] ip link add home0 type wireguard
 [#] wg setconf home0 /dev/fd/63
@@ -181,7 +181,7 @@ $ sudo wg-quick up home0
 
 Similarly, verify the interface's IP and added routes:
 
-```bash
+```shell
 $ ip a show dev home0
 24: home0: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
@@ -197,7 +197,7 @@ Up to this point, the `wg show` output on the home router probably didn't change
 
 If we trigger some traffic, however, the VPN will "wake up". Let's ping the internal address of the home router a few times:
 
-```bash
+```shell
 $ ping -c 3 10.10.10.1
 PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
 64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=603 ms
@@ -209,7 +209,7 @@ Note how the first ping was slower. That's because the VPN was "waking up" and b
 
 At the same time, the `wg show` output on the home router will have changed to something like this:
 
-```bash
+```shell
 $ sudo wg show
 interface: wg0
   public key: <router public key>

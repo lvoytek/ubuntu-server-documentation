@@ -14,7 +14,7 @@ For this setup, we will need:
 
 On the client host, install the following packages:
 
-```bash
+```shell
 sudo apt install sssd-ldap sssd-krb5 ldap-utils krb5-user
 ```
 
@@ -22,7 +22,7 @@ You may be asked about the default Kerberos realm. For this guide, we are using 
 
 At this point, you should already be able to obtain tickets from your Kerberos server, assuming DNS records point at it:
 
-```bash
+```shell
 $ kinit ubuntu
 Password for ubuntu@EXAMPLE.COM:
 
@@ -41,7 +41,7 @@ But we want to be able to login as an LDAP user, authenticated via Kerberos. Let
 
 Create the `/etc/sssd/sssd.conf` configuration file, with permissions `0600` and ownership `root:root`, and add the following content:
 
-```bash
+```shell
 [sssd]
 config_file_version = 2
 domains = example.com
@@ -61,7 +61,7 @@ This example uses two KDCs, which made it necessary to also specify the `krb5_kp
 
 Start the `sssd` service:
 
-```bash
+```shell
 sudo systemctl start sssd.service
 ```
 
@@ -69,7 +69,7 @@ sudo systemctl start sssd.service
 
 To enable automatic home directory creation, run the following command:
 
-```bash
+```shell
 sudo pam-auth-update --enable mkhomedir
 ```
 
@@ -108,7 +108,7 @@ Note how the user `john` has no `userPassword` attribute.
 
 The user `john` should be known to the system:
 
-```bash
+```shell
 ubuntu@ldap-client:~$ getent passwd john
 john:*:10001:10001:John Smith:/home/john:/bin/bash
 
@@ -118,7 +118,7 @@ uid=10001(john) gid=10001(john) groups=10001(john),10100(Engineering)
 
 Let's try a login as this user:
 
-```bash
+```shell
 ubuntu@ldap-krb-client:~$ sudo login
 ldap-krb-client login: john
 Password: 
@@ -165,7 +165,7 @@ The second step is to create a `host` principal on the KDC for this workstation.
 
 After the host principal is created, its keytab needs to be stored on the workstation. This two step process can be easily done on the workstation itself via `kadmin` (not `kadmin.local`) to contact the KDC remotely:
 
-```bash
+```shell
 $ sudo kadmin -p ubuntu/admin
 kadmin:  addprinc -randkey host/ldap-krb-client.example.com@EXAMPLE.COM
 WARNING: no policy specified for host/ldap-krb-client.example.com@EXAMPLE.COM; defaulting to no policy
@@ -178,7 +178,7 @@ Entry for principal host/ldap-krb-client.example.com with kvno 6, encryption typ
 
 Then exit the tool and make sure the permissions on the keytab file are tight:
 
-```bash
+```shell
 sudo chmod 0600 /etc/krb5.keytab
 sudo chown root:root /etc/krb5.keytab
 ```

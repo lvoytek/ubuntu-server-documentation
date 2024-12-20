@@ -5,7 +5,7 @@ Now we have LDAP running just the way we want, it is time to ensure we can save 
 
 What we need is a way to back up the directory database(s) -- specifically the configuration backend (`cn=config`) and the DIT (`dc=example,dc=com`). If we are going to backup those databases into, say, `/export/backup`, we could use `slapcat` as shown in the following script, called `/usr/local/bin/ldapbackup`:
 
-```bash
+```shell
 #!/bin/bash
 
 set -e
@@ -33,7 +33,7 @@ Now the files are created, they should be copied to a backup server.
 
 Assuming we did a fresh reinstall of LDAP, the restore process could be something like this:
 
-```bash
+```shell
 #!/bin/bash
 
 set -e

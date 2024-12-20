@@ -6,13 +6,13 @@
 
 On Linux it's available as a snap:
 
-```bash
+```shell
 sudo snap install multipass
 ```
 
 If you're running an older version of Ubuntu where `snapd` isn't pre-installed, you will need to install it first:
 
-```bash
+```shell
 sudo apt update
 sudo apt install snapd
 ```
@@ -50,7 +50,7 @@ minikube                                      latest           minikube is local
 
 You can launch a fresh instance by specifying either the image name from the list (in this example, 22.04) or using an alias, if the image has one. 
 
-```bash
+```shell
 $ multipass launch 22.04
 Launched: cleansing-guanaco
 ```
@@ -61,7 +61,7 @@ This command is equivalent to: `multipass launch jammy` or `multipass launch lts
 
 You can check out the currently running instance(s) by using the "multipass list` command:
 
-```bash
+```shell
 $ multipass list                                                  
 Name                    State             IPv4             Image
 cleansing-guanaco       Running           10.140.26.17     Ubuntu 22.04 LTS
@@ -71,7 +71,7 @@ cleansing-guanaco       Running           10.140.26.17     Ubuntu 22.04 LTS
 
 You can use the `multipass info` command to find out more details about the VM instance parameters:
 
-```bash
+```shell
 $ multipass info cleansing-guanaco 
 Name:           cleansing-guanaco
 State:          Running
@@ -88,7 +88,7 @@ Mounts:         --
 
 To enter the VM you created, use the `shell` command:
 
-```bash
+```shell
 $ multipass shell cleansing-guanaco 
 Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-53-generic x86_64)
 (...)
@@ -101,7 +101,7 @@ Don't forget to log out (or <kbd>Ctrl</kbd> + <kbd>D</kbd>) when you are done, o
 
 ## Run commands inside an instance from outside
 
-```bash
+```shell
 $ multipass exec cleansing-guanaco -- lsb_release -a
 No LSB modules are available.
 Distributor ID:	Ubuntu
@@ -114,13 +114,13 @@ Codename:	jammy
 
 You can stop an instance to save resources using the `stop` command:
 
-```bash
+```shell
 $ multipass stop cleansing-guanaco
 ```
 
 You can start it back up again using the `start` command:
 
-```bash
+```shell
 $ multipass start cleansing-guanaco
 ```
 
@@ -128,13 +128,13 @@ $ multipass start cleansing-guanaco
 
 Once you are finished with the instance, you can delete it as follows:
 
-```bash
+```shell
 $ multipass delete cleansing-guanaco
 ```
 
 It will now show up as deleted when you use the `list` command:
 
-```bash
+```shell
 $ multipass list
 Name                    State             IPv4             Image
 cleansing-guanaco       Deleted           --               Not Available
@@ -142,13 +142,13 @@ cleansing-guanaco       Deleted           --               Not Available
 
 And when you want to completely get rid of it (and any other deleted instances), you can use the `purge` command:
 
-```bash
+```shell
 $ multipass purge
 ```
 
 Which we can check again using `list`:
 
-```bash
+```shell
 $ multipass list
 No instances found.
 ```
@@ -161,13 +161,13 @@ You might, for example, want those guests to be on the same bridge to communicat
 
 Fortunately it is possible to integrate this by using the {ref}`libvirt <libvirt>` backend of Multipass:
 
-```bash
+```shell
 $ sudo multipass set local.driver=libvirt
 ```
 
 Now when you start a guest you can also access it via tools like [virt-manager](https://virt-manager.org/) or `virsh`:
 
-```bash
+```shell
 $ multipass launch lts
 Launched: engaged-amberjack 
 
@@ -183,7 +183,7 @@ For more detailed and comprehensive instructions on changing your drivers, refer
 
 You can use the following commands on the CLI:
 
-```bash
+```shell
 multipass help
 multipass help <command>
 multipass help --all

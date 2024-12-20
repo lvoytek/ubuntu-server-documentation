@@ -14,7 +14,7 @@ The examples in this section will use two servers with hostnames **`server01`** 
 
 First, on `server01`, install the `nagios3` package. In a terminal, enter:
 
-```bash
+```shell
 sudo apt install nagios3 nagios-nrpe-plugin
 ```
 
@@ -22,13 +22,13 @@ You will be asked to enter a password for the `nagiosadmin` user. The user's cre
 
 For example, to change the password for the `nagiosadmin` user enter:
 
-```bash
+```shell
 sudo htpasswd /etc/nagios3/htpasswd.users nagiosadmin
 ```
 
 To add a user:
 
-```bash
+```shell
 sudo htpasswd /etc/nagios3/htpasswd.users steve
 ```
 
@@ -36,7 +36,7 @@ sudo htpasswd /etc/nagios3/htpasswd.users steve
 
 Next, on `server02` install the `nagios-nrpe-server` package. From a terminal on `server02`, enter:
 
-```bash
+```shell
 sudo apt install nagios-nrpe-server
 ```
 
@@ -82,7 +82,7 @@ Large Nagios installations can be quite complex to configure. It is usually best
 
 First, create a **host** configuration file for `server02`. Unless otherwise specified, run all these commands on `server01`. In a terminal enter:
 
-```bash
+```shell
 sudo cp /etc/nagios3/conf.d/localhost_nagios2.cfg \
 /etc/nagios3/conf.d/server02.cfg
 ```
@@ -111,7 +111,7 @@ define service {
 
 Restart the Nagios daemon to enable the new configuration:
 
-```bash
+```shell
 sudo systemctl restart nagio3.service
 ```
 
@@ -140,7 +140,7 @@ define hostgroup {
 
 The Nagios check needs to authenticate to MySQL. To add a `nagios` user to MySQL, enter:
 
-```bash
+```shell
 mysql -u root -p -e "create user nagios identified by 'secret';"
     
 > **Note**:
@@ -148,7 +148,7 @@ mysql -u root -p -e "create user nagios identified by 'secret';"
     
 Restart Nagios to start checking the MySQL servers.
 
-```bash
+```shell
 sudo systemctl restart nagios3.service
 ```
 
@@ -178,13 +178,13 @@ command[check_all_disks]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -e
 
 Finally, restart `nagios-nrpe-server`:
 
-```bash    
+```shell    
 sudo systemctl restart nagios-nrpe-server.service
 ```
 
 Also, on `server01` restart `nagios3`:
 
-```bash
+```shell
 sudo systemctl restart nagios3.service
 ```
 
@@ -198,7 +198,7 @@ Before installing Munin on `server01` Apache2 will need to be installed. The def
 
 First, on `server01` install `munin` by running the following command in a terminal:
 
-```bash
+```shell
 sudo apt install munin
 ```
 
@@ -206,7 +206,7 @@ sudo apt install munin
 
 Now on `server02` install the `munin-node` package:
 
-```bash
+```shell
 sudo apt install munin-node
 ```
 
@@ -236,7 +236,7 @@ allow ^172\.18\.100\.100$
 
 Now restart `munin-node` on `server02` for the changes to take effect:
 
-```bash
+```shell
 sudo systemctl restart munin-node.service
 ```
 
@@ -249,7 +249,7 @@ Finally, in a browser go to `http://server01/munin`, and you should see links to
 
 The `munin-plugins-extra` package contains performance checks and additional services such as DNS, DHCP, Samba, etc. To install the package, from a terminal enter:
 
-```bash
+```shell
 sudo apt install munin-plugins-extra
 ```
 

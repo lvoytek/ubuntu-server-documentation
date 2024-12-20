@@ -17,7 +17,7 @@ The following packages must be installed to obtain a smart card configuration on
 
 To install these packages, run the following command in your terminal:
 
-```bash
+```shell
 sudo apt install opensc-pkcs11 pcscd sssd libpam-sss
 ```
 
@@ -35,7 +35,7 @@ If custom PKCS#11 modules are used, you need to ensure that `p11-kit` is [proper
 
 In any case, `p11-kit` can be used to see all the configured modules that can be used for authentication:
 
-```bash
+```shell
 $ p11-kit list-modules
 
 p11-kit-trust: p11-kit-trust.so
@@ -75,14 +75,14 @@ Before continuing, you may need to export or reference the certificate ID that m
 
 This is a more generic implementation that just uses the PKCS#11 protocol so it should work with all modules:
 
-```bash
+```shell
 sudo apt install gnutls-bin
 p11tool --list-tokens
 ```
 
 Alternatively, URLs can be listed via:
 
-```bash
+```shell
 p11tool --list-token-urls
 ```
 
@@ -102,7 +102,7 @@ Token 1:
 
 The command above will show all the available smart cards in the system and their associated PKCS#11 URI. Copy the URI token of the selected card in the following command, which prints all certificates that can be used for authentication and their associated token URIs.
 
-```bash
+```shell
 p11tool --list-all-certs 'pkcs11:token=[TOKEN-ID]'
 ```
 
@@ -122,31 +122,31 @@ Now, once the URI of the certificate that will be used for authentication is kno
 
 It can be exported as text Privacy Enhanced Mail (PEM) format using:
 
-```bash
+```shell
 $ p11tool --export 'pkcs11:id=%02;type=cert'
 ```
 
 ### Using opensc
 
-```bash
+```shell
 $ sudo apt install opensc
 ```
 
 Certificates can be via:
 
-```bash
+```shell
 $ pkcs15-tool --list-certificates
 ```
 
 And exported using
 
-```bash
+```shell
 $ pkcs15-tool --read-certificate [CERTIFICATE_ID]
 ```
 
 So, for example:
 
-```bash
+```shell
 $ pkcs15-tool --list-certificates 
 Using reader with a card: Alcor Micro AU9560 00 00
 X.509 Certificate [CNS1]
@@ -165,7 +165,7 @@ MIIHXDCCBUSgAwIBAgIQA1ex7A6.....
 
 The card certificate verification can be simulated using openssl:
 
-```bash
+```shell
 $ sudo apt install openssl
 
 # Save the certificate, using one of the method stated above
@@ -224,7 +224,7 @@ The card certificate must be allowed by a Certificate Authority, these should be
 
 As per SSSD using openssl, we need to add the whole certificates chain to the SSSD CA certificates path (if not changed via `sssd.certificate_verification` ), so adding the certificates to the `pam_cert_db_path` is enough:
 
-```bash
+```shell
 sudo cat Ca-Auth-CERT*.pem >> /etc/sssd/pki/sssd_auth_ca_db.pem
 ```
 
@@ -249,7 +249,7 @@ certificate_verification = partial_chain
 
 Card certificate verification can be simulated using SSSD tools directly, by using the command SSSD's `p11_child`:
 
-```bash
+```shell
 # In ubuntu 20.04
 $ sudo /usr/libexec/sssd/p11_child --pre -d 10 --debug-fd=2 --nssdb=/etc/sssd/pki/sssd_auth_ca_db.pem
 
@@ -284,7 +284,7 @@ When using only local users, sssd can be easily configured to define an `implici
 
 Certificate mapping for local users can be easily done using the certificate Subject check, in our example:
 
-```bash
+```shell
 openssl x509 -noout -subject -in card-cert.pem | sed "s/, /,/g;s/ = /=/g"
 subject=C=IT,O=Actalis S.p.A.,OU=REGIONE TOSCANA,SN=TREVISAN,GN=MARCO,CN=TRVMRC[...data-removed...]/6090033068507002.UyMnHxfF3gkAeBYHhxa6V1Edazs=
 ```
@@ -307,7 +307,7 @@ pam_cert_auth = True
 
 User mapping can be tested working in versions newer than Ubuntu 20.04 with:
 
-```bash
+```shell
 $ sudo dbus-send --system --print-reply \
     --dest=org.freedesktop.sssd.infopipe \
     /org/freedesktop/sssd/infopipe/Users \
@@ -429,7 +429,7 @@ debug_level = 10
 
 You can use it to check your configuration without having to login/logout for real, by just using:
 
-```bash
+```shell
 # Install it!
 $ sudo apt install pamtester
 

@@ -17,7 +17,7 @@ Additionally, we package the **NVIDIA Fabric Manager** and the **NVIDIA Switch C
 
 To check the version of your currently running driver:
 
-```bash
+```shell
 cat /proc/driver/nvidia/version
 ```
 
@@ -31,13 +31,13 @@ The `ubuntu-drivers` tool is recommended if your computer uses Secure Boot, sinc
 
 For desktop:
 
-```bash
+```shell
 sudo ubuntu-drivers list
 ```
 
 or, for servers:
 
-```bash
+```shell
 sudo ubuntu-drivers list --gpgpu
 ```
 
@@ -60,7 +60,7 @@ nvidia-driver-550-server-open
 
 You can either rely on automatic detection, which will install the driver that is considered the best match for your hardware:
 
-```bash
+```shell
 sudo ubuntu-drivers install
 ```
 
@@ -68,7 +68,7 @@ Or you can tell the `ubuntu-drivers` tool which driver you would like installed.
 
 Let's assume we want to install the `535` driver:
 
-```bash
+```shell
 sudo ubuntu-drivers install nvidia:535
 ```
 
@@ -76,7 +76,7 @@ sudo ubuntu-drivers install nvidia:535
 
 You can either rely on automatic detection, which will install the driver that is considered the best match for your hardware:
 
-```bash
+```shell
 sudo ubuntu-drivers install --gpgpu
 ```
 
@@ -84,20 +84,20 @@ Or you can tell the `ubuntu-drivers` tool which driver you would like installed.
 
 Let's assume we want to install the `535-server` driver (listed as `nvidia-driver-535-server`):
 
-```bash
+```shell
 sudo ubuntu-drivers install --gpgpu nvidia:535-server
 ```
 
 You will also want to install the following additional components:
 
-```bash
+```shell
 sudo apt install nvidia-utils-535-server
 ```
 
 #### Optional step
 
 If your system comes with NVswitch hardware, then you will want to install Fabric Manager and the NVSwitch Configuration and Query library. You can do so by running the following:
-```bash
+```shell
 sudo apt install nvidia-fabricmanager-535 libnvidia-nscq-535
 ```
 
@@ -118,7 +118,7 @@ If your system uses Secure Boot (as most x86 modern systems do), your kernel wil
 
 Install the metapackage for your kernel flavour (e.g. `generic`, `lowlatency`, etc) which is specific to the driver branch (e.g. `535`) that you want to install, and whether you want the compute vs. general display driver (e.g. `-server` or not):
 
-```bash
+```shell
 sudo apt install linux-modules-nvidia-${DRIVER_BRANCH}${SERVER}-${LINUX_FLAVOUR}
 ```
 
@@ -126,7 +126,7 @@ sudo apt install linux-modules-nvidia-${DRIVER_BRANCH}${SERVER}-${LINUX_FLAVOUR}
 
 Check that the modules for your specific kernel/ABI were installed by the metapackage:
 
-```bash
+```shell
 sudo apt-cache policy linux-modules-nvidia-${DRIVER_BRANCH}${SERVER}-$(uname -r)
 ```
 
@@ -134,7 +134,7 @@ sudo apt-cache policy linux-modules-nvidia-${DRIVER_BRANCH}${SERVER}-$(uname -r)
 
 If the modules were not installed for your current running kernel, upgrade to the latest kernel or install them by specifying the running kernel version:
 
-```bash
+```shell
 sudo apt install linux-modules-nvidia-${DRIVER_BRANCH}${SERVER}-$(uname -r)
 ```
 
@@ -146,25 +146,25 @@ Install the relevant NVIDIA DKMS package and `linux-headers` to build the kernel
 
 Install the `linux-headers` metapackage for your kernel flavour (e.g. `generic`, `lowlatency`, etc):
 
-```bash
+```shell
 sudo apt install linux-headers-${LINUX_FLAVOUR}
 ```
 
 Check that the headers for your specific kernel were installed by the metapackage:
 
-```bash
+```shell
 sudo apt-cache policy linux-headers-$(uname -r)
 ```
 
 If the headers for your current running kernel were not installed, install them by specifying the running kernel version:
 
-```bash
+```shell
 sudo apt install linux-headers-$(uname -r)
 ```
 
 Finally, install the NVIDIA DKMS package for your desired driver series (this may automatically guide you through creating and enrolling a new key for Secure Boot):
 
-```bash
+```shell
 sudo apt install nvidia-dkms-${DRIVER_BRANCH}${SERVER}
 ```
 
@@ -172,7 +172,7 @@ sudo apt install nvidia-dkms-${DRIVER_BRANCH}${SERVER}
 
 After installing the correct kernel modules (see the relevant section of this document), install the correct driver metapackage:
 
-```bash
+```shell
 sudo apt install nvidia-driver-${DRIVER_BRANCH}${SERVER}
 ```
 
@@ -180,7 +180,7 @@ sudo apt install nvidia-driver-${DRIVER_BRANCH}${SERVER}
 
 If your system comes with NVswitch hardware, then you will want to install Fabric Manager and the NVSwitch Configuration and Query library. You can do so by running the following:
 
-```bash
+```shell
 sudo apt install nvidia-fabricmanager-${DRIVER_BRANCH} libnvidia-nscq-${DRIVER_BRANCH}
 ```
 
@@ -197,13 +197,13 @@ sudo apt install nvidia-fabricmanager-${DRIVER_BRANCH} libnvidia-nscq-${DRIVER_B
 
 Remove any NVIDIA packages from your system:
 
-```bash
+```shell
 sudo apt --purge remove '*nvidia*${DRIVER_BRANCH}*'
 ```
 
 Remove any additional packages that may have been installed as a dependency (e.g. the `i386` libraries on amd64 systems) and which were not caught by the previous command:
 
-```bash
+```shell
 sudo apt autoremove
 ```
 

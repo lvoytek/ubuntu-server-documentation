@@ -30,7 +30,7 @@ Here is an example showing the default values (other settings removed for brevit
 
 The master key is created once per realm, when the realm is bootstrapped. That is usually done with the `krb5_newrealm` tool (see {ref}`how to install a Kerberos server <install-a-kerberos-server>` for details). You can check the master key type with either of these commands on the KDC server:
 
-```bash
+```shell
 $ sudo kadmin.local
 kadmin.local:  getprinc K/M
 Principal: K/M@EXAMPLE.INTERNAL
@@ -50,7 +50,7 @@ When a new Kerberos principal is created through the `kadmind` service (via the 
 
 For example, let's create an `ubuntu` principal, and check the keys that were created for it (output abbreviated):
 
-```bash
+```shell
 $ sudo kadmin.local
 Authenticating as principal root/admin@EXAMPLE.INTERNAL with password.
 kadmin.local:  addprinc ubuntu
@@ -137,7 +137,7 @@ permitted_enctypes = aes256-sha1 aes128-sha1
 
 Then `kinit` will fail, because the client only supports `sha1` variants, and the server only has `sha2` to offer for that particular principal the client is requesting:
 
-```bash
+```shell
 $ kinit ubuntu
 
 kinit: Generic error (see e-text) while getting initial credentials

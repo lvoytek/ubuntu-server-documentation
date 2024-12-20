@@ -42,26 +42,26 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
 
 - Install the necessary packages (it's assumed that OpenLDAP is already installed):
    
-  ```bash 
+  ```shell 
   sudo apt install krb5-kdc-ldap krb5-admin-server
   ```
 
 - Next, extract the `kerberos.schema.gz` file:
 
-  ```bash
+  ```shell
   sudo cp /usr/share/doc/krb5-kdc-ldap/kerberos.schema.gz /etc/ldap/schema/
   sudo gunzip /etc/ldap/schema/kerberos.schema.gz
   ```
 
 - The **Kerberos schema** needs to be added to the `cn=config` tree. This schema file needs to be converted to LDIF format before it can be added. For that we will use a helper tool, called `schema2ldif`, provided by the package of the same name which is available in the Universe archive:
 
-  ```bash
+  ```shell
   sudo apt install schema2ldif
   ```
 
 - To import the Kerberos schema, run:
 
-  ```bash
+  ```shell
   $ sudo ldap-schema-manager -i kerberos.schema
   SASL/EXTERNAL authentication started
   SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
@@ -74,7 +74,7 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
   ```
 
 - With the new schema loaded, let's index an attribute often used in searches:
-  ```bash
+  ```shell
   $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
   dn: olcDatabase={1}mdb,cn=config
   add: olcDbIndex
@@ -89,7 +89,7 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
   - **`ldap_kadmind_dn`**: needs to have read and write rights on the realm container, principal container and realm sub-trees
 
   Here is the command to create these entities:
-  ```bash
+  ```shell
   $ ldapadd -x -D cn=admin,dc=example,dc=com -W <<EOF
   dn: uid=kdc-service,dc=example,dc=com
   uid: kdc-service
@@ -113,7 +113,7 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
 
   Now let's set a password for them. Note that first the tool asks for the password you want for the specified user DN, and then for the password of the **`cn=admin`** DN:
 
-  ```bash
+  ```shell
   $ ldappasswd -x -D cn=admin,dc=example,dc=com -W -S uid=kdc-service,dc=example,dc=com
   New password:   <-- password you want for uid-kdc-service 
   Re-enter new password: 
@@ -124,7 +124,7 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
 
   You can test these with `ldapwhoami`:
 
-  ```bash
+  ```shell
   $ ldapwhoami -x -D uid=kdc-service,dc=example,dc=com -W
   Enter LDAP Password: 
   dn:uid=kdc-service,dc=example,dc=com
@@ -140,7 +140,7 @@ First, the necessary **schema** needs to be loaded on an OpenLDAP server that ha
 
   We need to insert new rules before the final `to * by * read` one, to control access to the Kerberos related entries and attributes:
 
-  ```bash
+  ```shell
   $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
   dn: olcDatabase={1}mdb,cn=config
   add: olcAccess
@@ -190,7 +190,7 @@ With OpenLDAP configured it is time to configure the KDC. In this example we are
 
 - Reconfigure the `krb5-config` package if needed to get a good starting point with `/etc/krb5.conf`:
   
-  ```bash   
+  ```shell   
   sudo dpkg-reconfigure krb5-config
   ```
 
@@ -237,7 +237,7 @@ With OpenLDAP configured it is time to configure the KDC. In this example we are
 
 - Next, use the `kdb5_ldap_util` utility to create the realm:
 
-  ```bash
+  ```shell
   $ sudo kdb5_ldap_util -D cn=admin,dc=example,dc=com create -subtrees dc=example,dc=com -r EXAMPLE.COM -s -H ldapi:///
   Password for "cn=admin,dc=example,dc=com": 
   Initializing database for realm 'EXAMPLE.COM'
@@ -249,7 +249,7 @@ With OpenLDAP configured it is time to configure the KDC. In this example we are
 
 - Create a stash of the password used to bind to the LDAP server. Run it once for each `ldap_kdc_dn` and `ldap_kadmin_dn`:
 
-  ```bash    
+  ```shell    
   sudo kdb5_ldap_util -D cn=admin,dc=example,dc=com stashsrvpw -f /etc/krb5kdc/service.keyfile uid=kdc-service,dc=example,dc=com
   sudo kdb5_ldap_util -D cn=admin,dc=example,dc=com stashsrvpw -f /etc/krb5kdc/service.keyfile uid=kadmin-service,dc=example,dc=com
   ```
@@ -265,13 +265,13 @@ With OpenLDAP configured it is time to configure the KDC. In this example we are
 
 - Start the Kerberos KDC and admin server:
 
-  ```bash
+  ```shell
   sudo systemctl start krb5-kdc.service krb5-admin-server.service
   ```
 
 You can now add Kerberos principals to the LDAP database, and they will be copied to any other LDAP servers configured for replication. To add a principal using the `kadmin.local` utility enter:
 
-```bash
+```shell
 $ sudo kadmin.local
 Authenticating as principal root/admin@EXAMPLE.COM with password.
 kadmin.local:  addprinc ubuntu
@@ -286,7 +286,7 @@ The above will create an `ubuntu` principal with a DN of `krbPrincipalName=ubunt
 
 Let's say, however, that you already have a user in your directory, and it's in `uid=testuser1,ou=People,dc=example,dc=com`. How can you add the Kerberos attributes to it? You use the `-x` parameter to specify the location. For the `ldap_kadmin_dn` to be able to write to it, we first need to update the ACLs:
 
-```bash
+```shell
 $ sudo ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF
 dn: olcDatabase={1}mdb,cn=config
 add: olcAccess
@@ -299,7 +299,7 @@ EOF
 
 And now we can specify the new location:
 
-```bash
+```shell
 $ sudo kadmin.local
 Authenticating as principal root/admin@EXAMPLE.COM with password.
 kadmin.local:  addprinc -x dn=uid=testuser1,ou=People,dc=example,dc=com testuser1

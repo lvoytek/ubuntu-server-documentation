@@ -14,7 +14,7 @@ Ubuntu ARM64 images can run inside QEMU. You can either do this fully emulated (
 
 The first step is to install the `qemu-system-arm` package, which needs to be done regardless of where the ARM64 virtual machine will run:
 
-```bash
+```shell
 sudo apt install qemu-system-arm
 ```
 
@@ -22,13 +22,13 @@ sudo apt install qemu-system-arm
 
 Next, create a VM-specific flash volume for storing NVRAM variables, which are necessary when booting EFI firmware:
 
-```bash
+```shell
 truncate -s 64m varstore.img
 ```
 
 We also need to copy the ARM UEFI firmware into a bigger file:
 
-```bash
+```shell
 truncate -s 64m efi.img
 dd if=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd of=efi.img conv=notrunc
 ```
@@ -41,7 +41,7 @@ You need to fetch the ARM64 variant of the Ubuntu cloud image you would like to 
 
 If you have access to an ARM64 host, you should be able to create and launch an ARM64 virtual machine there. Note that the command below assumes that you have already set up a network bridge to be used by the virtual machine.
 
-```bash
+```shell
 qemu-system-aarch64 \
  -enable-kvm \
  -m 1024 \
@@ -59,7 +59,7 @@ qemu-system-aarch64 \
 
 You can also emulate an ARM64 virtual machine on an x86 host. To do that:
 
-```bash
+```shell
 qemu-system-aarch64 \
  -m 2048\
  -cpu max \

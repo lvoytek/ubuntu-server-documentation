@@ -7,7 +7,7 @@ The nginx HTTP server is a powerful alternative to {ref}`Apache <install-apache2
 
 To install nginx, enter the following command at the terminal prompt:
 
-```bash
+```shell
 $ sudo apt update
 $ sudo apt install nginx
 ```
@@ -18,7 +18,7 @@ This will also install any required dependency packages, and some common mods fo
 
 You can verify that nginx is running via this command:
 
-```bash
+```shell
 $ sudo systemctl status nginx
   ● nginx.service - A high performance web server and a reverse proxy server
        Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
@@ -41,7 +41,7 @@ $ sudo systemctl status nginx
 
 To restart nginx, run:
 
-```bash
+```shell
 $ sudo systemctl restart nginx
 ```
 
@@ -49,13 +49,13 @@ $ sudo systemctl restart nginx
 
 By default, Nginx will automatically start at boot time.  To disable this behaviour so that you can start it up manually, you can disable it:
 
-```bash
+```shell
 $ sudo systemctl disable nginx
 ```
 
 Then, to re-enable it, run:
 
-```bash
+```shell
 $ sudo systemctl enable nginx
 ```
 

@@ -19,7 +19,7 @@ To ensure a successful upgrade, review the following items:
 
 * Fully update the system. The upgrade process works best when the current system has all the latest updates installed. You should confirm that these commands complete successfully and that no further updates are available. We also suggest rebooting the system after all the updates are applied, to ensure the latest kernel is being run. To upgrade, run the following commands:
 
-  ```bash
+  ```shell
   sudo apt update
   sudo apt upgrade
   ```
@@ -36,7 +36,7 @@ To ensure a successful upgrade, review the following items:
 
 We recommend upgrading the system using the `do-release-upgrade` command on Server edition and cloud images. This command can handle system configuration changes that are sometimes needed between releases. To begin the process, run the following command:
 
-```bash
+```shell
 sudo do-release-upgrade
 ```
 

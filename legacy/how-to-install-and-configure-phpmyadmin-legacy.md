@@ -16,7 +16,7 @@ You will also need a web server. In this guide we use Apache2, although you can 
 
 Once your MySQL database is set up, you can install `phpmyadmin` via the terminal:
 
-```bash
+```shell
 sudo apt install phpmyadmin
 ```
 
@@ -49,7 +49,7 @@ The `config.header.inc.php` and `config.footer.inc.php` files in the `/etc/phpmy
 
 Another important configuration file is `/etc/phpmyadmin/apache.conf`. This file is symlinked to `/etc/apache2/conf-available/phpmyadmin.conf`, and once enabled, is used to configure Apache2 to serve the phpMyAdmin site. The file contains directives for loading PHP, directory permissions, etc. From a terminal type:
 
-```bash
+```shell
 sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 sudo a2enconf phpmyadmin.conf
 sudo systemctl reload apache2.service

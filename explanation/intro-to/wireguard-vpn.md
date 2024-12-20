@@ -38,7 +38,7 @@ The `wg-quick` configuration file can have an arbitrary name, and can even be pl
 
 For example, a file called `/etc/wireguard/wg0.conf` will have the needed configuration settings for a WireGuard network interface called `wg0`. By following this practice, you get the benefit of being able to call `wg-quick` with just the interface name:
 
-```bash
+```shell
 $ sudo wg-quick up wg0
 ```
 
@@ -73,7 +73,7 @@ The **peers** list, each one in its own `[Peer]` section (example above has just
 
 To generate the keypairs for each peer, the `wg` command is used:
 
-```bash
+```shell
 $ umask 077
 $ wg genkey > wg0.key
 $ wg pubkey < wg0.key > wg0.pub
@@ -83,7 +83,7 @@ And then the contents of `wg0.key` and `wg0.pub` can be used in the configuratio
 
 This is what it looks like when this interface is brought up by `wg-quick`:
 
-```bash
+```shell
 $ sudo wg-quick up wg0
 [#] ip link add wg0 type wireguard
 [#] wg setconf wg0 /dev/fd/63
@@ -106,7 +106,7 @@ To better understand how `AllowedIPs` work, let's go through a quick example.
 
 Let's say this system wants to send traffic to `10.10.10.201/24`. There is a route for it which says to use the `wg0` interface for that:
 
-```bash
+```shell
 $ ip route get 10.10.10.201
 10.10.10.201 dev wg0 src 10.10.11.10 uid 1000
     cache

@@ -28,13 +28,13 @@ present on this system.
 
 Command:
 
-```bash
+```shell
 hwloc-info
 ```
 
 Output (example on a laptop):
 
-```bash
+```shell
 depth 0:           1 Machine (type #0)
  depth 1:          1 Package (type #1)
   depth 2:         1 L3Cache (type #6)
@@ -54,13 +54,13 @@ elements. Here is an example to get details on the first core.
 
 Command:
 
-```bash
+```shell
 hwloc-info -p core:0
 ```
 
 Output:
 
-```bash
+```shell
 Core L#0
  type = Core
  full type = Core
@@ -97,13 +97,13 @@ between cores, sockets and hardware in the system.
 
 Command:
 
-```bash
+```shell
 hwloc-ls
 ```
 
 Output (example on a laptop):
 
-```bash
+```shell
 Machine (31GB total)
   Package L#0
     NUMANode L#0 (P#0 31GB)
@@ -126,7 +126,7 @@ Machine (31GB total)
 
 Output (example on a server - shortened for readbility):
 
-```bash
+```shell
 Package L#0
     NUMANode L#0 (P#0 378GB)
     L3 L#0 (32MB)
@@ -174,13 +174,13 @@ would render the same in a graphical representation.
 
 Command:
 
-```bash
+```shell
 hwloc-ls
 ```
 
 Output (CLI shows navigation info, the real content is in the GUI):
 
-```bash
+```shell
 Keyboard shortcuts:
  Zooming, scrolling and closing:
   Zoom-in or out ...................... + -

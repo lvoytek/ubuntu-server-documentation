@@ -15,7 +15,7 @@ Before installing and configuring Samba as a print server, it is best to already
 
 To install the `samba` package, run the following command in your terminal:
 
-```bash
+```shell
 sudo apt install samba
 ```
 
@@ -36,7 +36,7 @@ guest ok = yes
 
 After editing `smb.conf`, restart Samba:
 
-```bash
+```shell
 sudo systemctl restart smbd.service nmbd.service
 ```
 

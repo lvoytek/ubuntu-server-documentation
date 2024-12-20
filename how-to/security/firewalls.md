@@ -17,13 +17,13 @@ The default firewall configuration tool for Ubuntu is `ufw`. Developed to ease `
 
 To enable `ufw`, run the following command from a terminal prompt:
 
-```bash
+```shell
 sudo ufw enable
 ```
 
 To disable it, you can use the following command:
 
-```bash
+```shell
 sudo ufw disable
 ```
 
@@ -31,13 +31,13 @@ sudo ufw disable
 
 To open a port (SSH in this case):
 
-```bash
+```shell
 sudo ufw allow 22
 ```
 
 Similarly, to close an opened port:
 
-```bash
+```shell
 sudo ufw deny 22
 ```
 
@@ -45,19 +45,19 @@ sudo ufw deny 22
 
 Rules can also be added using a **numbered** format:
 
-```bash
+```shell
 sudo ufw insert 1 allow 80
 ```
 
 To view the numbered format:
 
-```bash
+```shell
 sudo ufw status numbered
 ```
 
 To remove a rule, use `delete` followed by the rule:
 
-```bash
+```shell
 sudo ufw delete deny 22
 ```
 
@@ -65,7 +65,7 @@ sudo ufw delete deny 22
 
 It is possible to allow access from specific hosts or networks to a port. The following example allows SSH access from host `192.168.0.2` to any IP address on this host:
 
-```bash
+```shell
 sudo ufw allow proto tcp from 192.168.0.2 to any port 22
 ```
 
@@ -104,13 +104,13 @@ sudo ufw --dry-run allow http
 
 To see the firewall status, enter:
 
-```bash
+```shell
 sudo ufw status
 ```
 
 And for more verbose status information use:
 
-```bash
+```shell
 sudo ufw status verbose
 ```
 
@@ -125,19 +125,19 @@ Applications that open ports can include a `ufw` profile, which details the port
 
 To view which applications have installed a profile, run the following in a terminal:
     
-```bash
+```shell
 sudo ufw app list
 ```
 
 Similar to allowing traffic to a port, using an application profile is accomplished by entering:
 
-```bash
+```shell
 sudo ufw allow Samba
 ```
 
 An extended syntax is available as well:
 
-```bash
+```shell
 ufw allow from 192.168.0.0/24 to any app Samba
 ```
 
@@ -148,13 +148,13 @@ Replace `Samba` and `192.168.0.0/24` with the application profile you are using 
 
 To view details about which ports and protocols, and so on, are defined for an application, enter:
 
-```bash
+```shell
 sudo ufw app info Samba
 ```
 
 Not all applications that require opening a network port come with `ufw` profiles, but if you have profiled an application and want the file to be included with the package, please file a bug against the package in Launchpad.
 
-```bash
+```shell
 ubuntu-bug nameofpackage
 ```
 
@@ -222,7 +222,7 @@ For each **Table**, a corresponding `COMMIT` statement is required. In these exa
 
 Finally, disable and re-enable `ufw` to apply the changes:
 
-```bash
+```shell
 sudo ufw disable && sudo ufw enable
 ```
 
@@ -246,13 +246,13 @@ net.ipv6.conf.default.forwarding=1
 
 Next, run the `sysctl` command to enable the new settings in the configuration file:
 
-```bash
+```shell
 sudo sysctl -p
 ```
 
 IP masquerading can now be accomplished with a single `iptables` rule, which may differ slightly based on your network configuration:
 
-```bash
+```shell
 sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o ppp0 -j MASQUERADE
 ```
     
@@ -270,7 +270,7 @@ The above command assumes that your private address space is `192.168.0.0/16` an
 
 Also, each chain in the filter table (the default table, and where most -- or all -- packet filtering occurs) has a default **policy** of `ACCEPT`, but if you are creating a firewall in addition to a gateway device, you may have set the policies to `DROP` or `REJECT`, in which case your masqueraded traffic needs to be allowed through the `FORWARD` chain for the above rule to work:
 
-```bash
+```shell
 sudo iptables -A FORWARD -s 192.168.0.0/16 -o ppp0 -j ACCEPT
 sudo iptables -A FORWARD -d 192.168.0.0/16 -m state \
 --state ESTABLISHED,RELATED -i ppp0 -j ACCEPT
@@ -290,7 +290,7 @@ Firewall logs are essential for recognising attacks, troubleshooting your firewa
 
 If you are using `ufw`, you can turn on logging by entering the following in a terminal:
 
-```bash
+```shell
 sudo ufw logging on
 ```
 
@@ -298,7 +298,7 @@ To turn logging off in `ufw`, replace `on` with `off` in the above command:
 
 If you are using `iptables` instead of `ufw`, run:
 
-```bash
+```shell
 sudo iptables -A INPUT -m state --state NEW -p tcp --dport 80 \
  -j LOG --log-prefix "NEW_HTTP_CONN: "
 ```

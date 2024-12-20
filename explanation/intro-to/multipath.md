@@ -77,7 +77,7 @@ If you configure an alias for a device that you would like to be consistent acro
 
 1. Disable all of your multipath devices on your other machines by running the following commands as root:
 
-   ```bash
+   ```shell
    systemctl stop multipath-tools.service
    multipath -F
    ```
@@ -86,7 +86,7 @@ If you configure an alias for a device that you would like to be consistent acro
 
 1. Re-enable the `multipathd` daemon on all the other machines in the cluster by running the following command as root:
 
-   ```bash
+   ```shell
    systemctl start multipath-tools.service
    ```
 
@@ -104,7 +104,7 @@ After creating multipath devices, you can use the multipath device names just as
 
 For example, if `/dev/mapper/mpatha` is the name of a multipath device, the following command (run as root) will mark `/dev/mapper/mpatha` as a physical volume:
 
-```bash
+```shell
 pvcreate /dev/mapper/mpatha
 ```
 
@@ -123,7 +123,7 @@ filter = [ "r/block/", "r/disk/", "r/sd.*/", "a/.*/" ]
 
 After updating `/etc/lvm.conf`, it's necessary to update the `initrd` so that this file will be copied there, where the filter matters the most -- during boot. Perform:
 
-```bash
+```shell
 update-initramfs -u -k all
 ```
 

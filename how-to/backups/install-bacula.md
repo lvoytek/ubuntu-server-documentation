@@ -34,7 +34,7 @@ These services and applications can be run on multiple servers and clients, or t
 
 There are multiple packages containing the different Bacula components. To install `bacula`, from a terminal prompt enter:
 
-```bash
+```shell
 sudo apt install bacula
 ```
 
@@ -66,7 +66,7 @@ Job {
 
 The Console can be used to query the Director about jobs, but to use the Console with a *non-root* user, the user needs to be in the **Bacula group**. To add a user to the Bacula group, run the following command from a terminal:
 
-```bash
+```shell
 sudo adduser $username bacula
 ```
 
@@ -95,7 +95,7 @@ This section shows how to back up specific directories on a single host to a loc
   The example is for a DDS-4 tape drive. Adjust the "Media Type" and "Archive Device" to match your hardware. Alternatively, you could also uncomment one of the other examples in the file.
 
 - After editing `/etc/bacula/bacula-sd.conf`, the Storage daemon will need to be restarted:
-   ```bash 
+   ```shell 
    sudo systemctl restart bacula-sd.service
    ```
 
@@ -145,7 +145,7 @@ This section shows how to back up specific directories on a single host to a loc
   The job will run every day at 00:01 or 12:01 am. There are many other scheduling options available.
 
 - Finally, create the **Job**:
-  ```bash
+  ```shell
   # Localhost backup.
   Job {
     Name = "LocalhostBackup"
@@ -162,12 +162,12 @@ This section shows how to back up specific directories on a single host to a loc
 
 - Each tape used will need to have a **Label**. If the current tape does not have a Label, Bacula will send an email letting you know. To label a tape using the Console enter the following command from a terminal:
 
-  ```bash
+  ```shell
   bconsole
   ```
 
 - At the Bacula Console prompt enter:
-  ```bash
+  ```shell
   label
   ```
 

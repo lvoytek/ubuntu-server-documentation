@@ -38,7 +38,7 @@ ssh-keygen -D /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so > smartcard.pub
 
 Copy this key to the SSH server.
 
-```bash
+```shell
 ssh-copy-id -f -i smartcard.pub ubuntu@server-2
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: “smartcard.pub”
 ubuntu@server-2’s password:

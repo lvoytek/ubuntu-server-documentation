@@ -23,7 +23,7 @@ For the best results, we need a system we can reach on the internet and that we 
 
 Let's start the configuration by installing WireGuard and generating the keys. On the client, run the following commands:
 
-```bash
+```shell
 sudo apt install wireguard
 umask 077
 wg genkey > wg0.key
@@ -33,7 +33,7 @@ sudo mv wg0.key wg0.pub /etc/wireguard
 
 And on the gateway server:
 
-```bash
+```shell
 sudo apt install wireguard
 umask 077
 wg genkey > gateway0.key
@@ -92,13 +92,13 @@ net.ipv4.ip_forward = 1
 
 And run:
 
-```bash
+```shell
 sudo sysctl -p /etc/sysctl.d/70-wireguard-routing.conf -w
 ```
 
 To masquerade the traffic from the VPN, one simple rule is needed:
 
-```bash
+```shell
 sudo iptables -t nat -A POSTROUTING -s 10.90.90.0/24 -o eth0 -j MASQUERADE
 ```
 
@@ -117,7 +117,7 @@ This completes the gateway server configuration.
 
 Let's bring up the WireGuard interfaces on both peers. On the gateway server:
 
-```bash
+```shell
 $ sudo wg-quick up gateway0
 [#] ip link add gateway0 type wireguard
 [#] wg setconf gateway0 /dev/fd/63
@@ -128,7 +128,7 @@ $ sudo wg-quick up gateway0
 
 And on the client:
 
-```bash
+```shell
 $ sudo wg-quick up wg0
 [#] ip link add wg0 type wireguard
 [#] wg setconf wg0 /dev/fd/63
@@ -145,7 +145,7 @@ $ sudo wg-quick up wg0
 
 From the client you should now be able to verify that your traffic reaching out to the internet is going through the gateway server via the WireGuard VPN. For example:
 
-```bash
+```shell
 $ mtr -r 1.1.1.1
 Start: 2022-09-01T12:42:59+0000
 HOST: laptop.lan                 Loss%   Snt   Last   Avg  Best  Wrst StDev
@@ -159,7 +159,7 @@ Above, hop 1 is the `gateway0` interface on the gateway server, then `10.48.128.
 
 If you only look at the output of `ip route`, however, it's not immediately obvious that the WireGuard VPN is the default gateway:
 
-```bash
+```shell
 $ ip route
 default via 192.168.122.1 dev enp1s0 proto dhcp src 192.168.122.160 metric 100 
 10.90.90.0/24 dev wg0 proto kernel scope link src 10.90.90.1 
@@ -185,7 +185,7 @@ There are two things you can do about this: select a specific DNS server to use 
 
 If you can use a DNS server that you trust, or don't mind using, this is probably the easiest solution. Many people would start with the DNS server assigned to the gateway server used for the VPN. This address can be checked by running the following command in a shell on the gateway server:
 
-```bash
+```shell
 $ resolvectl status
 Global
        Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
@@ -222,13 +222,13 @@ AllowedIPs = 0.0.0.0/0
 
 You can run that `resolvectl` command by hand if you want to avoid having to restart the WireGuard VPN:
 
-```bash
+```shell
 sudo resolvectl dns wg0 10.48.0.5; sudo resolvectl domain wg0 \~.
 ```
 
 Or just restart the WireGuard interface:
 
-```bash
+```shell
 sudo wg-quick down wg0; sudo wg-quick up wg0
 ```
 
@@ -244,7 +244,7 @@ Here we will proceed with `bind9`, which is in the Ubuntu *main* repository.
 
 On the gateway server, install the `bind9` package:
 
-```bash
+```shell
 sudo apt install bind9
 ```
 

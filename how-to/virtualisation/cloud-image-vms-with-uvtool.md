@@ -17,7 +17,7 @@ The following packages and their dependencies are required in order to use `uvto
 
 To install `uvtool`, run:
 
-```bash
+```shell
 sudo apt -y install uvtool
 ```
 
@@ -27,13 +27,13 @@ This will install `uvtool`'s main commands, `uvt-simplestreams-libvirt` and `uvt
 
 This is one of the major simplifications that `uvtool` provides. It knows where to find the cloud images so you only need one command to get a new cloud image. For instance, if you want to synchronise all cloud images for the amd64 architecture, the `uvtool` command would be:
 
-```bash
+```shell
 uvt-simplestreams-libvirt --verbose sync arch=amd64
 ```
 
 After all the images have been downloaded from the Internet, you will have a complete set of locally-stored cloud images. To see what has been downloaded, use the following command:
 
-```bash
+```shell
 uvt-simplestreams-libvirt query
 ```
 
@@ -47,13 +47,13 @@ release=focal arch=amd64 label=daily (20191029)
 
 In the case where you want to synchronise only one specific cloud image, you need to use the `release=` and `arch=` filters to identify which image needs to be synchronised.
 
-```bash
+```shell
 uvt-simplestreams-libvirt sync release=DISTRO-SHORT-CODENAME arch=amd64
 ```
 
 Furthermore, you can provide an alternative URL to fetch images from. A common case is the daily image, which helps you get the very latest images, or if you need access to the not-yet-released development release of Ubuntu. As an example:
 
-```bash
+```shell
 uvt-simplestreams-libvirt sync --source http://cloud-images.ubuntu.com/daily [... further options]
 ```
 
@@ -88,19 +88,19 @@ The key's randomart image is:
 
 To create a new virtual machine using `uvtool`, run the following in a terminal:
 
-```bash
+```shell
 uvt-kvm create firsttest
 ```
 
 This will create a VM named 'firsttest' using the current locally-available LTS cloud image. If you want to specify a release to be used to create the VM, you need to use the `release=` filter, and the short codename of the release, e.g. "jammy":
 
-```bash
+```shell
 uvt-kvm create secondtest release=DISTRO-SHORT-CODENAME
 ```
 
 The `uvt-kvm wait` command can be used to wait until the creation of the VM has completed:
 
-```bash
+```shell
 uvt-kvm wait secondttest
 ```
 
@@ -108,13 +108,13 @@ uvt-kvm wait secondttest
 
 Once the virtual machine creation is completed, you can connect to it using SSH:
 
-```bash
+```shell
 uvt-kvm ssh secondtest
 ```
 
 You can also connect to your VM using a regular SSH session using the IP address of the VM. The address can be queried using the following command:
 
-```bash
+```shell
 $ uvt-kvm ip secondtest
 192.168.122.199
 $ ssh -i ~/.ssh/id_rsa ubuntu@192.168.122.199
@@ -133,7 +133,7 @@ You can get the list of VMs running on your system with the `uvt-kvm list` comma
 
 Once you are finished with your VM, you can destroy it with:
 
-```bash
+```shell
 uvt-kvm destroy secondtest
 ```
 

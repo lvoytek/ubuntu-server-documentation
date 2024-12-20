@@ -19,7 +19,7 @@ Before installing WordPress you should install Apache2 (or a preferred web serve
 
 To install WordPress, run the following comand in the command prompt:
 
-```bash
+```shell
 sudo apt install wordpress
 ```
 
@@ -45,13 +45,13 @@ Alias /blog /usr/share/wordpress
 
 Now you can enable this new WordPress site:
 
-```bash
+```shell
 sudo a2ensite wordpress
 ```
 
 Once you configure the Apache2 web server (and make it ready for your WordPress application), you will need to restart it. You can run the following command to restart the Apache2 web server:
 
-```bash
+```shell
 sudo systemctl reload apache2.service
 ```
 
@@ -95,7 +95,7 @@ FLUSH PRIVILEGES;
 
 Then, run the following commands:
 
-```bash
+```shell
 cat wordpress.sql | sudo mysql --defaults-extra-file=/etc/mysql/debian.cnf
 ```
 

@@ -16,7 +16,7 @@ You can add another layer of cryptographic protection to your VPN with the `PreS
 
 Such a key can be generated with the `genpsk` command:
 
-```bash
+```shell
 $ wg genpsk
 vxlX6eMMin8uhxbKEhe/iOxi8ru+q1qWzCdjESXoFZY=
 ```

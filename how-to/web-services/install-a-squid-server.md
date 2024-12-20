@@ -7,7 +7,7 @@ Squid is a filtering and caching mechanism for web servers that can optimise ban
 
 At a terminal prompt, enter the following command to install the Squid server:
 
-```bash
+```shell
 sudo apt install squid
 ```
 
@@ -19,7 +19,7 @@ Squid is configured by editing directives in the `/etc/squid/squid.conf` configu
 
 Before editing the configuration file, you should make a copy of the original and protect it from writing. You will then have the original settings as a reference, and can reuse it when needed. Run the following commands to make a copy of the original configuration file and protect it from being written to:
 
-```bash
+```shell
 sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.original
 sudo chmod a-w /etc/squid/squid.conf.original
 ```
@@ -99,7 +99,7 @@ Using Squid's access control features, you can configure Squid-proxied Internet 
 
 After making any changes to the `/etc/squid/squid.conf` file, you will need to save the file and restart the squid server application. You can restart the server using the following command:
 
-```bash
+```shell
 sudo systemctl restart squid.service
 ```
 

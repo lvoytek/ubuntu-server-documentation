@@ -11,7 +11,7 @@ Download the ['focal daily live image' (later 20.04.5 image)](http://cdimage.ubu
    
 Now loop-back mount the ISO to extract the four files that are needed for the installation:
 
-```bash
+```shell
 user@workstation:~$ mkdir iso
 user@workstation:~$ sudo mount -o loop ubuntu-20.04.5-live-server-s390x.iso iso
 user@workstation:~$ 
@@ -426,7 +426,7 @@ However, with certain network environments it's just not possible to use a remot
 
 * The command to execute locally is:
 
-   ```bash
+   ```shell
    user@workstation:~$ ssh installer@10.222.111.11
    ```
 
@@ -436,7 +436,7 @@ However, with certain network environments it's just not possible to use a remot
 ```
 
 * Hence the remote session for the installer can be opened by:
-```bash
+```shell
 user@workstation:~$ ssh installer@10.222.111.11
 The authenticity of host '10.222.111.11 (10.222.111.11)' can't be established.
 ECDSA key fingerprint is SHA256:P+hBF3fj/pu6+0KaywUYii3Lyuc09Za9/a2elCDOgdE.

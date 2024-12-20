@@ -21,7 +21,7 @@ In the rare cases where the `-dbgsym` package is not available, you might need t
 
 Import the debug symbol archive [signing key](https://help.ubuntu.com/community/Repositories/Ubuntu#Authentication_Tab) from the Ubuntu server. On Ubuntu 18.04 LTS and newer, run the following command:
 
-```bash
+```shell
 sudo apt install ubuntu-dbgsym-keyring
 ```
 
@@ -29,7 +29,7 @@ sudo apt install ubuntu-dbgsym-keyring
 
 Create an `/etc/apt/sources.list.d/ddebs.list` by running the following line at a terminal:
 
-```bash
+```shell
 echo "deb http://ddebs.ubuntu.com $(lsb_release -cs) main restricted universe multiverse
 deb http://ddebs.ubuntu.com $(lsb_release -cs)-updates main restricted universe multiverse
 deb http://ddebs.ubuntu.com $(lsb_release -cs)-proposed main restricted universe multiverse" | \
@@ -38,7 +38,7 @@ sudo tee -a /etc/apt/sources.list.d/ddebs.list
 
 You can also add these repositories in your software sources from the Ubuntu software center or from Synaptic (refer to [this article](https://help.ubuntu.com/community/Repositories/Ubuntu), especially the section on [adding other repositories](https://help.ubuntu.com/community/Repositories/Ubuntu#Adding_Other_Repositories)). You will need to add lines like:
 
-```bash
+```shell
 deb http://ddebs.ubuntu.com focal main restricted universe multiverse
 ```
 
@@ -49,7 +49,7 @@ deb http://ddebs.ubuntu.com focal main restricted universe multiverse
 
 Run the following to update your package list or click the Reload button if you used the Synaptic Package Manager:
 
-```bash
+```shell
 sudo apt-get update
 ```
 
@@ -57,19 +57,19 @@ sudo apt-get update
 
 To install the debug symbol package (`*-dbgsym.ddeb`) for a specific package, you can now invoke:
 
-```bash
+```shell
 sudo apt-get install PACKAGE-dbgsym
 ```
 
 For example, to install the debug symbols for `xserver-xorg-core`:
 
-```bash
+```shell
 sudo apt-get install xserver-xorg-core-dbgsym
 ```
 
 As mentioned in the section above, some packages will ship their debug symbols via `*-dbg.deb` packages instead. Using `glibc` as an example, you can install its debug symbols using:
 
-```bash
+```shell
 sudo apt-get install libc6-dbg
 ```
 
@@ -83,7 +83,7 @@ For a binary path it only finds debug symbols for the actual binary itself, and 
 
 This tool will find both `-dbg` and `-dbgsym` style packages. However it only finds debug symbols for APT repositories that are currently enabled and updated, so you need to ensure that you enable at least the `ddebs.ubuntu.com` archive as described above. For a Launchpad PPA or the Ubuntu Cloud Archive you need to add another source line with the component changed from `main` to `main/debug`:
 
-```bash
+```shell
 sudo apt install debian-goodies
 find-dbgsym-packages [core_path|running_pid|binary_path]
 ```

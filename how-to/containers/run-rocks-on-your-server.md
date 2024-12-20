@@ -8,7 +8,7 @@ As with any other OCI-compliant container image, [rocks](https://canonical-rockc
 
 First, install Docker if it's not already installed:
 
-```bash
+```shell
 $ sudo apt-get install -y docker.io docker-compose-v2
 ```
 
@@ -40,14 +40,14 @@ This container, named `grafana-container`, serves Grafana 10.3.3 in an Ubuntu 22
 
 If you don’t have Firefox handy, `curl` can be used instead:
 
-```bash
+```shell
 $ curl -s http://localhost:3000/login | grep "<title>"
     <title>Grafana</title>
 ```
 
 Now that we’ve tested the deployment of the Grafana rock as a single container, let’s clean it up:
 
-```bash
+```shell
 $ sudo docker ps
 CONTAINER ID   IMAGE                                COMMAND                  CREATED          STATUS          PORTS                                       NAMES
 356e623ef2c1   ubuntu/grafana:10.3.3-22.04_stable   "/bin/pebble enter -…"   17 minutes ago   Up 17 minutes   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   grafana-container
@@ -55,7 +55,7 @@ CONTAINER ID   IMAGE                                COMMAND                  CRE
 
 We can stop and remove the container as follows:
 
-```bash
+```shell
 $ sudo docker stop grafana-container
 $ sudo docker rm grafana-container
 ```
@@ -109,7 +109,7 @@ Note that the Prometheus configuration file is being given to the container via 
 
 Since we already installed Docker in the section above, all that is needed is to create and start the containers defined in this Compose file. This can be achieved with:
 
-```bash
+```shell
 $ sudo docker compose up -d
 [+] Running 10/10
  ✔ grafana Pulled                                                                                                                                                                                                                                                                   
@@ -130,7 +130,7 @@ $ sudo docker compose up -d
 
 As before, the `-d` indicates that all containers in this stack should be started in the background. You can confirm they are live and running with:
 
-```bash
+```shell
 $ sudo docker compose ps
 NAME                   IMAGE                                   COMMAND                  SERVICE      CREATED         STATUS         PORTS
 grafana-container      ubuntu/grafana:10.3.3-22.04_stable      "/bin/pebble enter -…"   grafana      3 seconds ago   Up 3 seconds   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp

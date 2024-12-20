@@ -17,7 +17,7 @@ repositories defined in the `/etc/apt/sources.list` file and in the
 the latest changes made in the repositories, and thereby access the most
 up-to-date version of the package you're interested in, type the following:
 
-```bash
+```shell
 sudo apt update
 ```
 
@@ -25,7 +25,7 @@ sudo apt update
 
 As an example, to install the `nmap` network scanner, run the following command:
 
-```bash
+```shell
 sudo apt install nmap
 ```
 
@@ -38,7 +38,7 @@ spaces.
 
 To remove the package installed in the previous example, run the following:
 
-```bash
+```shell
 sudo apt remove nmap
 ```
 
@@ -58,7 +58,7 @@ syntax of the two tools is identical.
 
 Installed packages on your computer may periodically have upgrades available from the package repositories (e.g., security updates). To upgrade your system, first update your package index and then perform the upgrade -- as follows:
     
-```bash
+```shell
 sudo apt update
 sudo apt upgrade
 ```
@@ -71,7 +71,7 @@ Launching Aptitude with no command-line options will give you a menu-driven, tex
 
 Aptitude is best suited for use in a non-graphical terminal environment to ensure the command keys work properly. You can start the menu-driven interface of Aptitude as a regular user by typing the following command at a terminal prompt:
 
-```bash
+```shell
 sudo aptitude
 ```
 
@@ -123,13 +123,13 @@ To exit Aptitude, simply press the <kbd>q</kbd> key and confirm you want to exit
 
 You can also use Aptitude as a command-line tool, similar to `apt`. To install the `nmap` package with all necessary dependencies (as in the `apt` example), you would use the following command:
 
-```bash
+```shell
 sudo aptitude install nmap
 ```
 
 To remove the same package, you would use the command:
 
-```bash
+```shell
 sudo aptitude remove nmap
 ```
 
@@ -145,13 +145,13 @@ APT and Aptitude are newer, and layer additional features on top of `dpkg`. This
 
 To list *all* packages in the system’s package database (both installed and uninstalled) run the following command from a terminal prompt:
 
-```bash
+```shell
 dpkg -l
 ```
 
 Depending on the number of packages on your system, this can generate a large amount of output. Pipe the output through `grep` to see if a specific package is installed:
 
-```bash
+```shell
 dpkg -l | grep apache2
 ```
     
@@ -161,13 +161,13 @@ Replace `apache2` with any package name, part of a package name, or a regular ex
 
 To list the files installed by a package, in this case the `ufw` package, enter:
    
-```bash
+```shell
 dpkg -L ufw
 ```
 
 If you are unsure which package installed a file, `dpkg -S` may be able to tell you. For example:
     
-```bash
+```shell
 dpkg -S /etc/host.conf 
 base-files: /etc/host.conf
 ```
@@ -181,7 +181,7 @@ The output shows that the `/etc/host.conf` belongs to the base-files package.
 
 You can install a local `.deb` file by entering:
 
-```bash
+```shell
 sudo dpkg -i zip_3.0-4_amd64.deb
 ```
 
@@ -191,7 +191,7 @@ Change `zip_3.0-4_amd64.deb` to the actual file name of the local `.deb` file yo
 
 You can uninstall a package by running:
 
-```bash
+```shell
 sudo dpkg -r zip
 ```
     
@@ -249,7 +249,7 @@ deb-src http://security.ubuntu.com/ubuntu DISTRO-SHORT-CODENAME-security multive
 
 The `unattended-upgrades` package can be used to automatically update installed packages and can be configured to update all packages or to only install security updates. First, install the package by entering the following in a terminal:
 
-```bash
+```shell
 sudo apt install unattended-upgrades
 ```
 
@@ -315,7 +315,7 @@ Another useful package is `apticron`. `apticron` will configure a cron job to em
 
 To install the `apticron` package, enter the following command in a terminal:
 
-```bash
+```shell
 sudo apt install apticron
 ```
 

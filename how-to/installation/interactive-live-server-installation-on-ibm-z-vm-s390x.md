@@ -7,7 +7,7 @@ The following guide assumes that a z/VM guest has been defined, and that it is a
 
 Find a place to download the installer image:
 
-```bash
+```shell
 user@workstation:~$ wget 
 http://cdimage.ubuntu.com/ubuntu/releases/20.04.5/release/ubuntu-20.04.5-live-server-s390x.iso
 --2020-08-08 16:01:52--  
@@ -28,7 +28,7 @@ ubuntu-20.04.5-live 100%[===================>] 672.94M  37.1MB/s    in
 
 Now loop-back mount the ISO to extract four files that are needed for a z/VM guest installation:
 
-```bash
+```shell
 user@workstation:~$ mkdir iso
 user@workstation:~$ sudo mount -o loop ubuntu-20.04.5-live-server-s390x.iso iso
 user@workstation:~$ 
@@ -893,7 +893,7 @@ Type `reset` to clear the screen and to revert it back to the defaults.
 
 Now remove the old host key, since the system got a new one during the installation:
 
-```bash
+```shell
 user@workstation:~$ ssh-keygen -f "/home/user/.ssh/known_hosts" -R "10.222.111.24"
 # Host 10.222.111.24 found: line 159
 /home/user/.ssh/known_hosts updated.
@@ -902,7 +902,7 @@ user@workstation:~$
 ```
 
 And finally login to the newly installed z/VM guest:
-```bash
+```shell
 user@workstation:~$ ssh ubuntu@10.222.111.24
 Warning: Permanently added the ECDSA host key for IP address
 '10.222.111.24' to the list of known hosts.

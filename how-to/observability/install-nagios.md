@@ -14,7 +14,7 @@ The example in this guide uses two servers with hostnames: **`server01`** and **
 
 First, on `server01`, install the `nagios3` package by entering the following command into your terminal:
 
-```bash
+```shell
 sudo apt install nagios3 nagios-nrpe-plugin
 ```
 
@@ -22,13 +22,13 @@ You will be asked to enter a password for the **nagiosadmin** user. The user's c
 
 For example, to change the password for the nagiosadmin user, enter:
 
-```bash
+```shell
 sudo htpasswd /etc/nagios3/htpasswd.users nagiosadmin
 ```
 
 To add a user:
 
-```bash
+```shell
 sudo htpasswd /etc/nagios3/htpasswd.users steve
 ```
 
@@ -36,7 +36,7 @@ sudo htpasswd /etc/nagios3/htpasswd.users steve
 
 Next, on `server02` install the `nagios-nrpe-server` package. From a terminal on `server02` enter:
 
-```bash
+```shell
 sudo apt install nagios-nrpe-server
 ```
 
@@ -82,7 +82,7 @@ Large Nagios installations can be quite complex to configure. It is usually best
 
 First, create a **host** configuration file for `server02`. Unless otherwise specified, run all these commands on `server01`. In a terminal enter:
 
-```bash
+```shell
 sudo cp /etc/nagios3/conf.d/localhost_nagios2.cfg \
 /etc/nagios3/conf.d/server02.cfg
     
@@ -112,7 +112,7 @@ define service {
 
 Restart the Nagios daemon to enable the new configuration:
 
-```bash    
+```shell    
 sudo systemctl restart nagio3.service
 ```
 
@@ -144,7 +144,7 @@ define hostgroup {
 
 The Nagios check needs to authenticate to MySQL. To add a `nagios` user to MySQL enter:
 
-```bash    
+```shell    
 mysql -u root -p -e "create user nagios identified by 'secret';"
 ```
 
@@ -185,13 +185,13 @@ command[check_all_disks]=/usr/lib/nagios/plugins/check_disk -w 20% -c 10% -e
     
 Finally, restart `nagios-nrpe-server`:
 
-```bash
+```shell
 sudo systemctl restart nagios-nrpe-server.service
 ```
     
 Also, on `server01` restart Nagios:
 
-```bash    
+```shell    
 sudo systemctl restart nagios3.service
 ```
 

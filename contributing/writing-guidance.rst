@@ -146,7 +146,7 @@ what's happening. For example:
   
 .. code-block::
 
-   ```bash
+   ```shell
    uname -r
    ```
 

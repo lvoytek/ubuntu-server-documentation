@@ -13,13 +13,13 @@ Instead, the `sudo` utility ("superuser do") is used to carry out system adminis
 
 If for some reason you wish to enable the root account, you will need to give it a password:
 
-```bash
+```shell
 sudo passwd
 ```
 
 `sudo` will prompt you for your password, and then ask you to supply a new password for `root` as shown below:
 
-```bash
+```shell
 [sudo] password for username: (enter your own password)
 Enter new UNIX password: (enter a new password for root)
 Retype new UNIX password: (repeat new password for root)
@@ -30,7 +30,7 @@ passwd: password updated successfully
 
 To disable the root account password, use the following `passwd` syntax:
 
-```bash
+```shell
 sudo passwd -l root
 ```
 
@@ -46,7 +46,7 @@ Managing local users and groups differs very little from most other GNU/Linux op
 
 To add a user account, use the following syntax, and follow the prompts to give the account a password and identifiable characteristics, such as a full name, phone number, etc:
 
-```bash
+```shell
 sudo adduser username
 ```
 
@@ -54,7 +54,7 @@ sudo adduser username
 
 To delete a user account and its primary group, use the following syntax:
 
-```bash
+```shell
 sudo deluser username
 ```
 
@@ -64,7 +64,7 @@ Remember, any user added later with the same UID/GID as the previous owner will 
 
 You may want to change the UID/GID values to something more appropriate, such as the root account, and perhaps even relocate the folder to avoid future conflicts:
 
-```bash
+```shell
 sudo chown -R root:root /home/username/
 sudo mkdir /home/archived_users/
 sudo mv /home/username /home/archived_users/
@@ -74,13 +74,13 @@ sudo mv /home/username /home/archived_users/
 
 To temporarily lock a user password, use the following syntax:
 
-```bash
+```shell
 sudo passwd -l username
 ```
 
 Similarly, to unlock a user password:
 
-```bash
+```shell
 sudo passwd -u username
 ```
 
@@ -88,7 +88,7 @@ sudo passwd -u username
 
 To add or delete a personalised group, use the following syntax, respectively:
 
-```bash
+```shell
 sudo addgroup groupname
 sudo delgroup groupname
 ```
@@ -97,7 +97,7 @@ sudo delgroup groupname
 
 To add a user to a group, use the following syntax:
 
-```bash
+```shell
 sudo adduser username groupname
 ```
 
@@ -109,7 +109,7 @@ If your server will be home to multiple users, you should pay close attention to
 
 To verify your current user home directory permissions, use the following syntax:
 
-```bash
+```shell
 ls -ld /home/username
 ```
 
@@ -121,7 +121,7 @@ drwxr-xr-x  2 username username    4096 2007-10-02 20:03 username
 
 You can remove the world readable-permissions using the following command:
 
-```bash
+```shell
 sudo chmod 0750 /home/username
 ```
 
@@ -136,13 +136,13 @@ DIR_MODE=0750
 
 After correcting the directory permissions using any of the previously mentioned techniques, verify the results as follows:
 
-```bash
+```shell
 ls -ld /home/username
 ```
 
 The output below shows that world-readable permissions have been removed:
 
-```bash
+```shell
 drwxr-x---   2 username username    4096 2007-10-02 20:03 username
 ```
 
@@ -175,7 +175,7 @@ When creating user accounts, you should make it a policy to have a minimum and m
 
 To view the current status of a user account:
 
-```bash
+```shell
 sudo chage -l username
 ```
 
@@ -193,7 +193,7 @@ Number of days of warning before password expires       : 7
 
 To set any of these values, use the `chage` ("change age") command, and follow the interactive prompts:
 
-```bash
+```shell
 sudo chage username
 ```
 
@@ -203,13 +203,13 @@ sudo chage -E 01/31/2015 -m 5 -M 90 -I 30 -W 14 username
 
 To verify changes, use the same syntax as mentioned previously:
 
-```bash
+```shell
 sudo chage -l username
 ```
 
 The output below shows the new policies that have been established for the account:
 
-```bash
+```shell
 Last password change                                    : Jan 20, 2015
 Password expires                                        : Apr 19, 2015
 Password inactive                                       : May 19, 2015
@@ -231,20 +231,20 @@ Remove or rename the directory `.ssh/` in the user's home folder to prevent furt
 
 Be sure to check for any established SSH connections by the disabled account, as it is possible they may have existing inbound or outbound connections -- then `pkill` any that are found.
 
-```bash
+```shell
 who | grep username  (to get the pts/# terminal)
 sudo pkill -f pts/#
 ```
 
 Restrict SSH access to only user accounts that should have it. For example, you may create a group called `sshlogin` and add the group name as the value associated with the `AllowGroups` variable located in the file `/etc/ssh/sshd_config`:
 
-```bash
+```shell
 AllowGroups sshlogin
 ```
 
 Then add your permitted SSH users to the group `sshlogin`, and restart the SSH service.
 
-```bash
+```shell
 sudo adduser username sshlogin
 sudo systemctl restart ssh.service
 ```

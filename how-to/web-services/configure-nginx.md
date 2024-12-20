@@ -47,7 +47,7 @@ server {
 
 Make sure to create your web root directory structure:
 
-```bash
+```shell
 $ sudo mkdir -p /srv/my-site/html
 $ sudo chmod -R 755 /srv/my-site/html
 $ echo "<html><body><h1>My Site!</h1></body></html>" > /srv/my-site/html/index.html
@@ -55,13 +55,13 @@ $ echo "<html><body><h1>My Site!</h1></body></html>" > /srv/my-site/html/index.h
 
 Then, to make nginx reload its configuration, run:
 
-```bash
+```shell
 $ sudo systemctl reload nginx
 ```
 
 Check that the settings have taken effect using your web browser:
 
-```bash
+```shell
 $ www-browser www.my-site.org
 ```
 
@@ -73,13 +73,13 @@ To do that, first create a new server block in a configuration file as above, an
 
 Next, enable the site by creating a symlink to it from the `sites-enabled` directory:
 
-```bash
+```shell
 $ sudo ln -s /etc/nginx/sites-available/<your-domain> /etc/nginx/sites-enabled/
 ```
 
 To disable a website, you can delete the symlink in `sites-enabled`. For example, once you have your new site(s) configured and no longer need the default site configuration:
 
-```bash
+```shell
 $ sudo rm /etc/nginx/sites-available/default
 ```
 
@@ -120,7 +120,7 @@ Refer to the {ref}`security - certificates <certificates>` page in this manual f
 
 For example, to generate a self-signed certificate, you might run a set of commands similar to these:
 
-```bash
+```shell
 $ sudo openssl genrsa -out our-site.org.key 2048                                                                   
 $ openssl req -nodes -new -key our-site.org.key -out ca.csr                                                        
 $ openssl x509 -req -days 365 -in our-site.org.csr -signkey our-site.org.key -out our-site.org.crt                 

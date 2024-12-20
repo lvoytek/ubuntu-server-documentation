@@ -14,7 +14,7 @@ Before installing Rails you should install Apache (or a preferred web server) an
 
 Once you have a web server and a database service installed and configured, you are ready to install the Ruby on Rails package, `rails`, by entering the following in the terminal prompt.
 
-```bash
+```shell
 sudo apt install rails
 ```
 
@@ -44,13 +44,13 @@ Next, change the `<Directory "/path/to/rails/application/public">` directive:
 
 You should also enable the `mod_rewrite` module for Apache. To enable the `mod_rewrite` module, enter the following command into a terminal prompt:
 
-```bash
+```shell
 sudo a2enmod rewrite
 ```
 
 Finally, you will need to change the ownership of the `/path/to/rails/application/public` and `/path/to/rails/application/tmp` directories to the user that will be used to run the Apache process:
 
-```bash
+```shell
 sudo chown -R www-data:www-data /path/to/rails/application/public
 sudo chown -R www-data:www-data /path/to/rails/application/tmp
 ```
@@ -58,7 +58,7 @@ sudo chown -R www-data:www-data /path/to/rails/application/tmp
 If you need to compile your application assets run the following command in
 your application directory:
 
-```bash
+```shell
 RAILS_ENV=production rake assets:precompile
 ```
 
@@ -78,7 +78,7 @@ production:
 
 To finally create your application database and apply its migrations you can run the following commands from your app directory:
 
-```bash
+```shell
 RAILS_ENV=production rake db:create
 RAILS_ENV=production rake db:migrate
 ```

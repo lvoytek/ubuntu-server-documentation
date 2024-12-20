@@ -7,7 +7,7 @@ Distributed Replicated Block Device (DRBD) mirrors block devices between multipl
 
 To get started using DRBD, first install the necessary packages. In a terminal window, run the following command:
 
-```bash
+```shell
 sudo apt install drbd-utils
 ```
 
@@ -55,37 +55,37 @@ resource r0 {
 
 Now copy `/etc/drbd.conf` to the second host:
 
-```bash
+```shell
 scp /etc/drbd.conf drbd02:~
 ```
 
 And, on `drbd02`, move the file to `/etc`:
 
-```bash
+```shell
 sudo mv drbd.conf /etc/
 ```
 
 Now using the `drbdadm` utility, initialise the meta data storage. On both servers, run:
 
-```bash
+```shell
 sudo drbdadm create-md r0
 ```
 
 Next, on both hosts, start the `drbd` daemon:
 
-```bash
+```shell
 sudo systemctl start drbd.service
 ```
 
 On `drbd01` (or whichever host you wish to be the primary), enter the following:
 
-```bash
+```shell
 sudo drbdadm -- --overwrite-data-of-peer primary all
 ```
 
 After running the above command, the data will start syncing with the secondary host. To watch the progress, on `drbd02` enter the following:
 
-```bash
+```shell
 watch -n1 cat /proc/drbd
 ```
 
@@ -93,7 +93,7 @@ To stop watching the output press <kbd>Ctrl</kbd> + <kbd>C</kbd>.
 
 Finally, add a filesystem to `/dev/drbd0` and mount it:
 
-```bash
+```shell
 sudo mkfs.ext3 /dev/drbd0
 sudo mount /dev/drbd0 /srv
 ```
@@ -102,31 +102,31 @@ sudo mount /dev/drbd0 /srv
 
 To test that the data is actually syncing between the hosts copy some files on `drbd01`, the primary, to `/srv`:
 
-```bash
+```shell
 sudo cp -r /etc/default /srv
 ```
 
 Next, unmount `/srv`:
 
-```bash
+```shell
 sudo umount /srv
 ```
 
 Now demote the **primary** server to the **secondary** role:
 
-```bash
+```shell
 sudo drbdadm secondary r0
 ```
 
 Now on the **secondary** server, promote it to the **primary** role:
 
-```bash
+```shell
 sudo drbdadm primary r0
 ```
 
 Lastly, mount the partition:
 
-```bash
+```shell
 sudo mount /dev/drbd0 /srv
 ```
 

@@ -31,7 +31,7 @@ admin users = melissa
 
 After editing `/etc/samba/smb.conf`, reload Samba for the changes to take effect by running the following command:
 
-```bash
+```shell
 sudo smbcontrol smbd reload-config
 ```
 
@@ -47,7 +47,7 @@ UUID=66bcdd2e-8861-4fb0-b7e4-e61c569fe17d /srv  ext3    noatime,relatime,acl 0  
 
 Then remount the partition:
 
-```bash
+```shell
 sudo mount -v -o remount /srv
 ```
 
@@ -56,7 +56,7 @@ sudo mount -v -o remount /srv
 
 To match the Samba configuration above, the "sysadmin" group will be given read, write, and execute permissions to `/srv/samba/share`, the "qa" group will be given read and execute permissions, and the files will be owned by the username "Melissa". Enter the following in a terminal:
 
-```bash
+```shell
 sudo chown -R melissa /srv/samba/share/
 sudo chgrp -R sysadmin /srv/samba/share/
 sudo setfacl -R -m g:qa:rx /srv/samba/share/

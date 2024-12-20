@@ -8,7 +8,7 @@ Here are some tips to help troubleshoot SSSD.
 
 The debug level of SSSD can be changed on-the-fly via `sssctl`, from the `sssd-tools` package:
 
-```bash
+```shell
 sudo apt install sssd-tools
 sssctl debug-level <new-level>
 ```
@@ -33,7 +33,7 @@ Caching is useful to speed things up, but it can get in the way big time when tr
 
 You can either remove the whole cache:
 
-```bash
+```shell
 # sssctl cache-remove
 Creating backup of local data...
 SSSD backup of local data already exists, override? (yes/no) [no] yes
@@ -43,13 +43,13 @@ SSSD= needs to be running. Start SSSD now? (yes/no) [yes] yes
 
 Or just one element:
 
-```bash
+```shell
 sssctl cache-expire -u john
 ```
 
 Or expire everything:
 
-```bash
+```shell
 sssctl cache-expire -E
 ```
 

@@ -7,7 +7,7 @@
 
 To install Apache2, enter the following command at the terminal prompt:
 
-```bash
+```shell
 sudo apt install apache2
 ```
 

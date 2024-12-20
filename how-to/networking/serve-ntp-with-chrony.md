@@ -11,7 +11,7 @@ The NTP daemon `chronyd` calculates the drift and offset of your system clock an
 
 To install `chrony`, run the following command from a terminal prompt:
 
-```bash
+```shell
 sudo apt install chrony
 ```
 
@@ -37,7 +37,7 @@ pool 3.ubuntu.pool.ntp.org iburst
 
 See `man chrony.conf` for more details on the configuration options available. After changing any part of the config file you need to restart `chrony`, as follows:
 
-```bash
+```shell
 sudo systemctl restart chrony.service
 ```
 
@@ -128,7 +128,7 @@ Certain `chronyc` commands are privileged and cannot be run via the network with
 
 For the installation and setup you will first need to run the following command in your terminal window:
 
-```bash
+```shell
 sudo apt install gpsd chrony
 ```
 
@@ -309,7 +309,7 @@ ntsserverkey /etc/chrony/privkey.pem
 
 It is important to note that for isolation reasons `chrony`, by default, runs as user and group `_chrony`. Therefore you need to grant access to the certificates for that user, by running the following command:.
 
-```bash
+```shell
 sudo chown _chrony:_chrony /etc/chrony/*.pem
 ```
 
@@ -330,7 +330,7 @@ Authenticated NTP packets  : 197
 
 There is also a per-client statistic which can be enabled by the `-p` option of the `clients` command.
 
-```bash
+```shell
 sudo chronyc -N clients -k
 ```
 
